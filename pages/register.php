@@ -1,3 +1,16 @@
+<?php
+session_start(); // Bắt buộc phải có ở đầu file để dùng Session hiển thị thông báo
+?>
+<?php if (isset($_SESSION['message'])): ?>
+    <div class="p-4 mb-4 text-sm rounded-lg <?php echo $_SESSION['messageType'] === 'error' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'; ?>">
+        <?php echo $_SESSION['message']; ?>
+    </div>
+    <?php 
+        // Xóa thông báo sau khi đã hiển thị để không bị hiện lại khi F5 trang
+        unset($_SESSION['message']); 
+        unset($_SESSION['messageType']);
+    ?>
+<?php endif; ?>
 <!DOCTYPE html>
 
 <html class="light" lang="en"><head>
@@ -139,7 +152,7 @@
 <h2 class="font-headline text-3xl font-bold text-on-surface mb-3 tracking-tight">Create your account</h2>
 <p class="text-on-surface-variant">Start your journey as a guardian of change today.</p>
 </div>
-<form class="space-y-6"><!-- Full Name -->
+<form class="space-y-6" method="POST" action="../Management/modules/auth/register.php" name="register_form"" name="register_form"><!-- Full Name -->
 <div class="space-y-2">
 <label class="block font-label text-sm font-semibold text-on-surface-variant" for="full_name">Full Name</label>
 <div class="relative group">

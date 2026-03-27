@@ -1,13 +1,17 @@
 <?php
-// Bắt đầu session
-session_start();
-
-// Nếu người dùng đã đăng nhập từ trước, tự động chuyển hướng thẳng vào trang chủ (index.php)
-if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
-    header("Location: index.php");
-    exit();
-}
+session_start(); // Bắt buộc phải có ở đầu file để dùng Session hiển thị thông báo
 ?>
+<?php if (isset($_SESSION['message'])): ?>
+    <div class="p-4 mb-4 text-sm rounded-lg <?php echo $_SESSION['messageType'] === 'error' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'; ?>">
+        <?php echo $_SESSION['message']; ?>
+    </div>
+    <?php 
+        // Xóa thông báo sau khi đã hiển thị để không bị hiện lại khi F5 trang
+        unset($_SESSION['message']); 
+        unset($_SESSION['messageType']);
+    ?>
+<?php endif; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -130,10 +134,16 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
                     <p class="text-on-surface-variant">Continue your journey of stewardship and care.</p>
                 </div>
 
-                <form action="process_login.php" method="POST" class="space-y-6">
+                <?php if (!empty($error_message)): ?>
+                    <div class="mb-6 p-4 rounded-xl bg-error-container border border-error text-on-error-container text-sm font-semibold">
+                        <?php echo htmlspecialchars($error_message); ?>
+                    </div>
+                <?php endif; ?>
+
+                <form action="../Management/modules/auth/login.php" method="POST" class="space-y-6">
                     <div class="space-y-2">
                         <label class="block font-label text-xs font-bold uppercase tracking-wider text-on-surface-variant px-1" for="email">Tên tài khoản / Email</label>
-                        <input class="w-full px-5 py-4 rounded-xl bg-surface-container-highest border-none focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all duration-300 outline-none placeholder:text-outline/50" id="email" name="email" placeholder="Nhập admin_01 để test" type="text" required />
+                        <input class="w-full px-5 py-4 rounded-xl bg-surface-container-highest border-none focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all duration-300 outline-none placeholder:text-outline/50" id="email" name="email" placeholder="Nhập tài khoản (vd: admin_01)" type="text" required />
                     </div>
 
                     <div class="space-y-2">

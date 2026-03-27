@@ -1,6 +1,6 @@
 <?php
     $host = 'localhost';
-    $dbname = 'Charity';
+    $dbname = 'charity';
     $db_username = 'root'; // Mặc định của XAMPP/WAMP
     $db_password = '';     // Mặc định không có mật khẩu
 

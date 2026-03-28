@@ -128,7 +128,9 @@
             </div>
             <div class="col-span-12 lg:col-span-5 relative">
             <div class="aspect-[4/5] rounded-xl overflow-hidden shadow-2xl relative z-10 transform lg:translate-x-8">
+
             <img class="w-full h-full object-cover" data-alt="Candid portrait of smiling children in a community school setting with warm sunlight and soft background focus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBFtaD8dq-6sia22HJnwIsPqmADyYXvpp2ZLLTtnWtD-xPFbRyOpH-S_WGTmm6CKEqpUNztBS6X6t3pctKhSi4TBQiwkhHoNdpeAPtkEvASsvSie9yN78TSRTbM7v207uEC2dN5AXrx1abxqJWbEXkdC003fZw7FJpe4X1G5HAMEglVm4R3aQwonLF2GP-ocELwnexgKbGTONeP3jxoMk8eHJfO8SgB0bdeJBbh4k2r1KywGBRMJwSzVvy5F6T2WtfYZHJXOFv7VLN"/>
+            
             </div>
             <div class="absolute -bottom-6 -left-6 w-48 h-48 bg-secondary-container/20 rounded-xl -z-10 backdrop-blur-3xl"></div>
             </div>

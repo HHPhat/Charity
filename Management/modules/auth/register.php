@@ -1,4 +1,9 @@
 <?php
+    if (!defined('_HIENU')){
+        die('Truy cập không hợp lệ');
+    }
+?>
+<?php
 session_start();
 
 // Gọi file kết nối CSDL (Đường dẫn tương đối: lùi 2 cấp thư mục auth -> modules -> tới includes)

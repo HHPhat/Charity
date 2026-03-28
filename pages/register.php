@@ -1,5 +1,8 @@
 <?php
-session_start(); // Bắt buộc phải có ở đầu file để dùng Session hiển thị thông báo
+    if (!defined('_HIENU')){
+        die('Truy cập không hợp lệ');
+    }
+    session_start(); // Bắt buộc phải có ở đầu file để dùng Session hiển thị thông báo
 ?>
 <?php if (isset($_SESSION['message'])): ?>
     <div class="p-4 mb-4 text-sm rounded-lg <?php echo $_SESSION['messageType'] === 'error' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'; ?>">

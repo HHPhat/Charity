@@ -1,3 +1,9 @@
+<?php
+    if (!defined('_HIENU')){
+        die('Truy cập không hợp lệ');
+    }
+    session_start(); // Bắt buộc phải có ở đầu file để dùng Session hiển thị thông báo
+?>
 <!DOCTYPE html>
 
 <html lang="en"><head>

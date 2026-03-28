@@ -1,4 +1,9 @@
 <?php
+    if (!defined('_HIENU')){
+        die('Truy cập không hợp lệ');
+    }
+?>
+<?php
     $host = 'localhost';
     $dbname = 'charity';
     $db_username = 'root'; // Mặc định của XAMPP/WAMP

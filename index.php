@@ -1,5 +1,13 @@
-<!DOCTYPE html>
+<?php 
+    date_default_timezone_set('Asia/Ho_Chi_Minh');
+    session_start();
+    ob_start(); //header, cookie
 
+    require_once 'config.php';
+
+    echo _MODULES.' và'._ACTION;
+?>
+<!DOCTYPE html>
 <html class="light" lang="en"><head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>

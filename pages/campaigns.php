@@ -165,7 +165,8 @@
 <!-- Card 1 -->
 <div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden editorial-shadow hover:-translate-y-1 transition-transform duration-400">
 <div class="relative h-64 overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Candid portrait of smiling school children in a brightly lit rural classroom in East Africa with soft natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpinM245xuUj6C-4S6oH3s1iVTJC8vlgneCb6obnlja3aOJkJf3dmZF_52UvHCY4an58SceVnvnF1EH2ha334fVZeaY9voresT4LfhqObarpbo1grobmLDobC_7ybwd0Mlt0pjJsnBthBT2Tptop91EeuMRlcT50nzL-wufRzq3HxSYeILRyq8uptBA3d7nNdxdKJlDjhLjZMDmba1nBz_wni4f9ee00SqfcymoYpoWfIbC6qf1UFfNsW5IggmzpXablPsVp4508Mi"/>
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Candid portrait of smiling school children in a brightly lit rural classroom in East Africa with soft natural light" 
+src="/Charity/Management/templates/assets/image/004.jpg"/>
 <div class="absolute top-4 left-4">
 <span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">Children</span>
 </div>
@@ -193,7 +194,8 @@
 <!-- Card 2 (Emergency - Tertiary emphasis) -->
 <div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden editorial-shadow hover:-translate-y-1 transition-transform duration-400">
 <div class="relative h-64 overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Aerial view of clean water distribution center during an emergency relief effort with white tents and organized logistics" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlPoS3EabAGojWgAUuTullgwUY2FsGoYW2_0PeVBi9uFpXkQTkcrQcXRy7ahEG5mnUy8EcthVjuJLL9PfEsIGZd3n1tL4NMEjOaRDnoR18HR0gCu1QlcvfCzm8cmVEGzBfjvZGYhPKoiz6vi_Vrvn00CvGt1Pw8oGBP-tixBZwxBcZpHAMmh5fI_1z3UvbHpRmyhNGSOEPkoLbzGSrFe9fwVmbs53MLtUYBsTCCJhQpL27SUTFo3Pfrlrn04oLKYPCKg6rFyauFljB"/>
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Aerial view of clean water distribution center during an emergency relief effort with white tents and organized logistics"
+src="/Charity/Management/templates/assets/image/005.jpg"/>
 <div class="absolute top-4 left-4">
 <span class="bg-tertiary-container text-on-tertiary-container px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">Emergency</span>
 </div>
@@ -221,7 +223,8 @@
 <!-- Card 3 -->
 <div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden editorial-shadow hover:-translate-y-1 transition-transform duration-400">
 <div class="relative h-64 overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Lush green reforestation project with young saplings planted in rows against a majestic mountain backdrop under morning fog" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJq08kJG-aOBGhdg4z0Z6KM5JG5TG_WdDtwh2BoPASvmkIkuH4l3kqsQhNI30S_CCXH6TDJ_HR16qXq-IS-g-Kq_BOtRE8oU8PzFNFDJR1UqVQQOQlRbcpsa6L7TWSjOPmuzYJ2D4os_kleyVNt-6dOYDoimqVsBfRbOa4omxg83ky2JXOkmK0tbmJASq3v8VoThL8eHIy7AiEm_CwWjNfFpdM9Crvnhy4x9X2h1EjFPY60WTujehdq9tPci5dl8eEiDvoRXF6xpnn"/>
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Lush green reforestation project with young saplings planted in rows against a majestic mountain backdrop under morning fog" 
+src="/Charity/Management/templates/assets/image/006.jpg"/>
 <div class="absolute top-4 left-4">
 <span class="bg-surface-container text-on-surface-variant px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">Environment</span>
 </div>
@@ -249,7 +252,8 @@
 <!-- Card 4 -->
 <div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden editorial-shadow hover:-translate-y-1 transition-transform duration-400">
 <div class="relative h-64 overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Professional medical staff in scrubs performing a diagnostic check with high-tech equipment in a clean modern clinic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgciM7wKHE_n2covtHLDcZXdZmzgzF3U69nda-h7L8Tn8EjXjrIyytu1Udkhryxq3J7tuYoUcgUMzYppNjtzqlUaNLgfODJvdNldY_BXTD8q3ghhwwR-ZftypRjj765g50sfZT2wDM-_uwLulAvaVYX9ypItGyajb2e4xgO8BWkjh5JkigxpFhaPF4xTnecaV2IJiDnrC7BpXdCr7P7oTOxW3ybDR2cGJeNG2d59lcVGNbTUepFjPB0JyGi04xnW-SF99C2YDSMQFM"/>
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Professional medical staff in scrubs performing a diagnostic check with high-tech equipment in a clean modern clinic" 
+src="/Charity/Management/templates/assets/image/007.jpg"/>
 <div class="absolute top-4 left-4">
 <span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">Healthcare</span>
 </div>
@@ -277,7 +281,8 @@
 <!-- Card 5 -->
 <div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden editorial-shadow hover:-translate-y-1 transition-transform duration-400">
 <div class="relative h-64 overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Creative student workspace with colorful art supplies, books, and natural light streaming through large library windows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCY6E1_ZB-O08kAjC4K4f-23o73QozVrwVVJzPjdMiko61c7Kho9bo8Qftp3Zql_k2Cw2yHY89iqL-MVmslb8nWwEIDoHlnnzpFoGq0-IVlNMNEWV4gX2sikS6arR1KYjTXaYC48-5xyY0FDNu4KtWZOZaUa0oxkWK9xnCeU1H6dTZvnYkBWs_pNP0prme6zL0FTQ4blBjMOopPuQX8rTYBGXarjgxBGqfTPILpc806ZhZEVaa242mmf_vNjLFz6yaJnAo6iivLZFFE"/>
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Creative student workspace with colorful art supplies, books, and natural light streaming through large library windows" 
+src="/Charity/Management/templates/assets/image/008.jpg"/>
 <div class="absolute top-4 left-4">
 <span class="bg-surface-container text-on-surface-variant px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">Education</span>
 </div>
@@ -305,7 +310,8 @@
 <!-- Card 6 -->
 <div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden editorial-shadow hover:-translate-y-1 transition-transform duration-400">
 <div class="relative h-64 overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Modern high-efficiency solar panels installed on a community center roof against a clear blue sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRRVwn9oiGWurv-KeivP9gE-5dx8A7nZw9Ay_JgBA6bkH6KjpHS4R5SS2CzNLq08Xxzibk-4SoMhrlMS4hvkX9Hb9uao4rLshhCpjrDeiIH-jgPOuRGLmsw_5ujkqDqM8HH-czohT-nXR1hyalavTl5gyX8Ey6h6OjmIn_6A9D5YMoc1wTEDLMrManwdTjw0qDsCpv0sr5cViCS2t9xdFBjg9IhR4vce-80I0yw62HObMBRNa9ar8WUB4SO41f8c10nRyrI3sxohrN"/>
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Modern high-efficiency solar panels installed on a community center roof against a clear blue sky" 
+src="/Charity/Management/templates/assets/image/009.jpg"/>
 <div class="absolute top-4 left-4">
 <span class="bg-surface-container text-on-surface-variant px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">Environment</span>
 </div>

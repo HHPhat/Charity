@@ -136,9 +136,7 @@
             </div>
             <div class="col-span-12 lg:col-span-5 relative">
             <div class="aspect-[4/5] rounded-xl overflow-hidden shadow-2xl relative z-10 transform lg:translate-x-8">
-
-            <img class="w-full h-full object-cover" data-alt="Candid portrait of smiling children in a community school setting with warm sunlight and soft background focus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBFtaD8dq-6sia22HJnwIsPqmADyYXvpp2ZLLTtnWtD-xPFbRyOpH-S_WGTmm6CKEqpUNztBS6X6t3pctKhSi4TBQiwkhHoNdpeAPtkEvASsvSie9yN78TSRTbM7v207uEC2dN5AXrx1abxqJWbEXkdC003fZw7FJpe4X1G5HAMEglVm4R3aQwonLF2GP-ocELwnexgKbGTONeP3jxoMk8eHJfO8SgB0bdeJBbh4k2r1KywGBRMJwSzVvy5F6T2WtfYZHJXOFv7VLN"/>
-            
+            <img class="w-full h-full object-cover" data-alt="Candid portrait of smiling children in a community school setting with warm sunlight and soft background focus" src="/Charity/Management/templates/assets/image/Charity.jpg" />
             </div>
             <div class="absolute -bottom-6 -left-6 w-48 h-48 bg-secondary-container/20 rounded-xl -z-10 backdrop-blur-3xl"></div>
             </div>
@@ -160,7 +158,10 @@
             <!-- Campaign Card 1 -->
             <div class="bg-surface-container-lowest rounded-xl overflow-hidden flex flex-col group">
             <div class="relative aspect-video overflow-hidden">
-            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Close up of small green sapling being planted in rich dark soil by gentle hands under bright daylight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkE9F_9Roh82p6_TQ8NiE_piZkfQvwh-aPXrLN28C9Tnbaa3sJ8FGOgulgv7egI2mod2ocp0PuksT9emmHNX_VG7IlsXRnhCxVfuALp4F_mBMs23WEB64fOY96SPABwszhqb7OfLjROgvP81QqOohnos32-YGTNBH5RfRzjQWPSeugUt7jrMd2RrxzorsXy6J-kzuPGigt0yToL5irFMH7-Pk0VxPaERmxPLvAonPnZDfkw5X4euR6D3vUwxcRD3Nk4KGC-7POPJa3"/>
+            
+            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Close up of small green sapling being planted in rich dark soil by gentle hands under bright daylight" 
+            src="/Charity/Management/templates/assets/image/001.jpg"/>
+           
             <div class="absolute top-4 left-4">
             <span class="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">Environment</span>
             </div>
@@ -183,7 +184,9 @@
             <!-- Campaign Card 2 -->
             <div class="bg-surface-container-lowest rounded-xl overflow-hidden flex flex-col group">
             <div class="relative aspect-video overflow-hidden">
-            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Clean fresh water pouring into a glass in a rural village setting with soft natural morning light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCez2IKn5xLPtxCLsao6S9qALeNX0k8Z8SxbeB_coHr3Aete8V3WV21gJo4xHRFpxTNT6J8rQWaL4dSmddh2Rj_w6Z08u8G8tvp4w9ctlZdFm1ddwl7iJ12VwMSprb7T-VI73qKNCHjqF8t-0ieTuF2MIvQ5DfdYkxOdSiKj0RsNJlfp_KUOshL9rZdeXB-rUs5kq_hg7vRVf1_IuDpTrLZP_P0b1kbTFu9r0_jQZAv3TJMe1O-QH4hyg0TObCHkV54I2Z2YNwAms8Q"/>
+            
+            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Clean fresh water pouring into a glass in a rural village setting with soft natural morning light" 
+            src="/Charity/Management/templates/assets/image/002.jpg"/>
             <div class="absolute top-4 left-4">
             <span class="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">Health</span>
             </div>
@@ -206,7 +209,8 @@
             <!-- Campaign Card 3 -->
             <div class="bg-surface-container-lowest rounded-xl overflow-hidden flex flex-col group">
             <div class="relative aspect-video overflow-hidden">
-            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Library shelves filled with colorful children's books in a bright modern learning space" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLPK_Kn_jmJxnwzuE3quJJxLp7sbOBkz7jSX9VAJXiJUz1B6EwiZUtmqXWTrALVaWsZmefoSh7s_88c3y3M_Jy_g8N9Lhy4_fUwL5W0l9iWMh7KyPDECI7DxYsN5gROt79ryTyatSfP49ZElj_InuArNwPdMkB92yUTuux_NKr8Y1I-LHTXG1_sKMCl36ehTBZIX20-8N7lhRHsaR79zwtDruBcR_y4c7ettx95IgCE5Q79EP7-vTtCP2uyZxeWw7x4FntNQPd41wE"/>
+            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Library shelves filled with colorful children's books in a bright modern learning space"
+            src="/Charity/Management/templates/assets/image/003.jpg"/>
             <div class="absolute top-4 left-4">
             <span class="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">Education</span>
             </div>

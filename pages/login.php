@@ -1,7 +1,7 @@
 <?php
-    if (!defined('_HIENU')){
-        die('Truy cập không hợp lệ');
-    }
+    // if (!defined('_HIENU')){
+    //     die('Truy cập không hợp lệ');
+    // }
     session_start(); // Bắt buộc phải có ở đầu file để dùng Session hiển thị thông báo
 ?>
 <?php if (isset($_SESSION['message'])): ?>
@@ -20,7 +20,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Login - The Transparent Guardian</title>
+    <title>Login</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -143,7 +143,7 @@
                     </div>
                 <?php endif; ?>
 
-                <form action="../Management/modules/auth/login.php" method="POST" class="space-y-6">
+                <form action="../modules/auth/login.php" method="POST" class="space-y-6">
                     <div class="space-y-2">
                         <label class="block font-label text-xs font-bold uppercase tracking-wider text-on-surface-variant px-1" for="email">Tên tài khoản / Email</label>
                         <input class="w-full px-5 py-4 rounded-xl bg-surface-container-highest border-none focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all duration-300 outline-none placeholder:text-outline/50" id="email" name="email" placeholder="Nhập tài khoản (vd: admin_01)" type="text" required />

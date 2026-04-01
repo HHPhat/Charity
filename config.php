@@ -15,7 +15,8 @@
 
     //Thiết lập HOST
     define('_HOST_URL', 'https://.'.$_SERVER['HTTP_HOST'].'/Charity');
-    define('_HOST_URL_PAGES', _HOST_URL.'/Charity/pages');
+    define('_HOST_URL_PAGES', _HOST_URL.'/pages');
+    define('_HOST_URL_TEMPLATES', _HOST_URL.'/templates');
 
     //Thiết lập PATH
     define('_PATH_URL',__DIR__);

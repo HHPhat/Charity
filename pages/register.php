@@ -1,7 +1,7 @@
 <?php
-    if (!defined('_HIENU')){
-        die('Truy cập không hợp lệ');
-    }
+    // if (!defined('_HIENU')){
+    //     die('Truy cập không hợp lệ');
+    // }
     session_start(); // Bắt buộc phải có ở đầu file để dùng Session hiển thị thông báo
 ?>
 <?php if (isset($_SESSION['message'])): ?>
@@ -155,7 +155,7 @@
 <h2 class="font-headline text-3xl font-bold text-on-surface mb-3 tracking-tight">Create your account</h2>
 <p class="text-on-surface-variant">Start your journey as a guardian of change today.</p>
 </div>
-<form class="space-y-6" method="POST" action="../Management/modules/auth/register.php" name="register_form"" name="register_form"><!-- Full Name -->
+<form class="space-y-6" method="POST" action="../modules/auth/register.php" name="register_form"" name="register_form"><!-- Full Name -->
 <div class="space-y-2">
 <label class="block font-label text-sm font-semibold text-on-surface-variant" for="full_name">Full Name</label>
 <div class="relative group">

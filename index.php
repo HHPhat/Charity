@@ -4,8 +4,35 @@
     ob_start(); //header, cookie
 
     require_once 'config.php';
+    require_once 'includes/connect.php';
+    require_once 'includes/database.php';
+    require_once 'includes/session.php';
+    
+    $module = _MODULES;
+    $action = _ACTION;
 
-    echo _MODULES.' và'._ACTION;
+    // if (!empty($_GET['module'])){
+    //     $module = $_GET['module'];
+    // }
+
+    // if (!empty($_GET['action'])){
+    //     $action = $_GET['action'];
+    // }
+    // $path = 'modules/'.$module.'/'.$action.'.php';
+    
+    // if(!empty($path)){
+    //     if(file_exists($path)){
+    //         // require_once $path;
+    //         header("Location: ".$path);
+    //     }else{
+    //         // require_once 'modules/errors/404.php';
+    //         header("Location: modules/errors/404.php");
+    //     }
+    // }
+    // else{
+    //     // require_once 'modules/errors/500.php';
+    //     header("Location: modules/errors/500.php");
+    // }
 ?>
 <!DOCTYPE html>
 <html class="light" lang="en"><head>
@@ -136,7 +163,9 @@
             </div>
             <div class="col-span-12 lg:col-span-5 relative">
             <div class="aspect-[4/5] rounded-xl overflow-hidden shadow-2xl relative z-10 transform lg:translate-x-8">
-            <img class="w-full h-full object-cover" data-alt="Candid portrait of smiling children in a community school setting with warm sunlight and soft background focus" src="/Charity/Management/templates/assets/image/Charity.jpg" />
+
+            <img class="w-full h-full object-cover" data-alt="Candid portrait of smiling children in a community school setting with warm sunlight and soft background focus" src="/Charity/templates/assets/image/Charity.jpg"/>
+            
             </div>
             <div class="absolute -bottom-6 -left-6 w-48 h-48 bg-secondary-container/20 rounded-xl -z-10 backdrop-blur-3xl"></div>
             </div>
@@ -158,10 +187,8 @@
             <!-- Campaign Card 1 -->
             <div class="bg-surface-container-lowest rounded-xl overflow-hidden flex flex-col group">
             <div class="relative aspect-video overflow-hidden">
-            
             <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Close up of small green sapling being planted in rich dark soil by gentle hands under bright daylight" 
-            src="/Charity/Management/templates/assets/image/001.jpg"/>
-           
+            src="/Charity/templates/assets/image/001.jpg"/>
             <div class="absolute top-4 left-4">
             <span class="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">Environment</span>
             </div>
@@ -184,9 +211,8 @@
             <!-- Campaign Card 2 -->
             <div class="bg-surface-container-lowest rounded-xl overflow-hidden flex flex-col group">
             <div class="relative aspect-video overflow-hidden">
-            
             <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Clean fresh water pouring into a glass in a rural village setting with soft natural morning light" 
-            src="/Charity/Management/templates/assets/image/002.jpg"/>
+            src="/Charity/templates/assets/image/002.jpg"/>
             <div class="absolute top-4 left-4">
             <span class="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">Health</span>
             </div>
@@ -210,7 +236,7 @@
             <div class="bg-surface-container-lowest rounded-xl overflow-hidden flex flex-col group">
             <div class="relative aspect-video overflow-hidden">
             <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Library shelves filled with colorful children's books in a bright modern learning space"
-            src="/Charity/Management/templates/assets/image/003.jpg"/>
+            src="/Charity/templates/assets/image/003.jpg"/>
             <div class="absolute top-4 left-4">
             <span class="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">Education</span>
             </div>

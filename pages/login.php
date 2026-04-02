@@ -103,7 +103,7 @@
             <div class="text-blue-700 font-extrabold text-xl tracking-tighter">
                 The Transparent Guardian
             </div>
-            <a class="text-on-surface-variant font-label text-sm font-semibold hover:text-blue-600 transition-colors" href="#">
+            <a class="text-on-surface-variant font-label text-sm font-semibold hover:text-blue-600 transition-colors" href="../">
                 Back to home
             </a>
         </div>
@@ -152,7 +152,7 @@
                     <div class="space-y-2">
                         <div class="flex justify-between items-end px-1">
                             <label class="block font-label text-xs font-bold uppercase tracking-wider text-on-surface-variant" for="password">Password</label>
-                            <a class="text-xs font-semibold text-primary hover:text-primary-container transition-colors" href="#">Forgot Password?</a>
+                            <a class="text-xs font-semibold text-primary hover:text-primary-container transition-colors" href="forgot.php">Forgot Password?</a>
                         </div>
                         <div class="relative">
                             <input class="w-full px-5 py-4 rounded-xl bg-surface-container-highest border-none focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all duration-300 outline-none placeholder:text-outline/50" id="password" name="password" placeholder="••••••••" type="password" required />
@@ -203,7 +203,7 @@
                 <div class="mt-12 text-center">
                     <p class="text-on-surface-variant text-sm">
                         New to the guardian ecosystem? 
-                        <a class="font-bold text-secondary hover:underline ml-1" href="#">Join the Mission</a>
+                        <a class="font-bold text-secondary hover:underline ml-1" href="register.php">Register</a>
                     </p>
                 </div>
             </div>

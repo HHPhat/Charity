@@ -130,13 +130,24 @@
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
                     <a class="font-manrope font-bold text-sm tracking-tight text-blue-700 dark:text-blue-400 border-b-2 border-blue-700 dark:border-blue-400 pb-1" href="#">Home</a>
-                    <a class="font-manrope font-bold text-sm tracking-tight text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="#">Campaigns</a>
-                    <a class="font-manrope font-bold text-sm tracking-tight text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="#">My Joined Campaigns</a>
-                    <a class="font-manrope font-bold text-sm tracking-tight text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="#">My Account</a>
+                    <a class="font-manrope font-bold text-sm tracking-tight text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="modules/campaigns">Campaigns</a>
+                    <a class="font-manrope font-bold text-sm tracking-tight text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="modules/joined_campaigns">My Joined Campaigns</a>
+                    <a class="font-manrope font-bold text-sm tracking-tight text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="modules/accounts">My Account</a>
                 </div>
                 <div class="flex items-center gap-4">
-                    <button class="hidden md:block text-slate-600 font-bold text-sm hover:opacity-80 transition-opacity">Login</button>
-                    <button class="bg-primary text-on-primary px-6 py-2 rounded-xl font-bold text-sm scale-95 active:scale-90 transition-transform shadow-[0_2px_0_0_#00419e]">Sign Up</button>
+                    <button 
+                    class="hidden md:block text-slate-600 font-bold text-sm hover:opacity-80 transition-opacity" 
+                    type="button" 
+                    onclick="window.location.href='pages/login.php'">
+                    Login
+                    </button>
+
+                    <button 
+                    class="bg-primary text-on-primary px-6 py-2 rounded-xl font-bold text-sm scale-95 active:scale-90 transition-transform shadow-[0_2px_0_0_#00419e]"
+                    type="button"
+                    onclick="window.location.href='pages/register.php'">
+                    Sign Up
+                    </button>
                 </div>
             </div>
         </nav>

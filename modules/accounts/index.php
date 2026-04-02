@@ -91,9 +91,9 @@
 <div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
 <div class="text-2xl font-extrabold tracking-tighter text-blue-700">Transparent Guardian</div>
 <div class="hidden md:flex space-x-8 items-center">
-<a class="text-slate-600 hover:text-blue-600 font-manrope font-bold text-sm tracking-tight transition-opacity duration-400 ease-out" href="#">Home</a>
-<a class="text-slate-600 hover:text-blue-600 font-manrope font-bold text-sm tracking-tight transition-opacity duration-400 ease-out" href="#">Campaigns</a>
-<a class="text-slate-600 hover:text-blue-600 font-manrope font-bold text-sm tracking-tight transition-opacity duration-400 ease-out" href="#">My Joined Campaigns</a>
+<a class="text-slate-600 hover:text-blue-600 font-manrope font-bold text-sm tracking-tight transition-opacity duration-400 ease-out" href="../../">Home</a>
+<a class="text-slate-600 hover:text-blue-600 font-manrope font-bold text-sm tracking-tight transition-opacity duration-400 ease-out" href="../campaigns">Campaigns</a>
+<a class="text-slate-600 hover:text-blue-600 font-manrope font-bold text-sm tracking-tight transition-opacity duration-400 ease-out" href="../joined_campaigns">My Joined Campaigns</a>
 <a class="text-blue-700 border-b-2 border-blue-700 pb-1 font-manrope font-bold text-sm tracking-tight transition-opacity duration-400 ease-out" href="#">My Account</a>
 </div>
 <div class="flex items-center space-x-4">

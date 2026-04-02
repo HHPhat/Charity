@@ -95,10 +95,10 @@
                 Transparent Guardian
             </div>
 <div class="hidden md:flex items-center space-x-8 font-manrope font-bold text-sm tracking-tight">
-<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="#">Home</a>
-<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="#">Campaigns</a>
-<a class="text-blue-700 dark:text-blue-400 border-b-2 border-blue-700 dark:border-blue-400 pb-1 hover:opacity-80 transition-opacity duration-400 ease-out" href="#">My Joined Campaigns</a>
-<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="#">My Account</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="../../">Home</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="../campaigns">Campaigns</a>
+<a class="text-blue-700 dark:text-blue-400 border-b-2 border-blue-700 dark:border-blue-400 pb-1 hover:opacity-80 transition-opacity duration-400 ease-out" href="../joined_campaigns">My Joined Campaigns</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="../accounts">My Account</a>
 </div>
 <div class="flex items-center space-x-4">
 <button class="text-slate-600 font-bold text-sm hover:opacity-80 transition-opacity duration-400 ease-out scale-95 active:scale-90 transition-transform">Login</button>

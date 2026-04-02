@@ -108,7 +108,7 @@
 <div class="text-blue-700 font-extrabold text-xl tracking-tighter">
                 The Transparent Guardian
             </div>
-<a class="text-on-surface-variant font-label text-sm font-semibold hover:text-blue-600 transition-colors" href="#">
+<a class="text-on-surface-variant font-label text-sm font-semibold hover:text-blue-600 transition-colors" href="../">
                 Back to home
             </a>
 </div>
@@ -233,7 +233,7 @@
 <div class="mt-10 text-center">
 <p class="text-on-surface-variant">
                         Already have an account? 
-                        <a class="text-secondary font-bold ml-1 hover:text-on-secondary-fixed transition-colors" href="#">Sign In</a>
+                        <a class="text-secondary font-bold ml-1 hover:text-on-secondary-fixed transition-colors" href="login.php">Sign In</a>
 </p>
 </div>
 <!-- Subtle Trust Badge -->

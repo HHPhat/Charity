@@ -96,10 +96,10 @@
 <div class="flex items-center gap-8">
 <span class="text-2xl font-extrabold tracking-tighter text-blue-700 dark:text-blue-400">Transparent Guardian</span>
 <div class="hidden md:flex items-center gap-6">
-<a class="font-manrope font-bold text-sm tracking-tight text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="#">Home</a>
+<a class="font-manrope font-bold text-sm tracking-tight text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="../../">Home</a>
 <a class="font-manrope font-bold text-sm tracking-tight text-blue-700 dark:text-blue-400 border-b-2 border-blue-700 dark:border-blue-400 pb-1 hover:opacity-80 transition-opacity duration-400 ease-out" href="#">Campaigns</a>
-<a class="font-manrope font-bold text-sm tracking-tight text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="#">My Joined Campaigns</a>
-<a class="font-manrope font-bold text-sm tracking-tight text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="#">My Account</a>
+<a class="font-manrope font-bold text-sm tracking-tight text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="../joined_campaigns">My Joined Campaigns</a>
+<a class="font-manrope font-bold text-sm tracking-tight text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="../accounts">My Account</a>
 </div>
 </div>
 <div class="flex items-center gap-4">
@@ -185,7 +185,7 @@ src="/Charity/templates/assets/image/004.jpg"/>
 </div>
 <div class="flex items-center justify-between pt-4 mt-auto border-t border-surface-container">
 <span class="text-xs font-semibold text-outline tracking-wider uppercase">12 Days Left</span>
-<button class="flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all">
+<button class="flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all" type="button" onclick="window.location.href='../campaign_detail'">
                             View Details <span class="material-symbols-outlined text-sm">arrow_forward</span>
 </button>
 </div>

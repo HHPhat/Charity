@@ -3,6 +3,8 @@
     //     die('Truy cập không hợp lệ');
     // }
     session_start(); // Bắt buộc phải có ở đầu file để dùng Session hiển thị thông báo
+    require_once '../../includes/database.php';
+    
 ?>
 <!DOCTYPE html>
 
@@ -97,7 +99,7 @@
 <span class="text-2xl font-extrabold tracking-tighter text-blue-700 dark:text-blue-400">Transparent Guardian</span>
 <div class="hidden md:flex items-center gap-6">
 <a class="font-manrope font-bold text-sm tracking-tight text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="../../">Home</a>
-<a class="font-manrope font-bold text-sm tracking-tight text-blue-700 dark:text-blue-400 border-b-2 border-blue-700 dark:border-blue-400 pb-1 hover:opacity-80 transition-opacity duration-400 ease-out" href="#">Campaigns</a>
+<a class="font-manrope font-bold text-sm tracking-tight text-blue-700 dark:text-blue-400 border-b-2 border-blue-700 dark:border-blue-400 pb-1 hover:opacity-80 transition-opacity duration-400 ease-out" href="../campaigns">Campaigns</a>
 <a class="font-manrope font-bold text-sm tracking-tight text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="../joined_campaigns">My Joined Campaigns</a>
 <a class="font-manrope font-bold text-sm tracking-tight text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="../accounts">My Account</a>
 </div>
@@ -122,17 +124,24 @@
 </div>
 <!-- Search Component -->
 <div class="w-full md:w-96">
-<div class="relative group">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
-<input class="w-full pl-12 pr-4 py-4 bg-surface-container-highest border-none rounded-xl focus:ring-2 focus:ring-primary/20 transition-all text-on-surface placeholder:text-outline" placeholder="Search campaigns..." type="text"/>
-</div>
+    <form method="GET" action="">
+        <div class="relative group">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+            <input name="search" 
+                   value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>" 
+                   class="w-full pl-12 pr-4 py-4 bg-surface-container-highest border-none rounded-xl focus:ring-2 focus:ring-primary/20 transition-all text-on-surface placeholder:text-outline" 
+                   placeholder="Search campaigns..." 
+                   type="text"/>
+        </div>
+    </form>
 </div>
 </div>
 </header>
 <!-- Category Filters (Bento-style chips) -->
 <section class="mb-12">
 <div class="flex flex-wrap gap-3">
-<button class="px-6 py-2.5 rounded-full bg-primary text-on-primary text-sm font-semibold tracking-wide shadow-md">All Initiatives</button>
+<button class="px-6 py-2.5 rounded-full bg-primary text-on-primary text-sm font-semibold tracking-wide shadow-md" type="button" 
+                    onclick="window.location.href='../campaigns'">All Initiatives</button>
 <button class="px-6 py-2.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-sm font-semibold tracking-wide hover:bg-secondary-fixed-dim transition-colors">
 <span class="flex items-center gap-2">
 <span class="material-symbols-outlined text-sm">child_care</span> Children
@@ -161,196 +170,128 @@
 </div>
 </section>
 <!-- Campaigns Grid -->
+ <?php
+  // --- 1. XỬ LÝ LOGIC PHÂN TRANG VÀ TÌM KIẾM ---
+  $limit = 6; 
+  $current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+  // Bắt từ khóa tìm kiếm từ URL (nếu có)
+  $search_keyword = isset($_GET['search']) ? trim($_GET['search']) : "";
+
+  if ($current_page < 1) $current_page = 1;
+
+  // Truyền từ khóa tìm kiếm vào các hàm
+  $total_campaigns = get_total_campaigns_count($search_keyword);
+  $total_pages = ceil($total_campaigns / $limit); 
+
+  if ($current_page > $total_pages && $total_pages > 0) {
+      $current_page = $total_pages;
+  }
+
+  $offset = ($current_page - 1) * $limit;
+
+  // Lấy danh sách chiến dịch theo trang và từ khóa
+  $campaigns = get_campaigns_paginated($limit, $offset, $search_keyword);
+
+  // Tạo một biến lưu chuỗi tìm kiếm trên URL để gắn vào các nút phân trang
+  $search_query = !empty($search_keyword) ? "&search=" . urlencode($search_keyword) : "";
+?>
 <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
 <!-- Card 1 -->
-<div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden editorial-shadow hover:-translate-y-1 transition-transform duration-400">
-<div class="relative h-64 overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Candid portrait of smiling school children in a brightly lit rural classroom in East Africa with soft natural light" 
-src="/Charity/templates/assets/image/004.jpg"/>
-<div class="absolute top-4 left-4">
-<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">Children</span>
-</div>
-</div>
-<div class="p-8 flex flex-col flex-grow">
-<h3 class="text-2xl font-bold text-on-surface mb-3 group-hover:text-primary transition-colors">Building Tomorrow: Rural Schools Initiative</h3>
-<p class="text-on-surface-variant text-sm leading-relaxed mb-6 flex-grow">Providing clean water, digital tablets, and certified teachers for 15 remote villages in the Rift Valley.</p>
-<div class="mb-6">
-<div class="flex justify-between items-end mb-2">
-<span class="text-primary font-extrabold text-lg">$42,500 <span class="text-xs font-normal text-outline">raised</span></span>
-<span class="text-on-surface-variant font-bold text-sm">85%</span>
-</div>
-<div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
-<div class="h-full bg-primary rounded-full w-[85%]"></div>
-</div>
-</div>
-<div class="flex items-center justify-between pt-4 mt-auto border-t border-surface-container">
-<span class="text-xs font-semibold text-outline tracking-wider uppercase">12 Days Left</span>
-<button class="flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all" type="button" onclick="window.location.href='../campaign_detail'">
-                            View Details <span class="material-symbols-outlined text-sm">arrow_forward</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Card 2 (Emergency - Tertiary emphasis) -->
-<div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden editorial-shadow hover:-translate-y-1 transition-transform duration-400">
-<div class="relative h-64 overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Aerial view of clean water distribution center during an emergency relief effort with white tents and organized logistics"
-src="/Charity/templates/assets/image/005.jpg"/>
-<div class="absolute top-4 left-4">
-<span class="bg-tertiary-container text-on-tertiary-container px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">Emergency</span>
-</div>
-</div>
-<div class="p-8 flex flex-col flex-grow border-l-4 border-tertiary">
-<h3 class="text-2xl font-bold text-on-surface mb-3 group-hover:text-tertiary transition-colors">Flood Relief: Urban Crisis Response</h3>
-<p class="text-on-surface-variant text-sm leading-relaxed mb-6 flex-grow">Emergency medical supplies and temporary housing for families displaced by recent coastal storms.</p>
-<div class="mb-6">
-<div class="flex justify-between items-end mb-2">
-<span class="text-tertiary font-extrabold text-lg">$128,900 <span class="text-xs font-normal text-outline">raised</span></span>
-<span class="text-on-surface-variant font-bold text-sm">64%</span>
-</div>
-<div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
-<div class="h-full bg-tertiary rounded-full w-[64%]"></div>
-</div>
-</div>
-<div class="flex items-center justify-between pt-4 mt-auto border-t border-surface-container">
-<span class="text-xs font-semibold text-tertiary tracking-wider uppercase">Urgent Action</span>
-<button class="flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all">
-                            View Details <span class="material-symbols-outlined text-sm">arrow_forward</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Card 3 -->
-<div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden editorial-shadow hover:-translate-y-1 transition-transform duration-400">
-<div class="relative h-64 overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Lush green reforestation project with young saplings planted in rows against a majestic mountain backdrop under morning fog" 
-src="/Charity/templates/assets/image/006.jpg"/>
-<div class="absolute top-4 left-4">
-<span class="bg-surface-container text-on-surface-variant px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">Environment</span>
-</div>
-</div>
-<div class="p-8 flex flex-col flex-grow">
-<h3 class="text-2xl font-bold text-on-surface mb-3 group-hover:text-primary transition-colors">Ocean Guardian: Coral Reef Restoration</h3>
-<p class="text-on-surface-variant text-sm leading-relaxed mb-6 flex-grow">Deploying bio-engineered habitats to restore endangered marine ecosystems across the South Pacific.</p>
-<div class="mb-6">
-<div class="flex justify-between items-end mb-2">
-<span class="text-primary font-extrabold text-lg">$15,200 <span class="text-xs font-normal text-outline">raised</span></span>
-<span class="text-on-surface-variant font-bold text-sm">30%</span>
-</div>
-<div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
-<div class="h-full bg-primary rounded-full w-[30%]"></div>
-</div>
-</div>
-<div class="flex items-center justify-between pt-4 mt-auto border-t border-surface-container">
-<span class="text-xs font-semibold text-outline tracking-wider uppercase">45 Days Left</span>
-<button class="flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all">
-                            View Details <span class="material-symbols-outlined text-sm">arrow_forward</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Card 4 -->
-<div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden editorial-shadow hover:-translate-y-1 transition-transform duration-400">
-<div class="relative h-64 overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Professional medical staff in scrubs performing a diagnostic check with high-tech equipment in a clean modern clinic" 
-src="/Charity/templates/assets/image/007.jpg"/>
-<div class="absolute top-4 left-4">
-<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">Healthcare</span>
-</div>
-</div>
-<div class="p-8 flex flex-col flex-grow">
-<h3 class="text-2xl font-bold text-on-surface mb-3 group-hover:text-primary transition-colors">Heart Watch: Mobile Screening Units</h3>
-<p class="text-on-surface-variant text-sm leading-relaxed mb-6 flex-grow">Equipping mobile vans with cardiology equipment to provide free screenings in underserved urban areas.</p>
-<div class="mb-6">
-<div class="flex justify-between items-end mb-2">
-<span class="text-primary font-extrabold text-lg">$55,000 <span class="text-xs font-normal text-outline">raised</span></span>
-<span class="text-on-surface-variant font-bold text-sm">92%</span>
-</div>
-<div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
-<div class="h-full bg-primary rounded-full w-[92%]"></div>
-</div>
-</div>
-<div class="flex items-center justify-between pt-4 mt-auto border-t border-surface-container">
-<span class="text-xs font-semibold text-outline tracking-wider uppercase">2 Days Left</span>
-<button class="flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all">
-                            View Details <span class="material-symbols-outlined text-sm">arrow_forward</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Card 5 -->
-<div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden editorial-shadow hover:-translate-y-1 transition-transform duration-400">
-<div class="relative h-64 overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Creative student workspace with colorful art supplies, books, and natural light streaming through large library windows" 
-src="/Charity/templates/assets/image/008.jpg"/>
-<div class="absolute top-4 left-4">
-<span class="bg-surface-container text-on-surface-variant px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">Education</span>
-</div>
-</div>
-<div class="p-8 flex flex-col flex-grow">
-<h3 class="text-2xl font-bold text-on-surface mb-3 group-hover:text-primary transition-colors">Project Literacy: Community Libraries</h3>
-<p class="text-on-surface-variant text-sm leading-relaxed mb-6 flex-grow">Transforming vacant spaces into vibrant community reading rooms with curated book collections.</p>
-<div class="mb-6">
-<div class="flex justify-between items-end mb-2">
-<span class="text-primary font-extrabold text-lg">$11,000 <span class="text-xs font-normal text-outline">raised</span></span>
-<span class="text-on-surface-variant font-bold text-sm">50%</span>
-</div>
-<div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
-<div class="h-full bg-primary rounded-full w-[50%]"></div>
-</div>
-</div>
-<div class="flex items-center justify-between pt-4 mt-auto border-t border-surface-container">
-<span class="text-xs font-semibold text-outline tracking-wider uppercase">20 Days Left</span>
-<button class="flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all">
-                            View Details <span class="material-symbols-outlined text-sm">arrow_forward</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Card 6 -->
-<div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden editorial-shadow hover:-translate-y-1 transition-transform duration-400">
-<div class="relative h-64 overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Modern high-efficiency solar panels installed on a community center roof against a clear blue sky" 
-src="/Charity/templates/assets/image/009.jpg"/>
-<div class="absolute top-4 left-4">
-<span class="bg-surface-container text-on-surface-variant px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">Environment</span>
-</div>
-</div>
-<div class="p-8 flex flex-col flex-grow">
-<h3 class="text-2xl font-bold text-on-surface mb-3 group-hover:text-primary transition-colors">Solar Power for Shelters</h3>
-<p class="text-on-surface-variant text-sm leading-relaxed mb-6 flex-grow">Reducing operating costs for women's shelters by installing sustainable solar energy systems.</p>
-<div class="mb-6">
-<div class="flex justify-between items-end mb-2">
-<span class="text-primary font-extrabold text-lg">$28,000 <span class="text-xs font-normal text-outline">raised</span></span>
-<span class="text-on-surface-variant font-bold text-sm">70%</span>
-</div>
-<div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
-<div class="h-full bg-primary rounded-full w-[70%]"></div>
-</div>
-</div>
-<div class="flex items-center justify-between pt-4 mt-auto border-t border-surface-container">
-<span class="text-xs font-semibold text-outline tracking-wider uppercase">8 Days Left</span>
-<button class="flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all">
-                            View Details <span class="material-symbols-outlined text-sm">arrow_forward</span>
-</button>
-</div>
-</div>
-</div>
+  <?php
+// --- 2. HIỂN THỊ DANH SÁCH CHIẾN DỊCH ---
+if (empty($campaigns)) {
+    echo "<p class='text-center col-span-full'>Chưa có chiến dịch nào.</p>";
+} else {
+    foreach ($campaigns as $campaign) {
+        $id = $campaign['campaign_id'];
+        $name = htmlspecialchars($campaign['campaign_name']);
+        $org_name = htmlspecialchars($campaign['org_name']); 
+        
+        // ... các biến khác giữ nguyên ...
+        $img_path = "/Charity/templates/assets/image/campaigns/{$id}/campaign_{$id}.jpg";
+?>
+        <div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden editorial-shadow hover:-translate-y-1 transition-transform duration-400">
+            <div class="relative h-64 overflow-hidden">
+                <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                     src="<?= $img_path ?>" 
+                     onerror="this.src='/Charity/templates/assets/image/placeholder.jpg';"/>
+                
+                <div class="absolute top-4 left-4">
+                    <span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">
+                        <?= $org_name ?>
+                    </span>
+                </div>
+            </div>
+            
+            <div class="p-8 flex flex-col flex-grow">
+                <h3 class="text-2xl font-bold text-on-surface mb-3 group-hover:text-primary transition-colors">
+                    <?= $name ?>
+                </h3>
+                <p class="text-xs text-outline mb-4 uppercase font-bold tracking-widest">By <?= $org_name ?></p>
+                <p class="text-on-surface-variant text-sm leading-relaxed mb-6 flex-grow">
+                    <?= htmlspecialchars($campaign['description']) ?>
+                </p>
+                <div class="flex items-center justify-between pt-4 mt-auto border-t border-surface-container">
+                    <span class="text-xs font-semibold text-outline tracking-wider uppercase">12 Days Left</span>
+                    <button class="flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all" 
+                            type="button" 
+                            onclick="window.location.href='campaign_detail.php?id=<?= $id ?>'">
+                        View Details <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+<?php 
+    } 
+} 
+?>
 </section>
 <!-- Pagination -->
+<?php if ($total_pages > 1): ?>
 <nav class="mt-20 flex justify-center items-center gap-2">
-<button class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container text-on-surface transition-colors">
-<span class="material-symbols-outlined">chevron_left</span>
-</button>
-<button class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-on-primary font-bold">1</button>
-<button class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container text-on-surface transition-colors font-medium">2</button>
-<button class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container text-on-surface transition-colors font-medium">3</button>
-<span class="mx-2 text-outline">...</span>
-<button class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container text-on-surface transition-colors font-medium">12</button>
-<button class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container text-on-surface transition-colors">
-<span class="material-symbols-outlined">chevron_right</span>
-</button>
+    
+    <?php if ($current_page > 1): ?>
+        <a href="?page=<?= $current_page - 1 ?><?= $search_query ?>" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container text-on-surface transition-colors">
+            <span class="material-symbols-outlined">chevron_left</span>
+        </a>
+    <?php else: ?>
+        <button disabled class="w-10 h-10 flex items-center justify-center rounded-lg text-outline opacity-50 cursor-not-allowed">
+            <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+    <?php endif; ?>
+
+    <?php 
+    $visible_pages = 2; 
+    for ($i = 1; $i <= $total_pages; $i++): 
+        if ($i == 1 || $i == $total_pages || ($i >= $current_page - $visible_pages && $i <= $current_page + $visible_pages)):
+    ?>
+            <?php if ($i == $current_page): ?>
+                <button class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-on-primary font-bold"><?= $i ?></button>
+            <?php else: ?>
+                <a href="?page=<?= $i ?><?= $search_query ?>" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container text-on-surface transition-colors font-medium"><?= $i ?></a>
+            <?php endif; ?>
+            
+    <?php 
+        elseif ($i == $current_page - $visible_pages - 1 || $i == $current_page + $visible_pages + 1): 
+    ?>
+            <span class="mx-2 text-outline">...</span>
+    <?php 
+        endif; 
+    endfor; 
+    ?>
+
+    <?php if ($current_page < $total_pages): ?>
+        <a href="?page=<?= $current_page + 1 ?><?= $search_query ?>" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container text-on-surface transition-colors">
+            <span class="material-symbols-outlined">chevron_right</span>
+        </a>
+    <?php else: ?>
+        <button disabled class="w-10 h-10 flex items-center justify-center rounded-lg text-outline opacity-50 cursor-not-allowed">
+            <span class="material-symbols-outlined">chevron_right</span>
+        </button>
+    <?php endif; ?>
+
 </nav>
+<?php endif; ?>
 </main>
 <!-- Floating Donation Widget -->
 <div class="fixed bottom-8 right-8 z-40">
@@ -381,3 +322,37 @@ src="/Charity/templates/assets/image/009.jpg"/>
 </div>
 </footer>
 </body></html>
+
+<!--
+  <section>
+    
+  <div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden editorial-shadow hover:-translate-y-1 transition-transform duration-400">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Modern high-efficiency solar panels installed on a community center roof against a clear blue sky" 
+src="/Charity/templates/assets/image/009.jpg"/>
+<div class="absolute top-4 left-4">
+<span class="bg-surface-container text-on-surface-variant px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">Environment</span>
+</div>
+</div>
+<div class="p-8 flex flex-col flex-grow">
+<h3 class="text-2xl font-bold text-on-surface mb-3 group-hover:text-primary transition-colors">Solar Power for Shelters</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-6 flex-grow">Reducing operating costs for women's shelters by installing sustainable solar energy systems.</p>
+<div class="mb-6">
+<div class="flex justify-between items-end mb-2">
+<span class="text-primary font-extrabold text-lg">$28,000 <span class="text-xs font-normal text-outline">raised</span></span>
+<span class="text-on-surface-variant font-bold text-sm">70%</span>
+</div>
+<div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full w-[70%]"></div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-4 mt-auto border-t border-surface-container">
+<span class="text-xs font-semibold text-outline tracking-wider uppercase">8 Days Left</span>
+<button class="flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all">
+                            View Details <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+ -->

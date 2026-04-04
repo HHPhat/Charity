@@ -5,13 +5,19 @@
     session_start(); // Bắt buộc phải có ở đầu file để dùng Session hiển thị thông báo
 ?>
 <?php if (isset($_SESSION['message'])): ?>
-    <div class="p-4 mb-4 text-sm rounded-lg <?php echo $_SESSION['messageType'] === 'error' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'; ?>">
-        <?php echo $_SESSION['message']; ?>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            title: '<?= ($_SESSION['messageType'] == "error") ? "Lỗi!" : "Thành công" ?>',
+            text: '<?= $_SESSION['message'] ?>',
+            icon: '<?= $_SESSION['messageType'] ?>',
+            confirmButtonColor: '#00419e'
+        });
+    </script>
     <?php 
-        // Xóa thông báo sau khi đã hiển thị để không bị hiện lại khi F5 trang
+        // Hiển thị xong thì xóa đi để không hiện lại khi F5
         unset($_SESSION['message']); 
-        unset($_SESSION['messageType']);
+        unset($_SESSION['messageType']); 
     ?>
 <?php endif; ?>
 
@@ -117,7 +123,7 @@
             <div class="relative z-10 m-12 mt-32 p-12 bg-surface/10 backdrop-blur-md rounded-3xl border border-white/10 flex flex-col justify-end">
                 <span class="material-symbols-outlined text-secondary-fixed mb-6 text-5xl" style="font-variation-settings: 'FILL' 1;">format_quote</span>
                 <h2 class="font-headline text-4xl md:text-5xl font-extrabold text-white leading-tight mb-8">
-                    "Transparency is the <span class="text-secondary-fixed">bridge</span> between compassion and impact."
+                    "Transparency is the <span class="text-secondary-fixed">bridge</span> between compassion and impact." <?php echo $_SESSION['fullname']; ?>
                 </h2>
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-1 bg-secondary-fixed rounded-full"></div>

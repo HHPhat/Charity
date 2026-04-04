@@ -97,8 +97,33 @@
 <a class="text-blue-700 border-b-2 border-blue-700 pb-1 font-manrope font-bold text-sm tracking-tight transition-opacity duration-400 ease-out" href="#">My Account</a>
 </div>
 <div class="flex items-center space-x-4">
-<button class="text-slate-600 font-manrope font-bold text-sm hover:opacity-80 transition-opacity">Login</button>
-<button class="bg-primary text-on-primary px-6 py-2 rounded-xl font-manrope font-bold text-sm shadow-[0_2px_0_0_#00419e] scale-95 active:scale-90 transition-transform">Sign Up</button>
+<?php if (empty($_SESSION['account_id'])): ?>
+    <div class="flex items-center gap-2">
+        <button onclick="window.location.href='../../pages/login.php'" class="text-slate-600 dark:text-slate-400 hover:text-blue-600 font-manrope font-bold text-sm tracking-tight scale-95 active:scale-90 transition-transform">
+            Login
+        </button>
+        <button onclick="window.location.href='../../pages/register.php'" class="bg-primary text-on-primary px-6 py-2 rounded-xl font-manrope font-bold text-sm tracking-tight scale-95 active:scale-90 transition-transform shadow-[0_2px_0_0_rgba(0,65,158,1)]">
+            Sign Up
+        </button>
+    </div>
+
+<?php else: ?>
+    <div class="flex items-center gap-5">
+        <div class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity" onclick="window.location.href='my_account.php'">
+            <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">person</span>
+            </div>
+            <span class="font-manrope font-bold text-sm text-on-surface tracking-tight">
+                <?= htmlspecialchars($_SESSION['account_id'] ?? 'User') ?>
+            </span>
+        </div>
+        
+        <button onclick="window.location.href='/Charity/modules/auth/logout.php'" class="text-red-500 hover:text-red-600 font-manrope font-bold text-sm tracking-tight flex items-center gap-1 scale-95 active:scale-90 transition-transform">
+            <span class="material-symbols-outlined text-sm">logout</span>
+            Logout
+        </button>
+    </div>
+<?php endif; ?>
 </div>
 </div>
 </nav>

@@ -137,19 +137,33 @@
                     <a class="font-manrope font-bold text-sm tracking-tight text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="modules/accounts">My Account</a>
                 </div>
                 <div class="flex items-center gap-4">
-                    <button 
-                    class="hidden md:block text-slate-600 font-bold text-sm hover:opacity-80 transition-opacity" 
-                    type="button" 
-                    onclick="window.location.href='pages/login.php'">
-                    Login
-                    </button>
+                    <?php if (empty($_SESSION['account_id'])): ?>
+                        <div class="flex items-center gap-2">
+                            <button onclick="window.location.href='pages/login.php'" class="text-slate-600 dark:text-slate-400 hover:text-blue-600 font-manrope font-bold text-sm tracking-tight scale-95 active:scale-90 transition-transform">
+                                Login
+                            </button>
+                            <button onclick="window.location.href='pages/register.php'" class="bg-primary text-on-primary px-6 py-2 rounded-xl font-manrope font-bold text-sm tracking-tight scale-95 active:scale-90 transition-transform shadow-[0_2px_0_0_rgba(0,65,158,1)]">
+                                Sign Up
+                            </button>
+                        </div>
 
-                    <button 
-                    class="bg-primary text-on-primary px-6 py-2 rounded-xl font-bold text-sm scale-95 active:scale-90 transition-transform shadow-[0_2px_0_0_#00419e]"
-                    type="button"
-                    onclick="window.location.href='pages/register.php'">
-                    Sign Up
-                    </button>
+                    <?php else: ?>
+                        <div class="flex items-center gap-5">
+                            <div class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity" onclick="window.location.href='my_account.php'">
+                                <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined">person</span>
+                                </div>
+                                <span class="font-manrope font-bold text-sm text-on-surface tracking-tight">
+                                    <?= htmlspecialchars($_SESSION['account_id'] ?? 'User') ?>
+                                </span>
+                            </div>
+                            
+                            <button onclick="window.location.href='/Charity/modules/auth/logout.php'" class="text-red-500 hover:text-red-600 font-manrope font-bold text-sm tracking-tight flex items-center gap-1 scale-95 active:scale-90 transition-transform">
+                                <span class="material-symbols-outlined text-sm">logout</span>
+                                Logout
+                            </button>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </nav>

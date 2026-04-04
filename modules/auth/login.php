@@ -31,18 +31,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } 
 
     try {
-        $sql = "SELECT account, password, role, status FROM Account WHERE account = :account";
+        $sql = "SELECT 
+    a.account, 
+    a.password, 
+    a.status, 
+    a.role, 
+    d.donor_id, 
+    d.full_name, 
+    d.email, 
+    d.phone
+FROM Account a
+INNER JOIN Donor d ON a.account = d.account where c.account = ".$account_input;
+        // $sql = "SELECT account, password, role, status FROM Account WHERE account = :account";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':account', $account_input, PDO::PARAM_STR);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user && $user['status'] === 'Active') {
-            if (!empty($password_input)) {//=== $user['password']
+            if (password_verify($password_input, $user['password'])) {
                 // Đăng nhập thành công
                 $_SESSION['logged_in'] = true;
                 $_SESSION['account_id'] = $user['account'];
                 $_SESSION['role'] = $user['role'];
+                $_SESSION['fullname']=$user['fullname'];
+                $_SESSION['donor_id']= $user['donor_id'];
                 
                 header("Location: ../../index.php");
                 exit();

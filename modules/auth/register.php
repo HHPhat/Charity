@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $conn->beginTransaction();
 
         // Thêm dữ liệu vào bảng Account
-        $hashed_password = md5($password); 
+        $hashed_password=password_hash($password, PASSWORD_DEFAULT); 
         $creation_date = date('Y-m-d H:i:s');
         $role = 'Donor'; 
         $status = 'Active';
@@ -69,9 +69,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // 1. Lưu thông báo thành công
         $_SESSION['message'] = "Đăng ký tài khoản thành công! Vui lòng đăng nhập.";
         $_SESSION['messageType'] = "success";
+        $_SESSION['logged_in'] = true;
+        $_SESSION['account_id'] = $username;
+        $_SESSION['role'] = "Donor";
+        $_SESSION['fullname']=$full_name;
+        $_SESSION['donor_id']= $new_donor_id;
         
         // 2. Chuyển hướng người dùng (bạn có thể đổi thành pages/register.php nếu muốn ở lại trang cũ)
-        header("Location: ../../pages/login.php"); 
+        header("Location: ../../"); 
         exit();
 
     } catch (Exception $e) {

@@ -13,32 +13,6 @@
         return $result;
     }
 
-//     function get_total_campaigns_count() {
-//     global $conn;
-//     $sql = "SELECT COUNT(*) as total FROM CharityCampaign c
-//             INNER JOIN CharityOrganization o ON c.org_id = o.org_id";
-//     $stm = $conn->prepare($sql);
-//     $stm->execute();
-//     $result = $stm->fetch(PDO::FETCH_ASSOC);
-//     return $result['total'];
-// }
-
-//     // Hàm 2: Lấy dữ liệu chiến dịch theo trang (Có giới hạn LIMIT và OFFSET)
-//     function get_campaigns_paginated($limit, $offset) {
-//         global $conn;
-//         $sql = "SELECT c.*, o.org_name 
-//                 FROM CharityCampaign c
-//                 INNER JOIN CharityOrganization o ON c.org_id = o.org_id
-//                 ORDER BY c.start_date DESC
-//                 LIMIT :limit OFFSET :offset";
-                
-//         $stm = $conn->prepare($sql);
-//         // Lưu ý: PDO yêu cầu ép kiểu INT cho LIMIT và OFFSET
-//         $stm->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-//         $stm->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-//         $stm->execute();
-//         return $stm->fetchAll(PDO::FETCH_ASSOC);
-//     }
 // Hàm 1: Đếm tổng số chiến dịch (Có hỗ trợ tìm kiếm)
     function get_total_campaigns_count($search = "") {
         global $conn;
@@ -87,5 +61,27 @@
         return $stm->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
+    function get_user_donated_campaigns($donor_id) {
+    global $conn;
+    // Lấy thông tin chiến dịch, tổ chức, ngày quyên góp sớm nhất và tổng tiền quyên góp của user này
+    $sql = "SELECT 
+                c.campaign_id, 
+                o.org_name, 
+                c.campaign_name, 
+                c.end_date, 
+                c.target_amount,
+                MIN(d.donation_time) AS first_donation_time, 
+                SUM(d.amount) AS total_donated
+            FROM Donation d
+            INNER JOIN CharityCampaign c ON d.campaign_id = c.campaign_id
+            INNER JOIN CharityOrganization o ON c.org_id = o.org_id
+            WHERE d.donor_id = :donor_id
+            GROUP BY c.campaign_id, o.org_name, c.campaign_name, c.end_date, c.target_amount
+            ORDER BY first_donation_time DESC";
+            
+    $stm = $conn->prepare($sql);
+    $stm->bindValue(':donor_id', $donor_id, PDO::PARAM_INT);
+    $stm->execute();
+    return $stm->fetchAll(PDO::FETCH_ASSOC);
+}
 ?>

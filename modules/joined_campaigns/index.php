@@ -3,6 +3,7 @@
     //     die('Truy cập không hợp lệ');
     // }
     session_start(); // Bắt buộc phải có ở đầu file để dùng Session hiển thị thông báo
+    require_once '../../includes/database.php';
 ?>
 <!DOCTYPE html>
 
@@ -101,7 +102,7 @@
 <a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 hover:opacity-80 transition-opacity duration-400 ease-out" href="../accounts">My Account</a>
 </div>
 <div class="flex items-center space-x-4">
-<button class="text-slate-600 font-bold text-sm hover:opacity-80 transition-opacity duration-400 ease-out scale-95 active:scale-90 transition-transform">Login</button>
+<button class="text-slate-600 font-bold text-sm hover:opacity-80 transition-opacity duration-400 ease-out scale-95 active:scale-90 transition-transform">login</button>
 <button class="bg-primary text-on-primary px-5 py-2 rounded-xl font-bold text-sm shadow-[0_2px_0_rgba(0,65,158,1)] hover:opacity-90 scale-95 active:scale-90 transition-transform">Sign Up</button>
 </div>
 </div>
@@ -142,109 +143,90 @@
 </div>
 </div>
 <!-- Campaign Item 1 -->
-<div class="group bg-surface-container-lowest rounded-xl overflow-hidden hover:shadow-md transition-all duration-400 ease-out border-l-4 border-primary">
-<div class="p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center">
-<div class="w-full md:w-48 h-32 shrink-0 overflow-hidden rounded-lg">
-<img alt="Clean Water" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="dramatic wide shot of a community well being installed in a dusty african village under a bright blue sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDVHMPqWsNpwp98UGSIxpZtHRCPIJog5PDatqis9kkFgOLsUkXoez5eFmtveZqMlABkIU5l2QxmbQ5VWMvBnX4KTrctBSxQ89eUcs8WGHBKp19lZu2KL4xq5QmQ5RpviyrGsqZ5D1rbIEw0bytYFIJTIOY_wkiKC26suD5I6HQp48sIhg2uZz7s8LA1yFkefZF61JnrJBkX9TbOhNJtS0BIj4dP-5V08dg3RtxMsvcKhenooh2l1uxL70iljpLr88IGn-CmCbVEbbx"/>
-</div>
-<div class="flex-grow">
-<div class="flex flex-wrap items-center gap-3 mb-2">
-<span class="text-xs font-bold uppercase tracking-widest text-primary">Water &amp; Sanitation</span>
-<span class="text-on-surface-variant text-sm">•</span>
-<span class="text-on-surface-variant text-sm font-medium">Joined Oct 12, 2023</span>
-</div>
-<h3 class="text-xl font-bold mb-3 headline-font text-on-surface">Clean Water for Turkana Valley</h3>
-<div class="w-full bg-surface-variant h-1.5 rounded-full mb-4">
-<div class="bg-primary h-full rounded-full" style="width: 72%"></div>
-</div>
-<div class="flex items-center gap-6">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-primary text-xl">payments</span>
-<span class="text-on-surface font-bold">$250.00</span>
-</div>
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-on-surface-variant text-xl">event</span>
-<span class="text-on-surface-variant">Last gift: 3 days ago</span>
-</div>
-</div>
-</div>
-<div class="shrink-0 w-full md:w-auto">
-<button class="w-full md:w-auto bg-surface-container-high hover:bg-primary hover:text-white text-on-surface-variant font-bold px-8 py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2">
+<div class="flex flex-col gap-6">
+<?php
+// Kiểm tra session và gọi hàm
+if (isset($_SESSION['donor_id'])) {
+    $donor_id = $_SESSION['donor_id'];
+    $donated_campaigns = get_user_donated_campaigns($donor_id);
+    if (empty($donated_campaigns)) {
+        echo "<p class='text-on-surface-variant'>Bạn chưa tham gia đóng góp cho chiến dịch nào.</p>";
+    } else {
+        foreach ($donated_campaigns as $campaign) {
+            $campaign_id = $campaign['campaign_id'];
+            $org_name = htmlspecialchars($campaign['org_name']);
+            $campaign_name = htmlspecialchars($campaign['campaign_name']);
+            
+            // Xử lý định dạng thời gian
+            $first_donation_time = date('d/m/Y', strtotime($campaign['first_donation_time']));
+            $end_date = date('d/m/Y', strtotime($campaign['end_date']));
+            
+            // Xử lý tiền tệ
+            $total_donated = $campaign['total_donated'];
+            $target_amount = $campaign['target_amount'];
+            
+            // Tính phần trăm đóng góp của user so với mục tiêu (để làm thanh progress bar)
+            // Nếu bạn muốn progress bar thể hiện tổng tiền của TẤT CẢ mọi người thì cần query thêm, ở đây tạm dùng % của riêng user này
+            $percent = ($target_amount > 0) ? min(100, round(($total_donated / $target_amount) * 100)) : 0;
+            
+            // Đường dẫn ảnh
+            $img_path = "/Charity/templates/assets/image/campaigns/{$campaign_id}/campaign_{$campaign_id}.jpg";
+?>
+            <div class="group bg-surface-container-lowest rounded-xl overflow-hidden hover:shadow-md transition-all duration-400 ease-out border-l-4 border-primary">
+                <div class="p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center">
+                    
+                    <div class="w-full md:w-48 h-32 shrink-0 overflow-hidden rounded-lg">
+                        <img alt="<?= $campaign_name ?>" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                             src="<?= $img_path ?>"
+                             onerror="this.src='/Charity/templates/assets/image/placeholder.jpg';" />
+                    </div>
+                    
+                    <div class="flex-grow">
+                        <div class="flex flex-wrap items-center gap-3 mb-2">
+                            <span class="text-xs font-bold uppercase tracking-widest text-primary"><?= $org_name ?></span>
+                            <span class="text-on-surface-variant text-sm">•</span>
+                            <span class="text-on-surface-variant text-sm font-medium">Tham gia ngày: <?= $first_donation_time ?></span>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold mb-3 headline-font text-on-surface"><?= $campaign_name ?></h3>
+                        
+                        <div class="w-full bg-surface-variant h-1.5 rounded-full mb-4">
+                            <div class="bg-primary h-full rounded-full" style="width: <?= $percent ?>%"></div>
+                        </div>
+                        
+                        <div class="flex items-center gap-6">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary text-xl">payments</span>
+                                <span class="text-on-surface font-bold">$<?= number_format($total_donated, 2) ?></span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-on-surface-variant text-xl">event</span>
+                                <span class="text-on-surface-variant">Kết thúc: <?= $end_date ?></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="shrink-0 w-full md:w-auto">
+                        <button class="w-full md:w-auto bg-surface-container-high hover:bg-primary hover:text-white text-on-surface-variant font-bold px-8 py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2" 
+                                type="button" 
+                                onclick="window.location.href='campaign_detail.php?id=<?= $campaign_id ?>'">
                             View Donation Tracking
                             <span class="material-symbols-outlined text-lg">arrow_forward</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Campaign Item 2 -->
-<div class="group bg-surface-container-lowest rounded-xl overflow-hidden hover:shadow-md transition-all duration-400 ease-out border-l-4 border-secondary">
-<div class="p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center">
-<div class="w-full md:w-48 h-32 shrink-0 overflow-hidden rounded-lg">
-<img alt="Education" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="close-up of a diverse group of smiling children in a modern library holding bright colorful books" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBp7CDdPOpME7Z-fDFeYmHyGAoyziqOuSToneIDRm40JO0j8zeH0hs0S0AEubp5FtFN6Kqz6smTjks_JmwmIuJ4GZVjZGWgu7J5GKzrwWxozyVlAu3uVpdYL7792z_SSzWVQyMNj1VP3oEr7TKgu1KDeT3hrMDTDr-zvPorOE86WT75a7pB1eY207UgXR-6_htC4e96eOTGETpWt-VyF-SI6ORmkO4d-watpyN1F-z6rxudxxdPqZ4jihc-RZCkuHMBv9_PIyNPG-YB"/>
-</div>
-<div class="flex-grow">
-<div class="flex flex-wrap items-center gap-3 mb-2">
-<span class="text-xs font-bold uppercase tracking-widest text-secondary">Education</span>
-<span class="text-on-surface-variant text-sm">•</span>
-<span class="text-on-surface-variant text-sm font-medium">Joined Sep 05, 2023</span>
-</div>
-<h3 class="text-xl font-bold mb-3 headline-font text-on-surface">Digital Literacy Initiative 2024</h3>
-<div class="w-full bg-surface-variant h-1.5 rounded-full mb-4">
-<div class="bg-secondary h-full rounded-full" style="width: 45%"></div>
-</div>
-<div class="flex items-center gap-6">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-secondary text-xl">payments</span>
-<span class="text-on-surface font-bold">$500.00</span>
-</div>
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-on-surface-variant text-xl">event</span>
-<span class="text-on-surface-variant">Last gift: Aug 20, 2023</span>
-</div>
-</div>
-</div>
-<div class="shrink-0 w-full md:w-auto">
-<button class="w-full md:w-auto bg-surface-container-high hover:bg-secondary hover:text-white text-on-surface-variant font-bold px-8 py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2">
-                            View Donation Tracking
-                            <span class="material-symbols-outlined text-lg">arrow_forward</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Campaign Item 3 -->
-<div class="group bg-surface-container-lowest rounded-xl overflow-hidden hover:shadow-md transition-all duration-400 ease-out border-l-4 border-tertiary">
-<div class="p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center">
-<div class="w-full md:w-48 h-32 shrink-0 overflow-hidden rounded-lg">
-<img alt="Emergency Medical" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="emergency first aid supplies and medication organized on a clean stainless steel tray in a mobile clinic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkM6rKJARVBznWRPm7Wdage6hxsCXb8VlsoXCth8Yy_SJdzi-9s8WXTZUDoG95u0XySYLvoT7-PWf5X5ier6_Ys3sLf04QKFGURPfNi4oCWQzXs0jNhn0y0neLnJLGr-TiPYYhqfmpGxCPat_3qaF5cxXiNysS1VLkl67_w_tJSTDdqiMaJTK8GACPB-ZYyU5oICeRQr6r_pXoQijseiI-FuEzFq6LgzBj92VZkQ7xGeNT9w-EJxZ8BScYa4hwoueGHgKAqJr8TSvy"/>
-</div>
-<div class="flex-grow">
-<div class="flex flex-wrap items-center gap-3 mb-2">
-<span class="text-xs font-bold uppercase tracking-widest text-tertiary">Emergency Relief</span>
-<span class="text-on-surface-variant text-sm">•</span>
-<span class="text-on-surface-variant text-sm font-medium">Joined Jan 15, 2024</span>
-</div>
-<h3 class="text-xl font-bold mb-3 headline-font text-on-surface">Regional Medical Support Fund</h3>
-<div class="w-full bg-surface-variant h-1.5 rounded-full mb-4">
-<div class="bg-tertiary h-full rounded-full" style="width: 88%"></div>
-</div>
-<div class="flex items-center gap-6">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-tertiary text-xl">payments</span>
-<span class="text-on-surface font-bold">$490.00</span>
-</div>
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-on-surface-variant text-xl">event</span>
-<span class="text-on-surface-variant">Last gift: 12 days ago</span>
-</div>
-</div>
-</div>
-<div class="shrink-0 w-full md:w-auto">
-<button class="w-full md:w-auto bg-surface-container-high hover:bg-tertiary hover:text-white text-on-surface-variant font-bold px-8 py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2">
-                            View Donation Tracking
-                            <span class="material-symbols-outlined text-lg">arrow_forward</span>
-</button>
-</div>
-</div>
+                        </button>
+                    </div>
+                    
+                </div>
+            </div>
+<?php
+        }
+    }
+    
+} else {
+    echo "<p class='text-on-surface-variant'>Vui lòng đăng nhập để xem thông tin đóng góp của bạn.</p>";
+    
+}
+?>
 </div>
 </section>
 <!-- Upsell Banner -->

@@ -234,8 +234,7 @@ if (empty($campaigns)) {
                 <div class="flex items-center justify-between pt-4 mt-auto border-t border-surface-container">
                     <span class="text-xs font-semibold text-outline tracking-wider uppercase">12 Days Left</span>
                     <button class="flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all" 
-                            type="button" 
-                            onclick="window.location.href='campaign_detail.php?id=<?= $id ?>'">
+                            type="button" onclick="window.location.href='campaign_detail.php?id=<?= $id ?>'">
                         View Details <span class="material-symbols-outlined text-sm">arrow_forward</span>
                     </button>
                 </div>

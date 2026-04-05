@@ -139,6 +139,7 @@ require_once '../../includes/database.php'; // Đảm bảo đường dẫn chí
 
 // 1. LẤY VÀ XỬ LÝ DỮ LIỆU
 $campaign_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$_SESSION['campaign_id']= $campaign_id;
 $campaign = get_campaign_detail($campaign_id);
 
 if (!$campaign) {
@@ -150,6 +151,8 @@ if (!$campaign) {
 $img_path = "/Charity/templates/assets/image/campaigns/{$campaign_id}/campaign_{$campaign_id}.jpg";
 $org_name = htmlspecialchars($campaign['org_name'] ?? 'Tổ chức ẩn danh');
 $campaign_name = htmlspecialchars($campaign['campaign_name']);
+$_SESSION['org_name']= $org_name;
+$_SESSION['campaign_name']= $campaign_name;
 $description = nl2br(htmlspecialchars($campaign['description'])); // nl2br để giữ format xuống dòng
 
 // Số liệu tài chính
@@ -291,13 +294,19 @@ $donors = get_campaign_donors($campaign_id, 5); // Lấy 5 người gần nhất
                         </div>
                     </div>
 <div class="space-y-4">
-<button class="w-full bg-secondary-container text-on-secondary-container py-5 rounded-xl font-headline font-extrabold text-xl shadow-[0_4px_0_0_#743500] hover:translate-y-[1px] hover:shadow-[0_2px_0_0_#743500] active:translate-y-[4px] active:shadow-none transition-all">
+<!-- <button class="w-full bg-secondary-container text-on-secondary-container py-5 rounded-xl font-headline font-extrabold text-xl shadow-[0_4px_0_0_#743500] hover:translate-y-[1px] hover:shadow-[0_2px_0_0_#743500] active:translate-y-[4px] active:shadow-none transition-all">
                                     Donate Now
-                                </button>
-<button class="w-full bg-surface-container-high text-on-surface py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-surface-dim transition-colors">
-<span class="material-symbols-outlined" data-icon="volunteer_activism">volunteer_activism</span>
-                                    Join as Volunteer
-                                </button>
+                                </button> -->
+<!-- <button class="w-full bg-surface-container-high text-on-surface py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-surface-dim transition-colors"> -->
+<form action="../pay" method="POST">
+    <input type="hidden" name="campaign_id" value="<?= $campaign_id ?>">
+    
+    <input type="hidden" name="bankCode" value=""> <input type="hidden" name="language" value="vn">
+
+    <button type="submit" class="w-full bg-primary text-white font-bold py-4 rounded-xl hover:opacity-90 transition-opacity">
+        Quyên góp qua VNPAY
+    </button>
+</form>
 </div>
 <p class="text-center text-xs text-on-surface-variant mt-6 px-4 leading-relaxed">
 <span class="material-symbols-outlined text-[10px] align-middle mr-1" data-icon="verified_user">verified_user</span>

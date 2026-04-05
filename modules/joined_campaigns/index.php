@@ -235,7 +235,7 @@ if (isset($_SESSION['donor_id'])) {
                     <div class="shrink-0 w-full md:w-auto">
                         <button class="w-full md:w-auto bg-surface-container-high hover:bg-primary hover:text-white text-on-surface-variant font-bold px-8 py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2" 
                                 type="button" 
-                                onclick="window.location.href='campaign_detail.php?id=<?= $campaign_id ?>'">
+                                onclick="window.location.href='../campaign_detail?id=<?= $campaign_id ?>'">
                             View Donation Tracking
                             <span class="material-symbols-outlined text-lg">arrow_forward</span>
                         </button>

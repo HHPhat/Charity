@@ -1,4 +1,5 @@
 <?php
+session_start(); // Cần thiết để lấy dữ liệu từ $_SESSION
 require_once '../../includes/database.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -45,6 +46,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("<script>alert('Dữ liệu hàng hoá không hợp lệ!'); history.back();</script>");
     }
 
+    // =========================================================================
+    // KIỂM TRA NGÂN SÁCH CÒN LẠI TỪ SESSION
+    // =========================================================================
+    $remaining_budget = isset($_SESSION['remaining_budget']) ? floatval($_SESSION['remaining_budget']) : 0;
+    
+    if ($total_amount_backend > $remaining_budget) {
+        die("<script>
+                alert('Số dư của quỹ không đủ để thực hiện phiếu mua hàng!'); 
+                window.location.href='../fund_allocation?id=1';
+             </script>");
+    }
+    // =========================================================================
+
     try {
         // Bắt đầu Transaction để tránh dữ liệu lưu bị lỗi giữa chừng
         global $conn;
@@ -52,6 +66,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // 3. Insert bảng PurchaseSlip
         $id_ps = insert_purchase_slip($purchase_date, $total_amount_backend, $note, $allocation_id);
+
+        $total_quantity = 0; // Bổ sung biến đếm tổng số lượng hàng
 
         // 4. Insert vòng lặp vào bảng PurchaseOrderDetails
         foreach ($valid_details as $item) {
@@ -62,11 +78,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $id_ps, 
                 $item['product_id']
             );
+            $total_quantity += $item['qty']; // Cộng dồn số lượng
+        }
+
+        $beneficiary_id = get_beneficiary_by_allocation($allocation_id);
+
+        if ($beneficiary_id) {
+            // 4. Tạo Phiếu giao hàng
+            $dn_note = "Giao hàng tự động cho Phiếu mua hàng số: PS-" . $id_ps;
+            $id_dn = insert_delivery_note($purchase_date, $dn_note, $id_ps);
+
+            // 5. Ghi chi tiết số lượng hàng hóa được giao cho người hưởng lợi đó
+            insert_detection_detail($total_quantity, $id_dn, $beneficiary_id);
         }
 
         // Cam kết hoàn tất lưu dữ liệu
         $conn->commit();
-        echo "<script>alert('Lập phiếu mua hàng thành công!'); window.location.href='../';</script>";
+        echo "<script>
+                alert('Lập phiếu mua hàng thành công!'); 
+                window.location.href='../fund_allocation';
+              </script>";
 
     } catch (Exception $e) {
         $conn->rollBack();

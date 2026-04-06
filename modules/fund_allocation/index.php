@@ -99,10 +99,6 @@
 </div>
 </div>
 <nav class="flex-1 space-y-1">
-<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-transform duration-300 hover:translate-x-1 font-manrope tracking-tight text-sm" href="#">
-<span class="material-symbols-outlined">dashboard</span>
-                        Dashboard
-                    </a>
 <a class="flex items-center gap-3 px-4 py-3 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 font-semibold rounded-lg font-manrope tracking-tight text-sm" href="#">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
                         Campaigns
@@ -158,26 +154,11 @@
 <div class="max-w-2xl">
 <span class="inline-block px-3 py-1 bg-secondary-fixed text-on-secondary-fixed text-xs font-bold rounded-full mb-4">Performance Overview</span>
 <h2 class="text-5xl font-black text-on-surface tracking-tight leading-tight">Impact <br/>Dashboard.</h2>
-<p class="mt-4 text-on-surface-variant text-lg max-w-lg leading-relaxed">
+<!-- <p class="mt-4 text-on-surface-variant text-lg max-w-lg leading-relaxed">
                             Review and manage your organization's mission. Your transparency is the foundation of our collective trust.
-                        </p>
+                        </p> -->
 </div>
 <!-- Quick Stats Grid (Bento Style) -->
-<div class="grid grid-cols-2 gap-4 w-full md:w-auto">
-<div class="bg-white p-6 rounded-2xl shadow-[0_20px_40px_rgba(25,28,29,0.04)] flex flex-col gap-2 min-w-[180px]">
-<span class="material-symbols-outlined text-primary text-3xl">payments</span>
-<span class="text-2xl font-black text-on-surface tracking-tighter">$1.2M</span>
-<span class="text-xs text-slate-500 font-medium uppercase tracking-wider">Funds Raised</span>
-</div>
-<div class="bg-primary p-6 rounded-2xl shadow-lg flex flex-col gap-2 min-w-[180px] text-on-primary">
-<span class="material-symbols-outlined text-3xl">rocket_launch</span>
-<span class="text-2xl font-black tracking-tighter">24</span>
-<span class="text-xs text-blue-100 font-medium uppercase tracking-wider">Active Campaigns</span>
-</div>
-</div>
-</section>
-<!-- Secondary Stats Row -->
-<section class="grid grid-cols-1 md:grid-cols-4 gap-6">
 <div class="bg-surface-container-low p-6 rounded-2xl border border-transparent hover:border-primary/10 transition-all">
 <div class="flex justify-between items-start">
 <span class="text-on-surface-variant text-sm font-semibold">Total Donors</span>
@@ -208,8 +189,41 @@
                             </div>
 </div>
 </div>
+</section>
+<!-- Secondary Stats Row -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<!-- <div class="bg-surface-container-low p-6 rounded-2xl border border-transparent hover:border-primary/10 transition-all">
+<div class="flex justify-between items-start">
+<span class="text-on-surface-variant text-sm font-semibold">Total Donors</span>
+<div class="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-primary shadow-sm">
+<span class="material-symbols-outlined text-xl">groups</span>
+</div>
+</div>
+<div class="mt-4">
+<h4 class="text-3xl font-black text-on-surface">8,421</h4>
+<div class="flex items-center gap-1 mt-1 text-green-600 text-xs font-bold">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                                +12% this month
+                            </div>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-2xl border border-transparent hover:border-primary/10 transition-all">
+<div class="flex justify-between items-start">
+<span class="text-on-surface-variant text-sm font-semibold">Lives Impacted</span>
+<div class="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-tertiary shadow-sm">
+<span class="material-symbols-outlined text-xl">favorite</span>
+</div>
+</div>
+<div class="mt-4">
+<h4 class="text-3xl font-black text-on-surface">42.5k</h4>
+<div class="flex items-center gap-1 mt-1 text-green-600 text-xs font-bold">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                                +5.2k this year
+                            </div>
+</div>
+</div> -->
 <!-- Empty/Asymmetric spacer for editorial feel -->
-<div class="md:col-span-2 relative overflow-hidden rounded-3xl bg-slate-900 flex items-center p-8">
+<!-- <div class="md:col-span-2 relative overflow-hidden rounded-3xl bg-slate-900 flex items-center p-8">
 <div class="relative z-10">
 <h3 class="text-white text-xl font-bold leading-tight">Transparency <br/>is our priority.</h3>
 <p class="text-slate-400 text-sm mt-2">All data is real-time and audited.</p>
@@ -217,7 +231,7 @@
 <div class="absolute right-0 top-0 h-full w-1/2 opacity-40">
 <img alt="abstract technology background" class="h-full w-full object-cover" data-alt="abstract digital network connection lines and nodes on a dark blue background representing data transparency and security" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlUV_2EX78wYqAd4BTPl4fy0NCAbgdU3olPKTEwk4CVb66xcTYMdJrHR2k0SpILoSFhmpkCQvtAlcf4LuRRbz3QUEeWoqybJESG9pphvL4ZxCe_gZLC2Yz9gdqP9d3I9z7bIcrkP62AY7GnR_9uBX40YCyt1qYVzfx-TVukwj5kC6-RJUs0UQ46xV09yGQMllTGpAauvpK6XXjr4KI_nqSWwfSIyA9hUisL5grP7nCKfbTB7uDF6jQ6lxtwgn1bORCrhIkgNST24Oc"/>
 </div>
-</div>
+</div> -->
 </section>
 <!-- Campaigns List Section -->
 <?php

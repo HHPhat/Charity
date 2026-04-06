@@ -263,4 +263,69 @@ function count_campaigns_by_org($org_id, $filter = 'all') {
     
     return $stmt->fetchColumn();
 }
+
+// Để thực hiện việc tự động tạo Phiếu giao hàng (DeliveryNote) và ghi nhận Chi tiết giao hàng (DetectionDetails) ngay sau khi lập Phiếu mua hàng, chúng ta sẽ làm theo 2 bước: Thêm hàm vào file database và gọi hàm đó trong luồng xử lý.
+
+// Bước 1: Thêm các hàm vào file ../../includes/database.php
+// Bạn hãy mở file database.php và bổ sung 3 hàm dưới đây. Ngoài 2 hàm thêm dữ liệu, chúng ta cần 1 hàm phụ để lấy ra beneficiary_id (người hưởng lợi) từ cái allocation_id ban đầu.
+
+// PHP
+
+// ... Các hàm cũ của bạn ...
+
+// 1. Hàm tạo Phiếu giao hàng (DeliveryNote)
+function insert_delivery_note($date, $note, $id_ps) {
+    global $conn;
+    $sql = "INSERT INTO DeliveryNote (date, note, id_ps) 
+            VALUES (:date, :note, :id_ps)";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([
+        ':date' => $date,
+        ':note' => $note,
+        ':id_ps' => $id_ps
+    ]);
+    return $conn->lastInsertId(); // Trả về id_dn vừa tạo
+}
+
+// 2. Hàm tạo Chi tiết giao hàng (DetectionDetails)
+function insert_detection_detail($quantity, $id_dn, $beneficiary_id) {
+    global $conn;
+    $sql = "INSERT INTO DetectionDetails (quantity, id_dn, beneficiary_id) 
+            VALUES (:quantity, :id_dn, :beneficiary_id)";
+    $stmt = $conn->prepare($sql);
+    return $stmt->execute([
+        ':quantity' => $quantity,
+        ':id_dn' => $id_dn,
+        ':beneficiary_id' => $beneficiary_id
+    ]);
+}
+
+// 3. Hàm lấy người hưởng lợi từ kế hoạch phân bổ (để biết giao cho ai)
+function get_beneficiary_by_allocation($allocation_id) {
+    global $conn;
+    $sql = "SELECT beneficiary_id FROM FundAllocation WHERE allocation_id = :allocation_id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':allocation_id', (int)$allocation_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchColumn(); // Trả về ID của người hưởng lợi
+}
+// Hàm lấy dữ liệu tài chính của chiến dịch (Tổng quyên góp & Tổng đã chi)
+function get_campaign_financials($campaign_id) {
+    global $conn;
+    $sql = "SELECT 
+                (SELECT COALESCE(SUM(amount), 0) 
+                 FROM Donation 
+                 WHERE campaign_id = :id) AS total_donated,
+                 
+                (SELECT COALESCE(SUM(ps.total_amount), 0) 
+                 FROM PurchaseSlip ps
+                 INNER JOIN FundAllocation fa ON ps.allocation_id = fa.allocation_id
+                 WHERE fa.campaign_id = :id) AS total_spent";
+                 
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':id', (int)$campaign_id, PDO::PARAM_INT);
+    $stmt->execute();
+    
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 ?>

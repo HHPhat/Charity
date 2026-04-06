@@ -374,17 +374,38 @@ $allocation_id = 1;
 </div>
 </div>
 <!-- Budget Info -->
+<?php
+    // 1. Gọi hàm tính toán số liệu
+    $financials = get_campaign_financials($campaign_id);
+    $total_donated = $financials['total_donated'];
+    $total_spent   = $financials['total_spent'];
+
+    // 2. Tính ngân sách còn lại
+    $remaining_budget = $total_donated - $total_spent;
+    $remaining_budget = max(0, $remaining_budget); // Đảm bảo số tiền không bị âm
+
+    // 3. Lưu vào SESSION theo yêu cầu
+    $_SESSION['remaining_budget'] = $remaining_budget;
+
+    // 4. Tính phần trăm (%) còn lại để hiển thị cho thanh Progress Bar
+    $percent_left = ($total_donated > 0) ? round(($remaining_budget / $total_donated) * 100) : 0;
+?>
+
 <div class="col-12">
-<div class="card border-0 rounded-4 bg-orange-500 text-white p-4 shadow-sm" style="background-color: #ff8016;">
-<label class="text-[10px] fw-bold text-uppercase tracking-widest opacity-75 mb-2">Ngân sách còn lại</label>
-<h4 class="fw-black font-headline mb-3">1.250.400.000 <small class="fw-normal h6">VNĐ</small></h4>
-<div class="progress mb-3" style="height: 6px; background-color: rgba(255,255,255,0.2);">
-<div aria-valuemax="100" aria-valuemin="0" aria-valuenow="65" class="progress-bar bg-white" role="progressbar" style="width: 65%"></div>
-</div>
-<p class="x-small fw-medium opacity-90 m-0" style="font-size: 0.7rem;">
-                                Đã sử dụng 35% ngân sách cho "Cứu trợ Miền Trung 2024".
-                            </p>
-</div>
+    <div class="card border-0 rounded-4 bg-orange-500 text-white p-4 shadow-sm" style="background-color: #ff8016;">
+        <label class="text-[10px] fw-bold text-uppercase tracking-widest opacity-75 mb-2">Ngân sách còn lại</label>
+        
+        <h4 class="fw-black font-headline mb-3">
+            <?= number_format($remaining_budget, 0, ',', '.') ?> <small class="fw-normal h6">VNĐ</small>
+        </h4>
+        
+        <div class="progress mb-3" title="Còn lại <?= $percent_left ?>% ngân sách" style="height: 6px; background-color: rgba(255,255,255,0.2);">
+            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="<?= $percent_left ?>" 
+                 class="progress-bar bg-white" role="progressbar" 
+                 style="width: <?= $percent_left ?>%">
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Source Selector -->
 <div class="col-12">

@@ -150,4 +150,117 @@ function time_elapsed_string($datetime, $full = false) {
     if (!$full) $string = array_slice($string, 0, 1);
     return $string ? implode(', ', $string) . ' trước' : 'vừa xong';
 }
+
+// ... Các kết nối CSDL hiện tại của bạn (biến $conn) ...
+
+// Lấy danh sách sản phẩm
+function get_all_products() {
+    global $conn;
+    $sql = "SELECT id_product, nam_product, unit FROM Product";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Lấy danh sách cửa hàng / nhà cung cấp
+function get_all_shops() {
+    global $conn;
+    $sql = "SELECT id_shop, name_shop FROM Shop";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Thêm mới phiếu mua hàng
+function insert_purchase_slip($purchase_date, $total_amount, $note, $allocation_id) {
+    global $conn;
+    $sql = "INSERT INTO PurchaseSlip (purchase_date, total_amount, note, allocation_id) 
+            VALUES (:purchase_date, :total_amount, :note, :allocation_id)";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([
+        ':purchase_date' => $purchase_date,
+        ':total_amount' => $total_amount,
+        ':note' => $note,
+        ':allocation_id' => $allocation_id
+    ]);
+    return $conn->lastInsertId(); // Trả về id_ps vừa được tạo
+}
+
+// Thêm chi tiết phiếu mua hàng
+function insert_purchase_order_detail($quantity, $price, $into_money, $id_ps, $id_product) {
+    global $conn;
+    $sql = "INSERT INTO PurchaseOrderDetails (quantity, price, into_money, id_ps, id_product) 
+            VALUES (:quantity, :price, :into_money, :id_ps, :id_product)";
+    $stmt = $conn->prepare($sql);
+    return $stmt->execute([
+        ':quantity' => $quantity,
+        ':price' => $price,
+        ':into_money' => $into_money,
+        ':id_ps' => $id_ps,
+        ':id_product' => $id_product
+    ]);
+}
+
+// Hàm lấy danh sách chiến dịch theo org_id (có kèm bộ lọc và phân trang)
+function get_campaigns_by_org($org_id, $filter = 'all', $limit = 5, $offset = 0) {
+    global $conn;
+    
+    // Xây dựng điều kiện HAVING dựa trên bộ lọc
+    $having = "";
+    if ($filter === 'active') {
+        // Đang hoạt động: Chưa hết hạn và chưa đủ mục tiêu
+        $having = "HAVING c.end_date >= NOW() AND raised_amount < c.target_amount";
+    } elseif ($filter === 'completed') {
+        // Đã hoàn thành: Số tiền >= Mục tiêu
+        $having = "HAVING raised_amount >= c.target_amount";
+    }
+
+    $sql = "SELECT 
+                c.*, 
+                o.org_name,
+                COALESCE(SUM(d.amount), 0) AS raised_amount
+            FROM CharityCampaign c
+            INNER JOIN CharityOrganization o ON c.org_id = o.org_id
+            LEFT JOIN Donation d ON c.campaign_id = d.campaign_id
+            WHERE c.org_id = :org_id
+            GROUP BY c.campaign_id, o.org_name
+            $having
+            ORDER BY c.start_date DESC
+            LIMIT :limit OFFSET :offset";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':org_id', (int)$org_id, PDO::PARAM_INT);
+    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+    $stmt->execute();
+    
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Hàm đếm tổng số chiến dịch để làm phân trang
+function count_campaigns_by_org($org_id, $filter = 'all') {
+    global $conn;
+    
+    $having = "";
+    if ($filter === 'active') {
+        $having = "HAVING c.end_date >= NOW() AND raised_amount < c.target_amount";
+    } elseif ($filter === 'completed') {
+        $having = "HAVING raised_amount >= c.target_amount";
+    }
+
+    $sql = "SELECT COUNT(*) FROM (
+                SELECT c.campaign_id, c.end_date, c.target_amount, COALESCE(SUM(d.amount), 0) AS raised_amount
+                FROM CharityCampaign c
+                LEFT JOIN Donation d ON c.campaign_id = d.campaign_id
+                WHERE c.org_id = :org_id
+                GROUP BY c.campaign_id
+                $having
+            ) AS subquery";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':org_id', (int)$org_id, PDO::PARAM_INT);
+    $stmt->execute();
+    
+    return $stmt->fetchColumn();
+}
 ?>

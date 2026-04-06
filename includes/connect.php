@@ -12,4 +12,5 @@
     } catch(PDOException $e) {
         die("Lỗi kết nối CSDL: " . $e->getMessage());
     }
+    
 ?>

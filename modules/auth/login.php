@@ -30,7 +30,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     d.donor_id, 
                     d.full_name, 
                     d.email, 
-                    d.phone
+                    d.phone,
+                    d.citizen_id
                 FROM Account a
                 INNER JOIN Donor d ON a.account = d.account 
                 WHERE a.account = :account";
@@ -56,6 +57,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // SỬA: Phải đúng tên cột trong DB là full_name
                 $_SESSION['full_name'] = $user['full_name']; 
                 $_SESSION['donor_id'] = $user['donor_id'];
+                $_SESSION['donor_email']= $user['email'];
+                $_SESSION['donor_phone']= $user['phone'];
+                $_SESSION['donor_citizenid']= $user['citizen_id'];
+                $_SESSION['account_status']= $user['status'];
+                
+          
+
+          
                 
                 header("Location: ../../index.php");
                 exit();
@@ -77,4 +86,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: ../../pages/login.php");
         exit();
     }
+
 }

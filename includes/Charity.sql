@@ -64,6 +64,7 @@ CREATE TABLE CharityCampaign (
 CREATE TABLE Donation (
     donation_id INT PRIMARY KEY,
     amount DECIMAL(18, 2),
+    message text,
     donation_time DATETIME,
     donor_id INT,
     campaign_id INT,

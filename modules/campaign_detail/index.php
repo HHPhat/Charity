@@ -3,6 +3,7 @@
     //     die('Truy cập không hợp lệ');
     // }
     session_start(); // Bắt buộc phải có ở đầu file để dùng Session hiển thị thông báo
+
 ?>
 <!DOCTYPE html>
 
@@ -133,153 +134,180 @@
 </nav>
 <main class="pt-24 pb-20">
 <!-- Hero Section: Editorial Asymmetry -->
-<section class="max-w-7xl mx-auto px-6 mb-20">
-<div class="editorial-grid items-center">
-<div class="col-span-12 lg:col-span-7 relative">
-<div class="aspect-[16/9] overflow-hidden rounded-xl bg-surface-variant">
-<img alt="Community clean water project" class="w-full h-full object-cover" data-alt="a diverse group of smiling children in a rural village gathered around a new clean water pump with sunlight filtering through trees" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWkQ63I1etAlgIhz7AMS3Aywn2MhFs0QV_8eeVNVzChgnN_FnlkRn3awq3fsTDLcM19bD5MpgcSP6TmPGglZaeRXwsJVqV7uN8RrCCEsE9cdSaoSSp6-S5vIY9fVEhEFkwR7b1mpYJaXY2_BrPOrT3VUS9Q0nBfm4YwJMDIUQJCgORID6_wUt9sjyMS4rOg9r2JPXe-4sdKAGnjTJxuAZlq1hp4UbIfXdg-qxQ6e9Hs9Dbuvi9ZjzvgxPUhUafKqpDcv_OFv6WHayC"/>
-</div>
-<div class="absolute -bottom-6 -right-6 hidden lg:block">
-<div class="bg-secondary-container text-on-secondary-container px-6 py-4 rounded-xl shadow-lg border-b-4 border-on-secondary-fixed-variant">
-<span class="block text-xs font-bold uppercase tracking-widest mb-1">Impact Chip</span>
-<span class="text-lg font-headline font-extrabold">85% Funded</span>
-</div>
-</div>
-</div>
-<div class="col-span-12 lg:col-span-4 lg:col-start-9">
-<span class="inline-block bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-bold mb-4 uppercase tracking-tighter">Clean Water Initiative</span>
-<h1 class="text-5xl lg:text-6xl font-headline font-extrabold tracking-tighter leading-tight mb-6">Sustainable Wells for the Sahel Region</h1>
-<p class="text-on-surface-variant text-lg leading-relaxed mb-8">Providing life-sustaining water sources to over 50 villages, ending the 10km daily walk for thousands of families.</p>
-<div class="flex flex-wrap gap-4">
-<button class="flex items-center gap-2 text-primary font-bold hover:opacity-80 transition-opacity">
-<span class="material-symbols-outlined" data-icon="share">share</span>
-                            Share Campaign
-                        </button>
-<button class="flex items-center gap-2 text-primary font-bold hover:opacity-80 transition-opacity">
-<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
-                            Add to Wishlist
-                        </button>
-</div>
-</div>
-</div>
+<?php
+require_once '../../includes/database.php'; // Đảm bảo đường dẫn chính xác
+
+// 1. LẤY VÀ XỬ LÝ DỮ LIỆU
+$campaign_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$_SESSION['campaign_id']= $campaign_id;
+$campaign = get_campaign_detail($campaign_id);
+
+if (!$campaign) {
+    echo "<h1>Không tìm thấy chiến dịch!</h1>";
+    exit;
+}
+
+// Xử lý các biến hiển thị
+$img_path = "/Charity/templates/assets/image/campaigns/{$campaign_id}/campaign_{$campaign_id}.jpg";
+$org_name = htmlspecialchars($campaign['org_name'] ?? 'Tổ chức ẩn danh');
+$campaign_name = htmlspecialchars($campaign['campaign_name']);
+$_SESSION['org_name']= $org_name;
+$_SESSION['campaign_name']= $campaign_name;
+$description = nl2br(htmlspecialchars($campaign['description'])); // nl2br để giữ format xuống dòng
+
+// Số liệu tài chính
+$target_amount = $campaign['target_amount'];
+$total_donated = $campaign['total_donated'];
+$total_donors = $campaign['total_donors'];
+
+// Tính phần trăm (%) tiến trình
+$percent = ($target_amount > 0) ? min(100, round(($total_donated / $target_amount) * 100, 1)) : 0;
+
+// Tính số ngày còn lại
+$end_date_timestamp = strtotime($campaign['end_date']);
+$current_timestamp = time();
+$days_remaining = max(0, floor(($end_date_timestamp - $current_timestamp) / (60 * 60 * 24)));
+
+// Lấy danh sách Donors
+$donors = get_campaign_donors($campaign_id, 5); // Lấy 5 người gần nhất
+?>
+
+<section class="max-w-7xl mx-auto px-6 mb-20 mt-10">
+    <div class="editorial-grid items-center">
+        <div class="col-span-12 lg:col-span-7 relative">
+            <div class="aspect-[16/9] overflow-hidden rounded-xl bg-surface-variant">
+                <img alt="<?= $campaign_name ?>" class="w-full h-full object-cover" src="<?= $img_path ?>" onerror="this.src='/Charity/templates/assets/image/placeholder.jpg';"/>
+            </div>
+            <div class="absolute -bottom-6 -right-6 hidden lg:block">
+                <div class="bg-secondary-container text-on-secondary-container px-6 py-4 rounded-xl shadow-lg border-b-4 border-on-secondary-fixed-variant">
+                    <span class="text-lg font-headline font-extrabold"><?= $percent ?>% Tiến trình gây quỹ</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-span-12 lg:col-span-4 lg:col-start-9">
+            <span class="inline-block bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-bold mb-4 uppercase tracking-tighter">
+                <?= $org_name ?>
+            </span>
+            
+            <h1 class="text-5xl lg:text-6xl font-headline font-extrabold tracking-tighter leading-tight mb-6">
+                <?= $campaign_name ?>
+            </h1>
+            
+            <p class="text-on-surface-variant text-lg leading-relaxed mb-8">
+                <?= mb_substr(strip_tags($description), 0, 150) ?>...
+            </p>
+            
+            <div class="flex flex-wrap gap-4">
+                <button class="flex items-center gap-2 text-primary font-bold hover:opacity-80 transition-opacity">
+                    <span class="material-symbols-outlined" data-icon="share">share</span> Share Campaign
+                </button>
+                <button class="flex items-center gap-2 text-primary font-bold hover:opacity-80 transition-opacity">
+                    <span class="material-symbols-outlined" data-icon="favorite">favorite</span> Add to Wishlist
+                </button>
+            </div>
+        </div>
+    </div>
 </section>
-<!-- Main Narrative & Progress -->
+
 <section class="max-w-7xl mx-auto px-6">
-<div class="editorial-grid">
-<!-- Left: Content Narrative -->
-<div class="col-span-12 lg:col-span-8 space-y-16">
-<div class="bg-surface-container-low p-10 lg:p-16 rounded-xl">
-<h2 class="text-3xl font-headline font-bold mb-8">The Story</h2>
-<div class="space-y-6 text-lg text-on-surface-variant leading-relaxed">
-<p>In the heart of the Sahel, the rhythm of life is dictated by the search for water. For generations, women and children have spent upwards of six hours every day trekking across arid landscapes to reach seasonal ponds. These sources are often contaminated, leading to preventable illnesses that hinder education and economic growth.</p>
-<p class="font-bold text-on-surface italic">"The water we drink is the water that makes us sick, but it is the only water we have." — Amina, Village Elder.</p>
-<p>Our project aims to install high-efficiency solar-powered wells that tap into deep aquifers. These wells are designed for longevity, using local materials and community-led maintenance teams. By bringing water directly to the village center, we unlock thousands of hours for schooling and local farming.</p>
-</div>
-<div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-<div class="bg-surface-container-lowest p-6 rounded-lg">
-<span class="material-symbols-outlined text-primary text-4xl mb-4" data-icon="waves">waves</span>
-<h3 class="font-bold text-xl mb-2">Deep Aquifer Access</h3>
-<p class="text-sm text-on-surface-variant">Boring deeper than traditional hand-dug wells to ensure year-round supply during droughts.</p>
-</div>
-<div class="bg-surface-container-lowest p-6 rounded-lg">
-<span class="material-symbols-outlined text-primary text-4xl mb-4" data-icon="solar_power">solar_power</span>
-<h3 class="font-bold text-xl mb-2">Solar Efficiency</h3>
-<p class="text-sm text-on-surface-variant">Harnessing the abundant Sahel sun to power pumps without expensive or dirty fuel.</p>
-</div>
-</div>
-</div>
-<!-- Donors List -->
-<div class="space-y-8">
-<h2 class="text-3xl font-headline font-bold">Recent Guardians</h2>
+    <div class="editorial-grid gap-10 lg:grid-cols-12 grid">
+        <div class="col-span-12 lg:col-span-8 space-y-16">
+            <div class="bg-surface-container-low p-10 lg:p-16 rounded-xl">
+                <h2 class="text-3xl font-headline font-bold mb-8">The Story</h2>
+                <div class="space-y-6 text-lg text-on-surface-variant leading-relaxed">
+                    <p><?= $description ?></p>
+                </div>
+            </div>
+            
+            <div class="space-y-8">
+                <h2 class="text-3xl font-headline font-bold">Recent Guardians</h2>
+                <div class="space-y-4">
+                    
+                    <?php if (empty($donors)): ?>
+                        <p class="text-on-surface-variant">Chưa có lượt quyên góp nào. Hãy là người đầu tiên!</p>
+                    <?php else: ?>
+                        <?php foreach ($donors as $donor): 
+                            // Lấy 2 chữ cái đầu của tên để làm Avatar
+                            $initials = strtoupper(mb_substr(preg_replace('/[^a-zA-Z]/', '', $donor['full_name']), 0, 2));
+                            if (empty($initials)) $initials = "US";
+                            
+                            $donor_message = htmlspecialchars($donor['message']);
+                            $donor_name = htmlspecialchars($donor['full_name']);
+                            $amount_formatted = number_format($donor['amount'], 0, ',', '.') . ' VNĐ';
+                            $time_ago = time_elapsed_string($donor['donation_time']);
+                        ?>
+                        <div class="flex items-center justify-between p-6 bg-surface-container-lowest rounded-xl border border-surface-container">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold">
+                                    <?= $initials ?>
+                                </div>
+                                <div>
+                                    <p class="font-bold"><?= $donor_name ?></p>
+                                    <p class="text-sm text-on-surface-variant"><?= $donor_message ?></p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-headline font-extrabold text-primary">+ <?= $amount_formatted ?></p>
+                                <p class="text-xs text-on-surface-variant"><?= $time_ago ?></p>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+
+                    <?php if ($total_donors > 5): ?>
+                        <button class="w-full py-4 text-primary font-bold border-2 border-primary/10 rounded-xl hover:bg-primary/5 transition-colors">
+                            View All <?= $total_donors ?> Donors
+                        </button>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-span-12 lg:col-span-4">
+            <div class="sticky top-32 space-y-6">
+                <div class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_20px_40px_rgba(25,28,29,0.06)] border border-outline-variant/20">
+                    <div class="mb-8">
+                        <div class="flex justify-between items-end mb-4">
+                            <div>
+                                <span class="text-4xl font-headline font-extrabold text-primary">
+                                    <?= number_format($total_donated, 0, ',', '.') ?> VNĐ
+                                </span>
+                                <span class="text-on-surface-variant block text-sm">raised of <?= number_format($target_amount, 0, ',', '.') ?> VNĐ goal</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-2xl font-headline font-bold text-secondary"><?= $percent ?>%</span>
+                            </div>
+                        </div>
+                        <div class="w-full h-3 bg-surface-variant rounded-full overflow-hidden">
+                            <div class="h-full bg-primary rounded-full" style="width: <?= $percent ?>%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4 mb-8">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-on-surface-variant">Donors</span>
+                            <span class="font-bold"><?= number_format($total_donors) ?></span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-on-surface-variant">Days Remaining</span>
+                            <span class="font-bold"><?= $days_remaining ?> Days</span>
+                        </div>
+                    </div>
 <div class="space-y-4">
-<!-- Donor 1 -->
-<div class="flex items-center justify-between p-6 bg-surface-container-lowest rounded-xl">
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold">
-                                        JS
-                                    </div>
-<div>
-<p class="font-bold">Jonathan Smith</p>
-<p class="text-sm text-on-surface-variant">"For a better future."</p>
-</div>
-</div>
-<div class="text-right">
-<p class="font-headline font-extrabold text-primary">$250.00</p>
-<p class="text-xs text-on-surface-variant">2 hours ago</p>
-</div>
-</div>
-<!-- Donor 2 -->
-<div class="flex items-center justify-between p-6 bg-surface-container-lowest rounded-xl">
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary font-bold">
-                                        ML
-                                    </div>
-<div>
-<p class="font-bold">Maria Lopez</p>
-<p class="text-sm text-on-surface-variant">Anonymous contribution</p>
-</div>
-</div>
-<div class="text-right">
-<p class="font-headline font-extrabold text-primary">$1,000.00</p>
-<p class="text-xs text-on-surface-variant">5 hours ago</p>
-</div>
-</div>
-<!-- Donor 3 -->
-<div class="flex items-center justify-between p-6 bg-surface-container-lowest rounded-xl">
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant font-bold">
-<span class="material-symbols-outlined" data-icon="person">person</span>
-</div>
-<div>
-<p class="font-bold">Anonymous</p>
-<p class="text-sm text-on-surface-variant">Every drop counts.</p>
-</div>
-</div>
-<div class="text-right">
-<p class="font-headline font-extrabold text-primary">$50.00</p>
-<p class="text-xs text-on-surface-variant">Yesterday</p>
-</div>
-</div>
-</div>
-<button class="w-full py-4 text-primary font-bold border-2 border-primary/10 rounded-xl hover:bg-primary/5 transition-colors">View All Donors</button>
-</div>
-</div>
-<!-- Right: Donation Sticky Widget -->
-<div class="col-span-12 lg:col-span-4">
-<div class="sticky top-32 space-y-6">
-<div class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_20px_40px_rgba(25,28,29,0.06)] border border-outline-variant/20">
-<div class="mb-8">
-<div class="flex justify-between items-end mb-4">
-<div>
-<span class="text-4xl font-headline font-extrabold text-primary">$42,500</span>
-<span class="text-on-surface-variant block text-sm">raised of $50,000 goal</span>
-</div>
-<div class="text-right">
-<span class="text-2xl font-headline font-bold text-secondary">85%</span>
-</div>
-</div>
-<div class="w-full h-3 bg-surface-variant rounded-full overflow-hidden">
-<div class="h-full bg-primary rounded-full" style="width: 85%"></div>
-</div>
-</div>
-<div class="space-y-4 mb-8">
-<div class="flex justify-between text-sm">
-<span class="text-on-surface-variant">Total Donors</span>
-<span class="font-bold">1,248</span>
-</div>
-<div class="flex justify-between text-sm">
-<span class="text-on-surface-variant">Days Remaining</span>
-<span class="font-bold">12 Days</span>
-</div>
-</div>
-<div class="space-y-4">
-<button class="w-full bg-secondary-container text-on-secondary-container py-5 rounded-xl font-headline font-extrabold text-xl shadow-[0_4px_0_0_#743500] hover:translate-y-[1px] hover:shadow-[0_2px_0_0_#743500] active:translate-y-[4px] active:shadow-none transition-all">
+<!-- <button class="w-full bg-secondary-container text-on-secondary-container py-5 rounded-xl font-headline font-extrabold text-xl shadow-[0_4px_0_0_#743500] hover:translate-y-[1px] hover:shadow-[0_2px_0_0_#743500] active:translate-y-[4px] active:shadow-none transition-all">
                                     Donate Now
-                                </button>
-<button class="w-full bg-surface-container-high text-on-surface py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-surface-dim transition-colors">
-<span class="material-symbols-outlined" data-icon="volunteer_activism">volunteer_activism</span>
-                                    Join as Volunteer
-                                </button>
+                                </button> -->
+<!-- <button class="w-full bg-surface-container-high text-on-surface py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-surface-dim transition-colors"> -->
+<form action="../pay" method="POST">
+    <input type="hidden" name="campaign_id" value="<?= $campaign_id ?>">
+    
+    <input type="hidden" name="bankCode" value=""> <input type="hidden" name="language" value="vn">
+
+    <button type="submit" class="w-full bg-primary text-white font-bold py-4 rounded-xl hover:opacity-90 transition-opacity">
+        Quyên góp qua VNPAY
+    </button>
+</form>
 </div>
 <p class="text-center text-xs text-on-surface-variant mt-6 px-4 leading-relaxed">
 <span class="material-symbols-outlined text-[10px] align-middle mr-1" data-icon="verified_user">verified_user</span>

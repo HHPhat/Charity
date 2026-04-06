@@ -3,9 +3,9 @@
     //     die('Truy cập không hợp lệ');
     // }
     session_start(); // Bắt buộc phải có ở đầu file để dùng Session hiển thị thông báo
+
 ?>
 <!DOCTYPE html>
-
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -128,6 +128,17 @@
 </div>
 </nav>
 <main class="pt-24 pb-20 max-w-7xl mx-auto px-6">
+    <?php if(isset($_SESSION['success'])): ?>
+    <div class="bg-green-500 text-white p-3 rounded mb-4 text-center">
+        <?= $_SESSION['success']; unset($_SESSION['success']); ?>
+    </div>
+<?php endif; ?>
+
+<?php if(isset($_SESSION['error'])): ?>
+    <div class="bg-red-500 text-white p-3 rounded mb-4 text-center">
+        <?= $_SESSION['error']; unset($_SESSION['error']); ?>
+    </div>
+<?php endif; ?>
 <!-- Header Section -->
 <header class="mb-12">
 <h1 class="text-4xl font-extrabold tracking-tight text-on-surface mb-2">Account Settings</h1>
@@ -168,49 +179,144 @@
 </button>
 </div>
 <div>
-<h2 class="text-2xl font-bold text-on-surface">Alexander Bennett</h2>
-<p class="text-on-surface-variant text-sm">Member since January 2023</p>
+
+<h2 class="text-2xl font-bold text-on-surface">
+    <?= htmlspecialchars($_SESSION ['full_name']) ?>
+</h2>
+
+
+ <p class="text-on-surface-variant text-sm">
+    Member since 
+    <?= date("F Y", strtotime($_SESSION['donor']['creation_date'] ?? 'now')) ?>
+</p>
 <div class="mt-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-fixed text-on-secondary-fixed">
-                                    Guardian Member
-                                </div>
+    <?= htmlspecialchars($_SESSION['role']) ?>
 </div>
 </div>
-<button class="flex items-center justify-center space-x-2 border-2 border-primary text-primary px-5 py-2 rounded-xl font-bold text-sm hover:bg-primary/5 transition-colors">
-<span class="material-symbols-outlined text-lg">edit_note</span>
-<span>Edit Profile</span>
+</div>
+
+
+
+
+<!-- Edit Profile Button -->
+<button id="editProfileBtn" class="disable-when-deactive flex items-center justify-center space-x-2 border-2 border-primary text-primary px-5 py-2 rounded-xl font-bold text-sm hover:bg-primary/5 transition-colors">
+    <span class="material-symbols-outlined text-lg">edit_note</span>
+    <span>Edit Profile</span>
 </button>
+</div> 
+<!-- Modal -->
+<div id="editProfileModal" class="fixed inset-0 flex items-center justify-center bg-black/50 hidden">
+    <div class="bg-white rounded-xl p-6 w-96">
+        <h2 class="text-lg font-bold mb-4">Edit Profile</h2>
+
+        <form method="POST" action="update_profile.php">
+            <div class="mb-3">
+                <label class="block text-sm font-medium">Full Name</label>
+                <input type="text" name="full_name"
+                    value="<?= htmlspecialchars($_SESSION ['full_name'] ?? '') ?>"
+                    class="w-full border px-3 py-2 rounded">
+            </div>
+
+            <div class="mb-3">
+                <label class="block text-sm font-medium">Email</label>
+                <input type="email" name="email"
+                    value="<?= htmlspecialchars($_SESSION['donor_email'] ?? '') ?>"
+                    class="w-full border px-3 py-2 rounded">
+            </div>
+
+            <div class="mb-3">
+                <label class="block text-sm font-medium">Phone</label>
+                <input type="text" name="phone"
+                    value="<?= htmlspecialchars($_SESSION['donor_phone'] ?? '') ?>"
+                    class="w-full border px-3 py-2 rounded">
+            </div>
+
+            <div class="mb-3">
+                <label class="block text-sm font-medium">CCCD</label>
+                <input type="text" name="citizen_id"
+                    value="<?= htmlspecialchars($_SESSION['donor_citizenid'] ?? '') ?>"
+                    class="w-full border px-3 py-2 rounded">
+            </div>
+
+            <div class="flex justify-end space-x-2">
+                <button type="button" id="closeModal" class="px-4 py-2 rounded border">
+                    Cancel
+                </button>
+                <button type="submit" name="save_profile" class="px-4 py-2 bg-primary text-white rounded">
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
+
+
+
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="space-y-1">
+        <label class="text-xs font-bold uppercase tracking-wider text-outline">Email Address (Read-only)</label>
+        <div class="flex items-center space-x-2 px-4 py-3 bg-surface-container-low rounded-lg text-on-surface-variant">
+            <span class="material-symbols-outlined text-lg">mail</span>
+            <span>
+                <?php 
+                    echo isset($_SESSION['donor_email']) ? htmlspecialchars($_SESSION['donor_email']) : 'Not set'; 
+                ?>
+            </span>
+        </div>
+    </div>
+<!-- </div> -->
+
+
+
 <div class="space-y-1">
-<label class="text-xs font-bold uppercase tracking-wider text-outline">Email Address (Read-only)</label>
-<div class="flex items-center space-x-2 px-4 py-3 bg-surface-container-low rounded-lg text-on-surface-variant">
-<span class="material-symbols-outlined text-lg">mail</span>
-<span>alexander.b@guardian.org</span>
+    <label class="text-xs font-bold uppercase tracking-wider text-outline">Phone Number (Read-only)</label>
+    <div class="flex items-center space-x-2 px-4 py-3 bg-surface-container-low rounded-lg text-on-surface-variant">
+        <span class="material-symbols-outlined text-lg">phone</span>
+        <span>
+            <?php 
+                // Kiểm tra session, nếu chưa có thì "Not set"
+                echo isset($_SESSION['donor_phone']) ? htmlspecialchars($_SESSION['donor_phone']) : 'Not set'; 
+            ?>
+        </span>
+    </div>
 </div>
-</div>
+
+
+
+
+
 <div class="space-y-1">
-<label class="text-xs font-bold uppercase tracking-wider text-outline">Phone Number (Read-only)</label>
-<div class="flex items-center space-x-2 px-4 py-3 bg-surface-container-low rounded-lg text-on-surface-variant">
-<span class="material-symbols-outlined text-lg">phone</span>
-<span>+1 (555) 0123-4567</span>
+    <label class="text-xs font-bold uppercase tracking-wider text-outline">CCCD</label>
+    <div class="flex items-center space-x-2 px-4 py-3 bg-surface-container-low rounded-lg text-on-surface-variant">
+        <span class="material-symbols-outlined text-lg">assignment_ind</span>
+        <span>
+            <?php 
+                // Kiểm tra session, nếu chưa có thì hiển thị "Not set"
+                echo isset($_SESSION['donor_citizenid']) ? htmlspecialchars($_SESSION['donor_citizenid']) : 'Not set'; 
+            ?>
+        </span>
+    </div>
 </div>
-</div>
+
+
+
+
+
+
+
 <div class="space-y-1">
 <label class="text-xs font-bold uppercase tracking-wider text-outline">Location</label>
 <div class="flex items-center space-x-2 px-4 py-3 bg-surface-container-highest rounded-lg text-on-surface">
 <span class="material-symbols-outlined text-lg">location_on</span>
-<span>San Francisco, CA</span>
-</div>
-</div>
-<div class="space-y-1">
-<label class="text-xs font-bold uppercase tracking-wider text-outline">Timezone</label>
-<div class="flex items-center space-x-2 px-4 py-3 bg-surface-container-highest rounded-lg text-on-surface">
-<span class="material-symbols-outlined text-lg">schedule</span>
-<span>Pacific Time (PT)</span>
+<span>HaNoi</span>
 </div>
 </div>
 </div>
 </section>
+
+
+
+
 <!-- Security Section -->
 <section class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_20px_40px_rgba(25,28,29,0.04)]">
 <h3 class="text-xl font-bold text-on-surface mb-6 flex items-center gap-2">
@@ -233,6 +339,8 @@
 <div class="absolute left-6 top-1 bg-white w-4 h-4 rounded-full transition-transform"></div>
 </div>
 </div>
+
+
 <div class="flex items-center justify-between p-4 bg-surface rounded-lg">
 <div class="flex items-center space-x-4">
 <div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary">
@@ -243,8 +351,56 @@
 <p class="text-sm text-on-surface-variant">Update your password regularly for better safety.</p>
 </div>
 </div>
-<button class="text-primary font-bold text-sm hover:underline">Update</button>
+<button id="openPasswordModal" 
+class="disable-when-deactive text-primary font-bold text-sm hover:underline">
+Update
+</button>
 </div>
+
+<div id="changePasswordModal" class="fixed inset-0 flex items-center justify-center bg-black/50 hidden">
+    <div class="bg-white rounded-xl p-6 w-96">
+        <h2 class="text-lg font-bold mb-4">Change Password</h2>
+
+       <form method="POST" action="update_password.php">
+    <div class="mb-3 relative">
+        <label class="block text-sm font-medium">Current Password</label>
+        <input type="password" name="current_password" id="current_password" class="w-full border px-3 py-2 rounded" required>
+        <span class="material-symbols-outlined absolute right-3 top-9 cursor-pointer" onclick="togglePassword('current_password', this)">visibility</span>
+    </div>
+
+    <div class="mb-3 relative">
+        <label class="block text-sm font-medium">New Password</label>
+        <input type="password" name="new_password" id="new_password" class="w-full border px-3 py-2 rounded" required>
+        <span class="material-symbols-outlined absolute right-3 top-9 cursor-pointer" onclick="togglePassword('new_password', this)">visibility</span>
+    </div>
+
+    <div class="mb-3 relative">
+        <label class="block text-sm font-medium">Confirm Password</label>
+        <input type="password" name="confirm_password" id="confirm_password" class="w-full border px-3 py-2 rounded" required>
+        <span class="material-symbols-outlined absolute right-3 top-9 cursor-pointer" onclick="togglePassword('confirm_password', this)">visibility</span>
+    </div>
+
+    <div class="flex justify-end space-x-2">
+        <button type="button" id="closePasswordModal" class="px-4 py-2 border rounded">Cancel</button>
+        <button type="submit" name="change_password" class="px-4 py-2 bg-primary text-white rounded">Save</button>
+    </div>
+</form>
+
+<script>
+function togglePassword(inputId, icon) {
+    const input = document.getElementById(inputId);
+    if (input.type === "password") {
+        input.type = "text";
+        icon.textContent = "visibility_off";
+    } else {
+        input.type = "password";
+        icon.textContent = "visibility";
+    }
+}
+</script>
+    </div>
+</div>
+
 <div class="flex items-center justify-between p-4 bg-surface rounded-lg">
 <div class="flex items-center space-x-4">
 <div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-outline">
@@ -259,6 +415,9 @@
 </div>
 </div>
 </section>
+
+
+
 <!-- Critical Actions -->
 <section class="flex flex-col md:flex-row gap-4 justify-between items-center p-8 bg-surface-container-low rounded-xl">
 <div class="text-center md:text-left">
@@ -266,10 +425,33 @@
 <p class="text-sm text-on-surface-variant">We're sorry to see you go. You can deactivate your account temporarily or delete it permanently.</p>
 </div>
 <div class="flex space-x-4">
-<button class="text-on-surface-variant font-bold text-sm px-4 py-2 hover:text-on-surface transition-colors">Log Out</button>
-<button class="text-error font-bold text-sm px-4 py-2 border border-error/20 rounded-lg hover:bg-error/5 transition-colors">Deactivate Account</button>
+
+<!-- <button class="text-error font-bold text-sm px-4 py-2 border border-error/20 rounded-lg hover:bg-error/5 transition-colors">Deactivate Account</button> -->
+
+<button id="toggleStatusBtn" class="px-4 py-2 rounded-lg font-bold border transition-colors">
+    <?php
+    $status = $_SESSION['account_status'] ?? 'Active';
+    if($status === 'Active'){
+        echo 'Deactivate Account';
+        $btnStyle = 'bg-white text-red-500 border-red-500 hover:bg-red-50';
+    } else {
+        echo 'Activate Account';
+        $btnStyle = 'bg-white text-green-500 border-green-500 hover:bg-green-50';
+    }
+    ?>
+</button>
+
+<script>
+const btn = document.getElementById('toggleStatusBtn');
+btn.className += ' <?php echo $btnStyle; ?>';
+</script>
 </div>
 </section>
+
+
+
+
+
 </div>
 </div>
 </main>
@@ -322,4 +504,95 @@
             </button>
 </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const editBtn = document.getElementById('editProfileBtn');
+    const modal = document.getElementById('editProfileModal');
+    const closeBtn = document.getElementById('closeModal');
+
+    // Mở modal
+    editBtn.addEventListener('click', () => {
+        modal.classList.remove('hidden');
+    });
+
+    // Đóng modal
+    closeBtn.addEventListener('click', () => {
+        modal.classList.add('hidden');
+    });
+
+    // Click ra ngoài modal cũng đóng
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.add('hidden');
+        }
+    });
+});
+</script>
+
+<script>
+document.getElementById("openPasswordModal").onclick = () => {
+    document.getElementById("changePasswordModal").classList.remove("hidden");
+};
+
+document.getElementById("closePasswordModal").onclick = () => {
+    document.getElementById("changePasswordModal").classList.add("hidden");
+};
+</script>
+
+
+<div class="flex space-x-4">
+    <button id="deactivateBtn" class="text-error font-bold text-sm px-4 py-2 border border-error/20 rounded-lg hover:bg-error/5 transition-colors">
+        Deactivate Account
+    </button>
+</div>
+
+<script>
+document.getElementById('deactivateBtn').addEventListener('click', function() {
+    if (!confirm("Bạn có chắc muốn tạm khóa tài khoản không?")) return;
+
+    fetch('status.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'action=deactivate'
+    })
+    .then(response => response.text())
+    .then(data => {
+        alert('Tài khoản đã bị khóa!');
+        location.reload(); // load lại trang để cập nhật trạng thái
+    })
+    .catch(error => console.error('Error:', error));
+});
+</script>
+
+<script>
+btn.addEventListener('click', function() {
+    if (!confirm("Bạn có chắc muốn đổi trạng thái tài khoản không?")) return;
+
+    fetch('/Charity/modules/accounts/status.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'action=toggle'
+    })
+    .then(res => res.text())
+    .then(newStatus => {
+        newStatus = newStatus.trim();
+
+        if(newStatus === 'Active'){
+            btn.textContent = 'Deactivate Account';
+            btn.classList.remove('text-green-500','border-green-500','hover:bg-green-50');
+            btn.classList.add('text-red-500','border-red-500','hover:bg-red-50');
+        } else if(newStatus === 'Deactive'){
+            btn.textContent = 'Activate Account';
+            btn.classList.remove('text-red-500','border-red-500','hover:bg-red-50');
+            btn.classList.add('text-green-500','border-green-500','hover:bg-green-50');
+        }
+
+        // Disable tất cả form và nút khác nếu Deactive
+        document.querySelectorAll('.disable-when-deactive').forEach(el => {
+            el.disabled = (newStatus === 'Deactive');
+        });
+    })
+    .catch(err => console.error('AJAX Error:', err));
+});
+</script>
 </body></html>

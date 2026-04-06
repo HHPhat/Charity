@@ -172,13 +172,13 @@
             <section class="max-w-7xl mx-auto px-6 mb-20">
             <div class="editorial-grid items-center">
             <div class="col-span-12 lg:col-span-7 mb-12 lg:mb-0">
-            <span class="inline-block px-4 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-sm font-bold mb-6">Our Shared Impact</span>
+            <span class="inline-block px-4 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-sm font-bold mb-6">Tình thương của chúng ta</span>
             <h1 class="font-headline text-5xl md:text-7xl font-extrabold tracking-tight text-on-surface leading-[1.1] mb-8">
-                                    Stewards of <br/><span class="text-primary italic">Global Change.</span>
+                                    Hạnh phúc từ tâm là <br/><span class="text-primary italic">cho đi nhiều thứ.</span>
             </h1>
             <div class="bg-surface-container-low p-8 rounded-xl relative overflow-hidden">
             <div class="relative z-10">
-            <p class="text-on-surface-variant font-medium text-lg mb-2">Total Amount Raised</p>
+            <p class="text-on-surface-variant font-medium text-lg mb-2">Tổng số tiền quyên góp được</p>
             <p class="text-4xl md:text-6xl font-headline font-extrabold text-on-surface flex items-baseline gap-2">
                                             2,500,000,000 <span class="text-xl md:text-2xl font-bold text-primary">VNĐ</span>
             </p>
@@ -203,8 +203,8 @@
             <div class="max-w-7xl mx-auto px-6">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-16">
             <div class="max-w-2xl">
-            <h2 class="font-headline text-4xl font-extrabold text-on-surface mb-4">Ongoing Campaigns</h2>
-            <p class="text-on-surface-variant text-lg">Every donation is tracked with radical transparency. Join a cause that resonates with your heart.</p>
+            <h2 class="font-headline text-4xl font-extrabold text-on-surface mb-4">Các hoạt động đang diễn ra</h2>
+            <p class="text-on-surface-variant text-lg">Mọi khoản đóng góp đều được theo dõi với sự minh bạch triệt để. Tham gia một mục tiêu cộng hưởng với trái tim bạn.</p>
             </div>
             <a class="mt-6 md:mt-0 flex items-center gap-2 text-primary font-bold hover:underline" href="#">
                                     View All Campaigns <span class="material-symbols-outlined">arrow_forward</span>
@@ -217,15 +217,15 @@
             <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Close up of small green sapling being planted in rich dark soil by gentle hands under bright daylight" 
             src="/Charity/templates/assets/image/001.jpg"/>
             <div class="absolute top-4 left-4">
-            <span class="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">Environment</span>
+            <span class="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">Môi trường</span>
             </div>
             </div>
             <div class="p-8 flex flex-col flex-grow">
-            <h3 class="font-headline text-xl font-bold text-on-surface mb-3">Reforesting the Central Highlands</h3>
-            <p class="text-on-surface-variant text-sm mb-6 flex-grow">Restoring critical ecosystems and providing sustainable livelihoods for local ethnic communities through native tree planting.</p>
+            <h3 class="font-headline text-xl font-bold text-on-surface mb-3">Trồng rừng</h3>
+            <p class="text-on-surface-variant text-sm mb-6 flex-grow">Khôi phục các hệ sinh thái rừng tự nhiên và nâng cao chất lượng môi trường, đồng thời mang lại sinh kế bền vững cho cộng đồng dân tộc thông qua việc trồng cây bản địa.</p>
             <div class="mb-6">
             <div class="flex justify-between text-xs font-bold mb-2">
-            <span class="text-on-surface">75% Raised</span>
+            <span class="text-on-surface">Đạt 75%</span>
             <span class="text-primary">150M / 200M VNĐ</span>
             </div>
             <div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
@@ -241,15 +241,15 @@
             <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Clean fresh water pouring into a glass in a rural village setting with soft natural morning light" 
             src="/Charity/templates/assets/image/002.jpg"/>
             <div class="absolute top-4 left-4">
-            <span class="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">Health</span>
+            <span class="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">Sức khỏe</span>
             </div>
             </div>
             <div class="p-8 flex flex-col flex-grow">
-            <h3 class="font-headline text-xl font-bold text-on-surface mb-3">Clean Water for Remote Villages</h3>
-            <p class="text-on-surface-variant text-sm mb-6 flex-grow">Installing solar-powered filtration systems to provide safe drinking water to over 500 households in Northern mountainous regions.</p>
+            <h3 class="font-headline text-xl font-bold text-on-surface mb-3">Nươc sạch cho các vùng sâu</h3>
+            <p class="text-on-surface-variant text-sm mb-6 flex-grow">Lắp đặt hệ thống lọc chạy bằng năng lượng mặt trời để cung cấp nước uống an toàn cho các hộ dân vùng sâu vùng xa.</p>
             <div class="mb-6">
             <div class="flex justify-between text-xs font-bold mb-2">
-            <span class="text-on-surface">42% Raised</span>
+            <span class="text-on-surface">Đạt 42%</span>
             <span class="text-primary">336M / 800M VNĐ</span>
             </div>
             <div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
@@ -265,15 +265,15 @@
             <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Library shelves filled with colorful children's books in a bright modern learning space"
             src="/Charity/templates/assets/image/003.jpg"/>
             <div class="absolute top-4 left-4">
-            <span class="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">Education</span>
+            <span class="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">Giáo dục</span>
             </div>
             </div>
             <div class="p-8 flex flex-col flex-grow">
-            <h3 class="font-headline text-xl font-bold text-on-surface mb-3">Digital Literacy for All</h3>
-            <p class="text-on-surface-variant text-sm mb-6 flex-grow">Equipping rural schools with modern computer labs and training teachers to integrate digital skills into the curriculum.</p>
+            <h3 class="font-headline text-xl font-bold text-on-surface mb-3">Mở thêm trường học vùng cao</h3>
+            <p class="text-on-surface-variant text-sm mb-6 flex-grow">Chúng tôi triển khai hoạt động mở thêm trường học tại các vùng cao nhằm giúp trẻ em có điều kiện tiếp cận giáo dục tốt hơn. Hoạt động này bao gồm xây dựng cơ sở vật chất, trang bị sách vở, đào tạo giáo viên và tổ chức các chương trình ngoại khóa, góp phần nâng cao tri thức, kỹ năng sống và phát triển cộng đồng địa phương.</p>
             <div class="mb-6">
             <div class="flex justify-between text-xs font-bold mb-2">
-            <span class="text-on-surface">91% Raised</span>
+            <span class="text-on-surface">Đạt 91%</span>
             <span class="text-primary">455M / 500M VNĐ</span>
             </div>
             <div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">

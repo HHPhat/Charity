@@ -140,10 +140,10 @@
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
 <div class="max-w-2xl">
 <h1 class="text-5xl font-extrabold tracking-tight text-on-surface mb-4 leading-tight">
-                        Active <span class="text-primary">Stewardship</span> Campaigns
+                        Các hoạt động <span class="text-primary">từ thiện</span>
                     </h1>
 <p class="text-lg text-on-surface-variant leading-relaxed">
-                        Discover transparent initiatives across the globe. Every donation is tracked with institutional integrity and heartfelt purpose.
+                        Mỗi hoạt động từ thiện là một nhịp cầu kết nối yêu thương. Tại đây, chúng tôi cùng nhau mang đến hy vọng, sẻ chia khó khăn và tạo nên những thay đổi tích cực cho cộng đồng.
                     </p>
 </div>
 <!-- Search Component -->
@@ -165,30 +165,30 @@
 <section class="mb-12">
 <div class="flex flex-wrap gap-3">
 <button class="px-6 py-2.5 rounded-full bg-primary text-on-primary text-sm font-semibold tracking-wide shadow-md" type="button" 
-                    onclick="window.location.href='../campaigns'">All Initiatives</button>
+                    onclick="window.location.href='../campaigns'">Tất cả hoạt động</button>
 <button class="px-6 py-2.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-sm font-semibold tracking-wide hover:bg-secondary-fixed-dim transition-colors">
 <span class="flex items-center gap-2">
-<span class="material-symbols-outlined text-sm">child_care</span> Children
+<span class="material-symbols-outlined text-sm">child_care</span> Trẻ em
                     </span>
 </button>
 <button class="px-6 py-2.5 rounded-full bg-surface-container-low text-on-surface-variant text-sm font-semibold tracking-wide hover:bg-surface-container-high transition-colors">
 <span class="flex items-center gap-2">
-<span class="material-symbols-outlined text-sm">eco</span> Environment
+<span class="material-symbols-outlined text-sm">eco</span> Môi trường
                     </span>
 </button>
 <button class="px-6 py-2.5 rounded-full bg-surface-container-low text-on-surface-variant text-sm font-semibold tracking-wide hover:bg-surface-container-high transition-colors">
 <span class="flex items-center gap-2">
-<span class="material-symbols-outlined text-sm">medical_services</span> Healthcare
+<span class="material-symbols-outlined text-sm">medical_services</span> Sức khỏe
                     </span>
 </button>
 <button class="px-6 py-2.5 rounded-full bg-surface-container-low text-on-surface-variant text-sm font-semibold tracking-wide hover:bg-surface-container-high transition-colors">
 <span class="flex items-center gap-2">
-<span class="material-symbols-outlined text-sm">school</span> Education
+<span class="material-symbols-outlined text-sm">school</span> Giáo dục
                     </span>
 </button>
 <button class="px-6 py-2.5 rounded-full bg-surface-container-low text-on-surface-variant text-sm font-semibold tracking-wide hover:bg-surface-container-high transition-colors">
 <span class="flex items-center gap-2">
-<span class="material-symbols-outlined text-sm">emergency_share</span> Emergency Relief
+<span class="material-symbols-outlined text-sm">emergency_share</span> Cứu trợ khẩn cấp
                     </span>
 </button>
 </div>

@@ -29,7 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Tạo ID ngẫu nhiên cho donation_id (Do trong bảng SQL của bạn không ghi AUTO_INCREMENT)
         // Nếu cột donation_id trong CSDL của bạn đã set AUTO_INCREMENT thì bạn có thể bỏ biến này đi
-        $donation_id = intval(time() . rand(10, 99));
+        // Tạo một số ngẫu nhiên an toàn (nằm trong khoảng tối đa của INT trong CSDL)
+        $donation_id = rand(1000000, 2147483000);
 
         // 3. Chuẩn bị câu lệnh SQL INSERT
         $sql = "INSERT INTO Donation (donation_id, amount, message, donation_time, donor_id, campaign_id) 
@@ -52,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             unset($_SESSION['campaign_id']);
             unset($_SESSION['campaign_name']);
             unset($_SESSION['org_name']);
+            unset($_SESSION['amount']);
 
             // Hiển thị thông báo thành công bằng SweetAlert2 và chuyển về trang chủ
             echo "<!DOCTYPE html><html lang='vi'><head><meta charset='UTF-8'><title>Hoàn tất</title>";

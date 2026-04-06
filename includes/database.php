@@ -110,7 +110,8 @@ function get_campaign_donors($campaign_id, $limit = 5) {
     global $conn;
     $sql = "SELECT 
                 dn.full_name, 
-                d.amount, 
+                d.amount,
+                d.message, 
                 d.donation_time, 
                 d.donation_id
             FROM Donation d

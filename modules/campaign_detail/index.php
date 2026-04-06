@@ -232,6 +232,7 @@ $donors = get_campaign_donors($campaign_id, 5); // Lấy 5 người gần nhất
                             $initials = strtoupper(mb_substr(preg_replace('/[^a-zA-Z]/', '', $donor['full_name']), 0, 2));
                             if (empty($initials)) $initials = "US";
                             
+                            $donor_message = htmlspecialchars($donor['message']);
                             $donor_name = htmlspecialchars($donor['full_name']);
                             $amount_formatted = number_format($donor['amount'], 0, ',', '.') . ' VNĐ';
                             $time_ago = time_elapsed_string($donor['donation_time']);
@@ -243,7 +244,7 @@ $donors = get_campaign_donors($campaign_id, 5); // Lấy 5 người gần nhất
                                 </div>
                                 <div>
                                     <p class="font-bold"><?= $donor_name ?></p>
-                                    <p class="text-sm text-on-surface-variant">"For a better future."</p>
+                                    <p class="text-sm text-on-surface-variant"><?= $donor_message ?></p>
                                 </div>
                             </div>
                             <div class="text-right">

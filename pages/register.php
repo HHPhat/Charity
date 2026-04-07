@@ -19,7 +19,7 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Join The Transparent Guardian</title>
+<title>Đăng ký tài khoản</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -109,7 +109,7 @@
                 The Transparent Guardian
             </div>
 <a class="text-on-surface-variant font-label text-sm font-semibold hover:text-blue-600 transition-colors" href="../">
-                Back to home
+                Về trang chủ
             </a>
 </div>
 </header>
@@ -121,23 +121,23 @@
 </div>
 <div class="relative z-10 max-w-lg">
 <div class="mb-12 inline-block px-4 py-2 bg-secondary-container text-on-secondary-container font-label text-xs font-bold uppercase tracking-widest rounded-full">
-                    The Transparent Guardian
+                    Chúng tôi bảo vệ minh bạch
                 </div>
 <h1 class="font-headline text-5xl font-extrabold text-on-primary leading-[1.1] mb-8 tracking-tighter">
-                    Your trust is the <span class="text-secondary-fixed italic underline decoration-secondary-container">foundation</span> of every life we change.
+                    Sự tin tưởng của bạn là<span class="text-secondary-fixed italic underline decoration-secondary-container"> nền tảng</span> cho cuộc sống thay đổi.
                 </h1>
 <p class="text-on-primary/80 text-xl font-body leading-relaxed mb-10">
-                    Join a community of thousands who believe in total transparency. Every cent you give is tracked, verified, and celebrated.
+                    Đăng ký tài khoản và tham gia cộng đồng hàng triệu người tin tưởng vào sự minh bạch hoàn toàn. Mỗi đồng của bạn cho đi đều được theo dõi, xác minh rõ ràng và ăn mừng.
                 </p>
 <!-- Editorial Impact Metric -->
 <div class="grid grid-cols-2 gap-8 border-t border-on-primary/10 pt-10">
 <div>
 <div class="text-3xl font-headline font-bold text-on-primary">100%</div>
-<div class="text-on-primary/60 text-sm font-label uppercase tracking-widest mt-1">Direct Impact</div>
+<div class="text-on-primary/60 text-sm font-label uppercase tracking-widest mt-1">Tác động trực tiếp</div>
 </div>
 <div>
-<div class="text-3xl font-headline font-bold text-on-primary">Real-Time</div>
-<div class="text-on-primary/60 text-sm font-label uppercase tracking-widest mt-1">Tracking Feed</div>
+<div class="text-3xl font-headline font-bold text-on-primary">Thời gian thực tế</div>
+<div class="text-on-primary/60 text-sm font-label uppercase tracking-widest mt-1">Cung cấp dữ liệu theo dõi</div>
 </div>
 </div>
 </div>
@@ -152,61 +152,61 @@
 <span class="text-primary font-headline font-extrabold text-2xl tracking-tighter">The Transparent Guardian</span>
 </div>
 <div class="mb-10 text-center lg:text-left">
-<h2 class="font-headline text-3xl font-bold text-on-surface mb-3 tracking-tight">Create your account</h2>
-<p class="text-on-surface-variant">Start your journey as a guardian of change today.</p>
+<h2 class="font-headline text-3xl font-bold text-on-surface mb-3 tracking-tight">Tạo tài khoản của bạn</h2>
+<p class="text-on-surface-variant">Bắt đầu hành trình của bạn với tư cách là người bảo vệ sự thay đổi ngay hôm nay.</p>
 </div>
 <form class="space-y-6" method="POST" action="../modules/auth/register.php" name="register_form"" name="register_form"><!-- Full Name -->
 <div class="space-y-2">
-<label class="block font-label text-sm font-semibold text-on-surface-variant" for="full_name">Full Name</label>
+<label class="block font-label text-sm font-semibold text-on-surface-variant" for="full_name">Họ và tên</label>
 <div class="relative group">
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">person</span>
-<input class="w-full pl-12 pr-4 py-3.5 bg-surface-container-highest border-none rounded-xl text-on-surface focus:ring-2 focus:ring-primary/20 transition-all outline-none" id="full_name" name="full_name" placeholder="John Doe" required="" type="text"/>
+<input class="w-full pl-12 pr-4 py-3.5 bg-surface-container-highest border-none rounded-xl text-on-surface focus:ring-2 focus:ring-primary/20 transition-all outline-none" id="full_name" name="full_name" placeholder="Nguyễn Hữu Thiện" required="" type="text"/>
 </div>
 </div>
 <!-- Email -->
 <div class="space-y-2">
-<label class="block font-label text-sm font-semibold text-on-surface-variant" for="email">Email Address</label>
+<label class="block font-label text-sm font-semibold text-on-surface-variant" for="email">Email</label>
 <div class="relative group">
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">mail</span>
-<input class="w-full pl-12 pr-4 py-3.5 bg-surface-container-highest border-none rounded-xl text-on-surface focus:ring-2 focus:ring-primary/20 transition-all outline-none" id="email" name="email" placeholder="name@example.com" required="" type="email"/>
+<input class="w-full pl-12 pr-4 py-3.5 bg-surface-container-highest border-none rounded-xl text-on-surface focus:ring-2 focus:ring-primary/20 transition-all outline-none" id="email" name="email" placeholder="name@gmail.com" required="" type="email"/>
 </div>
 </div>
 <!-- Phone and CCCD Grid -->
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div class="space-y-2">
-<label class="block font-label text-sm font-semibold text-on-surface-variant" for="phone">Phone Number</label>
+<label class="block font-label text-sm font-semibold text-on-surface-variant" for="phone">Số điện thoại</label>
 <div class="relative group">
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">call</span>
-<input class="w-full pl-12 pr-4 py-3.5 bg-surface-container-highest border-none rounded-xl text-on-surface focus:ring-2 focus:ring-primary/20 transition-all outline-none" id="phone" name="phone" placeholder="+1 (555) 000-0000" required="" type="tel"/>
+<input class="w-full pl-12 pr-4 py-3.5 bg-surface-container-highest border-none rounded-xl text-on-surface focus:ring-2 focus:ring-primary/20 transition-all outline-none" id="phone" name="phone" placeholder="+84 763 862 340" required="" type="tel"/>
 </div>
 </div>
 <div class="space-y-2">
-<label class="block font-label text-sm font-semibold text-on-surface-variant" for="cccd">CCCD (National ID)</label>
+<label class="block font-label text-sm font-semibold text-on-surface-variant" for="cccd">Căn cước công dân (CCCD)</label>
 <div class="relative group">
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">badge</span>
-<input class="w-full pl-12 pr-4 py-3.5 bg-surface-container-highest border-none rounded-xl text-on-surface focus:ring-2 focus:ring-primary/20 transition-all outline-none" id="cccd" name="cccd" placeholder="012345678901" required="" type="text"/>
+<input class="w-full pl-12 pr-4 py-3.5 bg-surface-container-highest border-none rounded-xl text-on-surface focus:ring-2 focus:ring-primary/20 transition-all outline-none" id="cccd" name="cccd" placeholder="087 604 00 1469" required="" type="text"/>
 </div>
 </div>
 </div>
 <!-- Username -->
 <div class="space-y-2">
-<label class="block font-label text-sm font-semibold text-on-surface-variant" for="username">Username</label>
+<label class="block font-label text-sm font-semibold text-on-surface-variant" for="username">Tên đăng nhập</label>
 <div class="relative group">
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">alternate_email</span>
-<input class="w-full pl-12 pr-4 py-3.5 bg-surface-container-highest border-none rounded-xl text-on-surface focus:ring-2 focus:ring-primary/20 transition-all outline-none" id="username" name="username" placeholder="johndoe88" required="" type="text"/>
+<input class="w-full pl-12 pr-4 py-3.5 bg-surface-container-highest border-none rounded-xl text-on-surface focus:ring-2 focus:ring-primary/20 transition-all outline-none" id="username" name="username" placeholder="HuuThien020304" required="" type="text"/>
 </div>
 </div>
 <!-- Password Grid -->
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div class="space-y-2">
-<label class="block font-label text-sm font-semibold text-on-surface-variant" for="password">Password</label>
+<label class="block font-label text-sm font-semibold text-on-surface-variant" for="password">Mật khẩu</label>
 <div class="relative group">
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">lock</span>
 <input class="w-full pl-12 pr-4 py-3.5 bg-surface-container-highest border-none rounded-xl text-on-surface focus:ring-2 focus:ring-primary/20 transition-all outline-none" id="password" name="password" placeholder="••••••••" required="" type="password"/>
 </div>
 </div>
 <div class="space-y-2">
-<label class="block font-label text-sm font-semibold text-on-surface-variant" for="confirm_password">Confirm Password</label>
+<label class="block font-label text-sm font-semibold text-on-surface-variant" for="confirm_password">Nhập lại mật khẩu</label>
 <div class="relative group">
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">verified_user</span>
 <input class="w-full pl-12 pr-4 py-3.5 bg-surface-container-highest border-none rounded-xl text-on-surface focus:ring-2 focus:ring-primary/20 transition-all outline-none" id="confirm_password" name="confirm_password" placeholder="••••••••" required="" type="password"/>
@@ -219,21 +219,21 @@
 <input class="w-5 h-5 rounded-md border-outline-variant bg-surface text-primary focus:ring-primary/20 focus:ring-offset-0" id="terms" required="" type="checkbox"/>
 </div>
 <label class="text-sm text-on-surface-variant leading-relaxed" for="terms">
-    I agree to the <a class="text-primary font-semibold hover:underline" href="#">Terms &amp; Conditions</a> and acknowledge the <a class="text-primary font-semibold hover:underline" href="#">Privacy Policy</a>.
+    Tôi đồng ý với <a class="text-primary font-semibold hover:underline" href="#">Điều khoản &amp; Điều kiện</a> và thừa nhận <a class="text-primary font-semibold hover:underline" href="#">Chính sách bảo mật</a>.
 </label>
 </div>
 <!-- Primary Action -->
 <div class="pt-4">
 <button class="w-full group relative flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-container text-on-primary font-headline font-bold py-4 px-8 rounded-xl shadow-[0_4px_0_rgb(0,65,158)] active:shadow-none active:translate-y-1 transition-all duration-200" onclick="if(!this.form.checkValidity()) { alert('Please fill in all required fields and accept the terms.'); return false; }" type="submit">
-    Join Us
+    Đăng Ký
     <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
 </button>
 </div></form>
 <!-- Login Link -->
 <div class="mt-10 text-center">
 <p class="text-on-surface-variant">
-                        Already have an account? 
-                        <a class="text-secondary font-bold ml-1 hover:text-on-secondary-fixed transition-colors" href="login.php">Sign In</a>
+                        Bạn đã có tài khoản? 
+                        <a class="text-secondary font-bold ml-1 hover:text-on-secondary-fixed transition-colors" href="login.php">Đăng nhập</a>
 </p>
 </div>
 <!-- Subtle Trust Badge -->

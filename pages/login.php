@@ -26,7 +26,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Login</title>
+    <title>Đăng nhập</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -110,7 +110,7 @@
                 The Transparent Guardian
             </div>
             <a class="text-on-surface-variant font-label text-sm font-semibold hover:text-blue-600 transition-colors" href="../">
-                Back to home
+                Về trang chủ
             </a>
         </div>
     </header>
@@ -123,11 +123,11 @@
             <div class="relative z-10 m-12 mt-32 p-12 bg-surface/10 backdrop-blur-md rounded-3xl border border-white/10 flex flex-col justify-end">
                 <span class="material-symbols-outlined text-secondary-fixed mb-6 text-5xl" style="font-variation-settings: 'FILL' 1;">format_quote</span>
                 <h2 class="font-headline text-4xl md:text-5xl font-extrabold text-white leading-tight mb-8">
-                    "Transparency is the <span class="text-secondary-fixed">bridge</span> between compassion and impact." <?php echo $_SESSION['fullname']; ?>
+                    "Tính minh bạch là <span class="text-secondary-fixed">cầu nối</span> giữa niềm tin và lòng trắc ẩn" <?php echo $_SESSION['fullname']; ?>
                 </h2>
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-1 bg-secondary-fixed rounded-full"></div>
-                    <p class="font-label text-white/80 uppercase tracking-widest text-xs font-bold">Guardian Collective</p>
+                    <p class="font-label text-white/80 uppercase tracking-widest text-xs font-bold">Tập thể người bảo vệ</p>
                 </div>
             </div>
         </div>
@@ -139,8 +139,8 @@
                 </div>
 
                 <div class="mb-10">
-                    <h3 class="font-headline text-3xl font-bold text-on-surface mb-2">Welcome Back</h3>
-                    <p class="text-on-surface-variant">Continue your journey of stewardship and care.</p>
+                    <h3 class="font-headline text-3xl font-bold text-on-surface mb-2">Chào mừng trở lại</h3>
+                    <p class="text-on-surface-variant">Tiếp tục hành trình quản lý và chăm sóc của bạn.</p>
                 </div>
 
                 <?php if (!empty($error_message)): ?>
@@ -151,14 +151,14 @@
 
                 <form action="../modules/auth/login.php" method="POST" class="space-y-6">
                     <div class="space-y-2">
-                        <label class="block font-label text-xs font-bold uppercase tracking-wider text-on-surface-variant px-1" for="email">Tên tài khoản / Email</label>
+                        <label class="block font-label text-xs font-bold uppercase tracking-wider text-on-surface-variant px-1" for="email">Tên đăng nhập / Email</label>
                         <input class="w-full px-5 py-4 rounded-xl bg-surface-container-highest border-none focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all duration-300 outline-none placeholder:text-outline/50" id="email" name="email" placeholder="Nhập tài khoản (vd: admin_01)" type="text" required />
                     </div>
 
                     <div class="space-y-2">
                         <div class="flex justify-between items-end px-1">
-                            <label class="block font-label text-xs font-bold uppercase tracking-wider text-on-surface-variant" for="password">Password</label>
-                            <a class="text-xs font-semibold text-primary hover:text-primary-container transition-colors" href="forgot.php">Forgot Password?</a>
+                            <label class="block font-label text-xs font-bold uppercase tracking-wider text-on-surface-variant" for="password">Mật khẩu</label>
+                            <a class="text-xs font-semibold text-primary hover:text-primary-container transition-colors" href="forgot.php">Quên mật khẩu?</a>
                         </div>
                         <div class="relative">
                             <input class="w-full px-5 py-4 rounded-xl bg-surface-container-highest border-none focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all duration-300 outline-none placeholder:text-outline/50" id="password" name="password" placeholder="••••••••" type="password" required />
@@ -170,7 +170,7 @@
 
                     <div class="flex items-center space-x-3 px-1">
                         <input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary/20 transition-all cursor-pointer" id="keep_logged_in" name="keep_logged_in" type="checkbox"/>
-                        <label class="text-sm text-on-surface-variant cursor-pointer select-none" for="keep_logged_in">Keep me logged in for 30 days</label>
+                        <label class="text-sm text-on-surface-variant cursor-pointer select-none" for="keep_logged_in">Ghi nhớ đăng nhập trong 30 ngày</label>
                     </div>
 
                     <button class="w-full py-4 bg-primary text-on-primary rounded-xl font-headline font-bold text-lg editorial-shadow hover:bg-primary-container active:scale-[0.98] transition-all duration-300 flex justify-center items-center gap-2" type="submit">
@@ -184,7 +184,7 @@
                         <div class="w-full border-t border-surface-variant"></div>
                     </div>
                     <div class="relative flex justify-center text-xs uppercase tracking-widest font-bold text-outline-variant">
-                        <span class="bg-surface px-4">Or continue with</span>
+                        <span class="bg-surface px-4">Hoặc tiếp tục với </span>
                     </div>
                 </div>
 
@@ -208,8 +208,8 @@
 
                 <div class="mt-12 text-center">
                     <p class="text-on-surface-variant text-sm">
-                        New to the guardian ecosystem? 
-                        <a class="font-bold text-secondary hover:underline ml-1" href="register.php">Register</a>
+                        Bạn chưa có tài khoản? 
+                        <a class="font-bold text-secondary hover:underline ml-1" href="register.php">Đăng ký tài khoản</a>
                     </p>
                 </div>
             </div>

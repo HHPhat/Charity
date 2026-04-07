@@ -40,7 +40,7 @@
 <html class="light" lang="en"><head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Transparent Guardian | Impact Through Transparency</title>
+    <title>Trang chủ</title>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
     <!-- Icons -->

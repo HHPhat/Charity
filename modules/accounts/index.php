@@ -109,7 +109,7 @@
 
 <?php else: ?>
     <div class="flex items-center gap-5">
-        <div class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity" onclick="window.location.href='my_account.php'">
+        <div class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity" onclick="window.location.href='#'">
             <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
                 <span class="material-symbols-outlined">person</span>
             </div>
@@ -164,6 +164,31 @@
 <span class="material-symbols-outlined">notifications</span>
 <span>Notifications</span>
 </button>
+</button>
+<a href="../fund_allocation/?id=1" class="flex w-full items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors text-left cursor-pointer">
+    <span class="material-symbols-outlined">person</span>
+    <span>1.Hội Chữ Thập Đỏ</span>
+</a>
+
+<a href="../fund_allocation/?id=2" class="flex w-full items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors text-left cursor-pointer">
+    <span class="material-symbols-outlined">person</span>
+    <span>2.Quỹ Hi Vọng</span>
+</a>
+
+<a href="../fund_allocation/?id=3" class="flex w-full items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors text-left cursor-pointer">
+    <span class="material-symbols-outlined">person</span>
+    <span>3.Quỹ Trẻ Em</span>
+</a>
+
+<a href="../fund_allocation/?id=4" class="flex w-full items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors text-left cursor-pointer">
+    <span class="material-symbols-outlined">person</span>
+    <span>4.Tâm Nguyện</span>
+</a>
+
+<a href="../fund_allocation/?id=5" class="flex w-full items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors text-left cursor-pointer">
+    <span class="material-symbols-outlined">person</span>
+    <span>5.Ánh Sáng</span>
+</a>
 </nav>
 </aside>
 <!-- Main Content Area -->

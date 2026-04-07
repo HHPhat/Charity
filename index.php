@@ -149,7 +149,7 @@
 
                     <?php else: ?>
                         <div class="flex items-center gap-5">
-                            <div class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity" onclick="window.location.href='my_account.php'">
+                            <div class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity" onclick="window.location.href='modules/accounts/'">
                                 <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
                                     <span class="material-symbols-outlined">person</span>
                                 </div>
@@ -239,7 +239,7 @@
             <div class="bg-surface-container-lowest rounded-xl overflow-hidden flex flex-col group">
             <div class="relative aspect-video overflow-hidden">
             <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Clean fresh water pouring into a glass in a rural village setting with soft natural morning light" 
-            src="/Charity/templates/assets/image/002.jpg"/>
+            src="/Charity/templates/assets/image/2/002.jpg"/>
             <div class="absolute top-4 left-4">
             <span class="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">Sức khỏe</span>
             </div>

@@ -328,4 +328,80 @@ function get_campaign_financials($campaign_id) {
     
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+
+// Lấy danh sách giao dịch (Quyên góp + Giải ngân) của chiến dịch
+function get_campaign_transactions($campaign_id, $limit = 6, $offset = 0) {
+    global $conn;
+    $sql = "
+        (SELECT 
+            dn.full_name AS entity_name, 
+            d.message AS note, 
+            d.amount AS amount, 
+            d.donation_time AS transaction_time, 
+            'donation' AS transaction_type 
+        FROM Donation d
+        LEFT JOIN Donor dn ON d.donor_id = dn.donor_id
+        WHERE d.campaign_id = :id1)
+        
+        UNION ALL
+        
+        (SELECT 
+            b.full_name AS entity_name, 
+            ps.note AS note, 
+            ps.total_amount AS amount, 
+            ps.purchase_date AS transaction_time, 
+            'expense' AS transaction_type 
+        FROM PurchaseSlip ps
+        INNER JOIN FundAllocation fa ON ps.allocation_id = fa.allocation_id
+        LEFT JOIN Beneficiary b ON fa.beneficiary_id = b.beneficiary_id
+        WHERE fa.campaign_id = :id2)
+        
+        ORDER BY transaction_time DESC
+        LIMIT :limit OFFSET :offset
+    ";
+    
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':id1', (int)$campaign_id, PDO::PARAM_INT);
+    $stmt->bindValue(':id2', (int)$campaign_id, PDO::PARAM_INT);
+    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+    $stmt->execute();
+    
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Hàm thêm chiến dịch mới
+function insert_charity_campaign($campaign_name, $description, $target_amount, $start_date, $end_date, $status, $org_id) {
+    global $conn;
+    $sql = "INSERT INTO CharityCampaign (campaign_name, description, target_amount, start_date, end_date, status, org_id) 
+            VALUES (:name, :desc, :target, :start, :end, :status, :org_id)";
+    
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([
+        ':name'   => $campaign_name,
+        ':desc'   => $description,
+        ':target' => $target_amount,
+        ':start'  => $start_date,
+        ':end'    => $end_date,
+        ':status' => $status,
+        ':org_id' => $org_id
+    ]);
+    
+    return $conn->lastInsertId(); // Trả về ID tự tăng của chiến dịch vừa tạo
+}
+
+// Hàm thêm phân bổ quỹ
+function insert_fund_allocation($amount, $allocation_date, $campaign_id, $beneficiary_id) {
+    global $conn;
+    $sql = "INSERT INTO FundAllocation (amount, allocation_date, campaign_id, beneficiary_id) 
+            VALUES (:amount, :date, :campaign_id, :beneficiary_id)";
+    
+    $stmt = $conn->prepare($sql);
+    return $stmt->execute([
+        ':amount'         => $amount,
+        ':date'           => $allocation_date,
+        ':campaign_id'    => $campaign_id,
+        ':beneficiary_id' => $beneficiary_id
+    ]);
+}
 ?>

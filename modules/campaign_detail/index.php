@@ -114,7 +114,7 @@
 
 <?php else: ?>
     <div class="flex items-center gap-5">
-        <div class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity" onclick="window.location.href='my_account.php'">
+        <div class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity" onclick="window.location.href='modules/accounts/'">
             <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
                 <span class="material-symbols-outlined">person</span>
             </div>
@@ -169,7 +169,8 @@ $current_timestamp = time();
 $days_remaining = max(0, floor(($end_date_timestamp - $current_timestamp) / (60 * 60 * 24)));
 
 // Lấy danh sách Donors
-$donors = get_campaign_donors($campaign_id, 5); // Lấy 5 người gần nhất
+//$donors = get_campaign_donors($campaign_id, 5); // Lấy 5 người gần nhất
+$transactions = get_campaign_transactions($campaign_id, 6);
 ?>
 
 <section class="max-w-7xl mx-auto px-6 mb-20 mt-10">
@@ -221,47 +222,61 @@ $donors = get_campaign_donors($campaign_id, 5); // Lấy 5 người gần nhất
             </div>
             
             <div class="space-y-8">
-                <h2 class="text-3xl font-headline font-bold">Recent Guardians</h2>
-                <div class="space-y-4">
-                    
-                    <?php if (empty($donors)): ?>
-                        <p class="text-on-surface-variant">Chưa có lượt quyên góp nào. Hãy là người đầu tiên!</p>
-                    <?php else: ?>
-                        <?php foreach ($donors as $donor): 
-                            // Lấy 2 chữ cái đầu của tên để làm Avatar
-                            $initials = strtoupper(mb_substr(preg_replace('/[^a-zA-Z]/', '', $donor['full_name']), 0, 2));
-                            if (empty($initials)) $initials = "US";
-                            
-                            $donor_message = htmlspecialchars($donor['message']);
-                            $donor_name = htmlspecialchars($donor['full_name']);
-                            $amount_formatted = number_format($donor['amount'], 0, ',', '.') . ' VNĐ';
-                            $time_ago = time_elapsed_string($donor['donation_time']);
-                        ?>
-                        <div class="flex items-center justify-between p-6 bg-surface-container-lowest rounded-xl border border-surface-container">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold">
-                                    <?= $initials ?>
-                                </div>
-                                <div>
-                                    <p class="font-bold"><?= $donor_name ?></p>
-                                    <p class="text-sm text-on-surface-variant"><?= $donor_message ?></p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <p class="font-headline font-extrabold text-primary">+ <?= $amount_formatted ?></p>
-                                <p class="text-xs text-on-surface-variant"><?= $time_ago ?></p>
-                            </div>
-                        </div>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-
-                    <?php if ($total_donors > 5): ?>
-                        <button class="w-full py-4 text-primary font-bold border-2 border-primary/10 rounded-xl hover:bg-primary/5 transition-colors">
-                            View All <?= $total_donors ?> Donors
-                        </button>
-                    <?php endif; ?>
+    <h2 class="text-3xl font-headline font-bold">Recent Activity</h2>
+    <div class="space-y-4" id="transaction-list">
+        
+        <?php if (empty($transactions)): ?>
+            <p class="text-on-surface-variant">Chưa có lượt quyên góp hay giải ngân nào.</p>
+        <?php else: ?>
+            <?php foreach ($transactions as $txn): 
+                $is_expense = ($txn['transaction_type'] === 'expense');
+                
+                // Xử lý tên hiển thị
+                $display_name = htmlspecialchars($txn['entity_name'] ?? ($is_expense ? 'Giải ngân' : 'Nhà tài trợ ẩn danh'));
+                $display_note = htmlspecialchars($txn['note'] ?? '');
+                $amount_formatted = number_format($txn['amount'], 0, ',', '.') . ' VNĐ';
+                $time_ago = time_elapsed_string($txn['transaction_time']);
+                
+                // Lấy 2 chữ cái đầu làm Avatar
+                $initials = strtoupper(mb_substr(preg_replace('/[^a-zA-Z]/', '', $display_name), 0, 2));
+                if (empty($initials)) $initials = $is_expense ? "CH" : "US"; // CH: Chi, US: User
+                
+                // Cấu hình màu sắc dựa trên loại giao dịch
+                if ($is_expense) {
+                    $amount_str = '- ' . $amount_formatted;
+                    $text_color = 'text-red-600';
+                    $bg_avatar  = 'bg-red-100';
+                    $text_avatar = 'text-red-600';
+                } else {
+                    $amount_str = '+ ' . $amount_formatted;
+                    $text_color = 'text-primary';
+                    $bg_avatar  = 'bg-primary-fixed';
+                    $text_avatar = 'text-primary';
+                }
+            ?>
+            <div class="flex items-center justify-between p-6 bg-surface-container-lowest rounded-xl border border-surface-container">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full <?= $bg_avatar ?> flex items-center justify-center <?= $text_avatar ?> font-bold">
+                        <?= $initials ?>
+                    </div>
+                    <div>
+                        <p class="font-bold"><?= $display_name ?></p>
+                        <p class="text-sm text-on-surface-variant"><?= $display_note ?></p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="font-headline font-extrabold <?= $text_color ?>"><?= $amount_str ?></p>
+                    <p class="text-xs text-on-surface-variant"><?= $time_ago ?></p>
                 </div>
             </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
+        <button id="btn-load-more" data-campaign="<?= $campaign_id ?>" data-offset="6" class="mt-4 w-full py-4 text-primary font-bold border-2 border-primary/10 rounded-xl hover:bg-primary/5 transition-colors">
+            View All Activity
+        </button>
+    </div>
+</div>
         </div>
 
         <div class="col-span-12 lg:col-span-4">
@@ -360,3 +375,48 @@ $donors = get_campaign_donors($campaign_id, 5); // Lấy 5 người gần nhất
 </div>
 </footer>
 </body></html>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const btnLoadMore = document.getElementById('btn-load-more');
+    const transactionList = document.getElementById('transaction-list');
+
+    if (btnLoadMore) {
+        btnLoadMore.addEventListener('click', function() {
+            // Lấy dữ liệu ID chiến dịch và Offset hiện tại
+            const campaignId = this.getAttribute('data-campaign');
+            let currentOffset = parseInt(this.getAttribute('data-offset'));
+            
+            // Đổi text của nút để báo hiệu đang tải
+            const originalText = this.innerText;
+            this.innerText = "Đang tải...";
+            this.disabled = true;
+
+            // Gọi AJAX bằng Fetch API
+            fetch(`load_more_transactions.php?campaign_id=${campaignId}&offset=${currentOffset}`)
+                .then(response => response.text())
+                .then(html => {
+                    if (html.trim() === "") {
+                        // Nếu backend trả về rỗng (Hết dữ liệu), thì ẩn nút đi
+                        btnLoadMore.style.display = 'none';
+                    } else {
+                        // Chèn thêm HTML giao dịch mới vào cuối danh sách
+                        transactionList.insertAdjacentHTML('beforeend', html);
+                        
+                        // Cập nhật lại Offset (+6) cho lần bấm tiếp theo
+                        btnLoadMore.setAttribute('data-offset', currentOffset + 6);
+                        
+                        // Phục hồi lại nút
+                        btnLoadMore.innerText = originalText;
+                        btnLoadMore.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải dữ liệu:', error);
+                    alert("Có lỗi xảy ra khi tải dữ liệu. Vui lòng thử lại!");
+                    btnLoadMore.innerText = originalText;
+                    btnLoadMore.disabled = false;
+                });
+        });
+    }
+});
+</script>

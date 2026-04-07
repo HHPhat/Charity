@@ -161,31 +161,27 @@ $allocation_id = 1;
 <span class="material-symbols-outlined text-white" data-icon="shield">shield</span>
 </div>
 <div>
-<h2 class="text-xl font-bold tracking-tight text-blue-800 dark:text-blue-300">Guardian Admin</h2>
-<p class="text-[10px] text-slate-500 uppercase tracking-widest">Institutional Steward</p>
+<a href="../../"><h2 class="text-xl font-bold tracking-tight text-blue-800 dark:text-blue-300">Guardian Admin</h2>
+<p class="text-[10px] text-slate-500 uppercase tracking-widest">Institutional Steward</p></a>
 </div>
 </div>
 <nav class="flex-1 space-y-1">
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-slate-500 dark:text-slate-400" href="#">
-<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-                Dashboard
-            </a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-slate-500 dark:text-slate-400" href="#">
-<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
-                Impact Reports
-            </a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-slate-500 dark:text-slate-400" href="#">
-<span class="material-symbols-outlined" data-icon="volunteer_activism">volunteer_activism</span>
-                Donations
-            </a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-400 text-blue-700 dark:text-blue-400 font-bold border-r-4 border-blue-700 bg-blue-50/50" href="#">
-<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
-                Purchase Slips
-            </a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-slate-500 dark:text-slate-400" href="#">
-<span class="material-symbols-outlined" data-icon="settings">settings</span>
-                Settings
-            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-transform duration-300 hover:translate-x-1 font-manrope tracking-tight text-sm" href="../fund_allocation/?id=1">
+<span class="material-symbols-outlined">volunteer_activism</span>
+                        Campaigns
+                    </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-transform duration-300 hover:translate-x-1 font-manrope tracking-tight text-sm" href="#">
+<span class="material-symbols-outlined">group</span>
+                        Donors
+                    </a>
+<a class="flex items-center gap-3 px-4 py-3 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 font-semibold rounded-lg font-manrope tracking-tight text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+                        Purchase Slips
+                    </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-transform duration-300 hover:translate-x-1 font-manrope tracking-tight text-sm" href="#">
+<span class="material-symbols-outlined">tune</span>
+                        Settings
+                    </a>
 </nav>
 <button class="btn btn-primary w-full shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
 <span class="material-symbols-outlined" data-icon="add">add</span>

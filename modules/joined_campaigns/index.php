@@ -114,7 +114,7 @@
 
 <?php else: ?>
     <div class="flex items-center gap-5">
-        <div class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity" onclick="window.location.href='my_account.php'">
+        <div class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity" onclick="window.location.href='modules/accounts/'">
             <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
                 <span class="material-symbols-outlined">person</span>
             </div>

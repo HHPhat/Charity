@@ -1,3 +1,29 @@
+<?php
+session_start();
+require_once '../../includes/database.php';
+
+// 1. Nhận các tham số từ URL
+$org_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$filter = isset($_GET['filter']) ? $_GET['filter'] : 'all'; // all, active, completed
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$_SESSION['org_id']= $org_id;
+if ($page < 1) $page = 1;
+$limit = 5; // Số chiến dịch hiển thị trên 1 trang
+$offset = ($page - 1) * $limit;
+
+// 2. Lấy dữ liệu
+$total_campaigns = count_campaigns_by_org($org_id, $filter);
+$total_pages = ceil($total_campaigns / $limit);
+$campaigns = get_campaigns_by_org($org_id, $filter, $limit, $offset);
+
+// Hàm hỗ trợ tạo link giữ nguyên các tham số
+function build_url($new_filter = null, $new_page = null) {
+    global $org_id, $filter, $page;
+    $f = $new_filter !== null ? $new_filter : $filter;
+    $p = $new_page !== null ? $new_page : $page;
+    return "?id=$org_id&filter=$f&page=$p";
+}
+?>
 <!DOCTYPE html>
 
 <html class="light" lang="en"><head>
@@ -94,8 +120,8 @@
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">guardian</span>
 </div>
 <div>
-<h1 class="text-lg font-black text-blue-700 dark:text-blue-400 font-headline leading-none">Transparent Guardian</h1>
-<p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mt-1">Admin Console</p>
+<a href="../../"><h1 class="text-lg font-black text-blue-700 dark:text-blue-400 font-headline leading-none">Transparent Guardian</h1>
+<p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mt-1">Admin Console</p></a>
 </div>
 </div>
 <nav class="flex-1 space-y-1">
@@ -108,8 +134,8 @@
                         Donors
                     </a>
 <a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-transform duration-300 hover:translate-x-1 font-manrope tracking-tight text-sm" href="#">
-<span class="material-symbols-outlined">analytics</span>
-                        Impact Reports
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+                        Purchase Slips
                     </a>
 <a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-transform duration-300 hover:translate-x-1 font-manrope tracking-tight text-sm" href="#">
 <span class="material-symbols-outlined">tune</span>
@@ -117,10 +143,10 @@
                     </a>
 </nav>
 <div class="pt-6 border-t border-slate-100 dark:border-slate-800">
-<button class="w-full bg-primary text-on-primary py-3 px-4 rounded-xl font-bold text-sm shadow-[0_2px_0_0_#00419e] hover:brightness-110 transition-all flex items-center justify-center gap-2">
+<a href = "add_campaign.php"><button class="w-full bg-primary text-on-primary py-3 px-4 rounded-xl font-bold text-sm shadow-[0_2px_0_0_#00419e] hover:brightness-110 transition-all flex items-center justify-center gap-2">
 <span class="material-symbols-outlined text-sm">add</span>
-                        Create Campaign
-                    </button>
+                Register Campaign
+                    </button></a>
 </div>
 </div>
 </aside>
@@ -192,73 +218,8 @@
 </section>
 <!-- Secondary Stats Row -->
 <section class="grid grid-cols-1 md:grid-cols-4 gap-6">
-<!-- <div class="bg-surface-container-low p-6 rounded-2xl border border-transparent hover:border-primary/10 transition-all">
-<div class="flex justify-between items-start">
-<span class="text-on-surface-variant text-sm font-semibold">Total Donors</span>
-<div class="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-primary shadow-sm">
-<span class="material-symbols-outlined text-xl">groups</span>
-</div>
-</div>
-<div class="mt-4">
-<h4 class="text-3xl font-black text-on-surface">8,421</h4>
-<div class="flex items-center gap-1 mt-1 text-green-600 text-xs font-bold">
-<span class="material-symbols-outlined text-sm">trending_up</span>
-                                +12% this month
-                            </div>
-</div>
-</div>
-<div class="bg-surface-container-low p-6 rounded-2xl border border-transparent hover:border-primary/10 transition-all">
-<div class="flex justify-between items-start">
-<span class="text-on-surface-variant text-sm font-semibold">Lives Impacted</span>
-<div class="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-tertiary shadow-sm">
-<span class="material-symbols-outlined text-xl">favorite</span>
-</div>
-</div>
-<div class="mt-4">
-<h4 class="text-3xl font-black text-on-surface">42.5k</h4>
-<div class="flex items-center gap-1 mt-1 text-green-600 text-xs font-bold">
-<span class="material-symbols-outlined text-sm">trending_up</span>
-                                +5.2k this year
-                            </div>
-</div>
-</div> -->
-<!-- Empty/Asymmetric spacer for editorial feel -->
-<!-- <div class="md:col-span-2 relative overflow-hidden rounded-3xl bg-slate-900 flex items-center p-8">
-<div class="relative z-10">
-<h3 class="text-white text-xl font-bold leading-tight">Transparency <br/>is our priority.</h3>
-<p class="text-slate-400 text-sm mt-2">All data is real-time and audited.</p>
-</div>
-<div class="absolute right-0 top-0 h-full w-1/2 opacity-40">
-<img alt="abstract technology background" class="h-full w-full object-cover" data-alt="abstract digital network connection lines and nodes on a dark blue background representing data transparency and security" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlUV_2EX78wYqAd4BTPl4fy0NCAbgdU3olPKTEwk4CVb66xcTYMdJrHR2k0SpILoSFhmpkCQvtAlcf4LuRRbz3QUEeWoqybJESG9pphvL4ZxCe_gZLC2Yz9gdqP9d3I9z7bIcrkP62AY7GnR_9uBX40YCyt1qYVzfx-TVukwj5kC6-RJUs0UQ46xV09yGQMllTGpAauvpK6XXjr4KI_nqSWwfSIyA9hUisL5grP7nCKfbTB7uDF6jQ6lxtwgn1bORCrhIkgNST24Oc"/>
-</div>
-</div> -->
 </section>
 <!-- Campaigns List Section -->
-<?php
-require_once '../../includes/database.php';
-
-// 1. Nhận các tham số từ URL
-$org_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-$filter = isset($_GET['filter']) ? $_GET['filter'] : 'all'; // all, active, completed
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-
-if ($page < 1) $page = 1;
-$limit = 5; // Số chiến dịch hiển thị trên 1 trang
-$offset = ($page - 1) * $limit;
-
-// 2. Lấy dữ liệu
-$total_campaigns = count_campaigns_by_org($org_id, $filter);
-$total_pages = ceil($total_campaigns / $limit);
-$campaigns = get_campaigns_by_org($org_id, $filter, $limit, $offset);
-
-// Hàm hỗ trợ tạo link giữ nguyên các tham số
-function build_url($new_filter = null, $new_page = null) {
-    global $org_id, $filter, $page;
-    $f = $new_filter !== null ? $new_filter : $filter;
-    $p = $new_page !== null ? $new_page : $page;
-    return "?id=$org_id&filter=$f&page=$p";
-}
-?>
 
 <section class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-slate-50 mt-8 max-w-7xl mx-auto">
     <div class="p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-slate-50/50">

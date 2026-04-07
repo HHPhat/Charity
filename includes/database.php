@@ -371,14 +371,15 @@ function get_campaign_transactions($campaign_id, $limit = 6, $offset = 0) {
 }
 
 // Hàm thêm chiến dịch mới
-function insert_charity_campaign($campaign_name, $description, $target_amount, $start_date, $end_date, $status, $org_id) {
+function insert_charity_campaign($campaign_name,$short_description, $description, $target_amount, $start_date, $end_date, $status, $org_id) {
     global $conn;
-    $sql = "INSERT INTO CharityCampaign (campaign_name, description, target_amount, start_date, end_date, status, org_id) 
-            VALUES (:name, :desc, :target, :start, :end, :status, :org_id)";
+    $sql = "INSERT INTO CharityCampaign (campaign_name,short_description, description, target_amount, start_date, end_date, status, org_id) 
+            VALUES (:name,:sdesc, :desc, :target, :start, :end, :status, :org_id)";
     
     $stmt = $conn->prepare($sql);
     $stmt->execute([
         ':name'   => $campaign_name,
+        ':sdesc'  => $short_description,
         ':desc'   => $description,
         ':target' => $target_amount,
         ':start'  => $start_date,

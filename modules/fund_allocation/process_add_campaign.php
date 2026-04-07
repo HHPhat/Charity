@@ -15,8 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Gộp tóm tắt và chi tiết vào chung trường description
     $summary = trim($_POST['summary'] ?? '');
     $detailed = trim($_POST['detailed_context'] ?? '');
-    $description = "Tóm tắt:\n" . $summary . "\n\nChi tiết:\n" . $detailed;
-
+    $description = "\nChi tiết:\n" . $detailed;
+    $short_description="Tóm tắt:\n" . $summary ;
     $target_amount = floatval($_POST['target_amount'] ?? 0);
     
     // Cài đặt ngày tháng và trạng thái
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->beginTransaction();
 
         // 3. THÊM VÀO BẢNG CharityCampaign
-        $campaign_id = insert_charity_campaign($campaign_name, $description, $target_amount, $start_date, $end_date, $status, $org_id);
+        $campaign_id = insert_charity_campaign($campaign_name,$short_description, $description, $target_amount, $start_date, $end_date, $status, $org_id);
 
         // 4. THÊM VÀO BẢNG FundAllocation
         $beneficiary_id = rand(1, 5);
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Cam kết hoàn tất mọi thứ
         $conn->commit();
-        
+        header("Location: ../fund_allocation/?id=".$org_id);  
         echo "<script>
                 alert('Khởi tạo chiến dịch thành công!'); 
                 window.location.href = '../fund_allocation/?id=".$org_id."; // Trở về trang danh sách chiến dịch
@@ -76,5 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 } else {
     die("Truy cập không hợp lệ!");
+    header("Location: ../fund_allocation/?id=".$org_id); 
 }
 ?>

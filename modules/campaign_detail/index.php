@@ -154,6 +154,7 @@ $campaign_name = htmlspecialchars($campaign['campaign_name']);
 $_SESSION['org_name']= $org_name;
 $_SESSION['campaign_name']= $campaign_name;
 $description = nl2br(htmlspecialchars($campaign['description'])); // nl2br để giữ format xuống dòng
+$short_description = nl2br(htmlspecialchars($campaign['short_description'])); 
 
 // Số liệu tài chính
 $target_amount = $campaign['target_amount'];
@@ -196,7 +197,7 @@ $transactions = get_campaign_transactions($campaign_id, 6);
             </h1>
             
             <p class="text-on-surface-variant text-lg leading-relaxed mb-8">
-                <?= mb_substr(strip_tags($description), 0, 150) ?>...
+                <?= mb_substr(strip_tags($short_description), 0, 150) ?>...
             </p>
             
             <div class="flex flex-wrap gap-4">

@@ -405,4 +405,23 @@ function insert_fund_allocation($amount, $allocation_date, $campaign_id, $benefi
         ':beneficiary_id' => $beneficiary_id
     ]);
 }
+
+/**
+ * Tính tổng số tiền quyên góp được từ tất cả các chiến dịch
+ */
+function get_total_donations_amount() {
+    global $conn;
+    try {
+        $sql = "SELECT SUM(amount) as total FROM Donation";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        // Nếu không có dữ liệu, trả về 0
+        return (float)($result['total'] ?? 0);
+    } catch (PDOException $e) {
+        error_log("Lỗi tính tổng tiền quyên góp: " . $e->getMessage());
+        return 0;
+    }
+}
 ?>

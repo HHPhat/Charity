@@ -1,0 +1,492 @@
+<?php 
+    session_start();
+    if (!isset($_SESSION["role"]) || $_SESSION["role"] != "Admin" ) {
+        die('Truy cập không hợp lệ');
+    }
+?>
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Transparent Guardian | Admin Dashboard</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#b91830",
+                        "primary-fixed": "#dae2ff",
+                        "on-primary-fixed-variant": "#00419e",
+                        "tertiary-fixed": "#ffdad9",
+                        "surface-tint": "#0057ce",
+                        "secondary-fixed": "#ffdbc8",
+                        "on-surface": "#191c1d",
+                        "background": "#f8f9fa",
+                        "surface-container": "#edeeef",
+                        "on-primary-fixed": "#001946",
+                        "on-primary-container": "#ffffff",
+                        "on-background": "#191c1d",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#dd3645",
+                        "surface-container-high": "#e7e8e9",
+                        "error-container": "#ffdad6",
+                        "primary": "#0057cd",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e1e3e4",
+                        "secondary-container": "#ff8016",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#2e3132",
+                        "on-secondary-container": "#5f2a00",
+                        "on-error-container": "#93000a",
+                        "secondary": "#984700",
+                        "surface-container-low": "#f3f4f5",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-secondary-fixed": "#321300",
+                        "on-tertiary-fixed": "#410008",
+                        "surface-variant": "#e1e3e4",
+                        "primary-fixed-dim": "#b1c5ff",
+                        "tertiary-fixed-dim": "#ffb3b2",
+                        "on-surface-variant": "#414754",
+                        "primary-container": "#0d6efd",
+                        "on-secondary-fixed-variant": "#743500",
+                        "surface-dim": "#d9dadb",
+                        "outline": "#727785",
+                        "on-tertiary-container": "#130001",
+                        "on-tertiary-fixed-variant": "#92001f",
+                        "surface-bright": "#f8f9fa",
+                        "inverse-primary": "#b1c5ff",
+                        "secondary-fixed-dim": "#ffb68a",
+                        "outline-variant": "#c1c6d6",
+                        "error": "#ba1a1a",
+                        "surface": "#f8f9fa"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-shadow {
+            box-shadow: 0 20px 40px rgba(25, 28, 29, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface">
+<!-- SideNavBar -->
+<aside class="flex flex-col fixed left-0 top-0 h-full h-screen w-64 border-r-0 bg-slate-50 dark:bg-slate-900 z-50">
+<div class="p-8">
+<div class="flex items-center gap-3 mb-10">
+<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">security</span>
+</div>
+<div>
+<h1 class="text-xl font-bold text-blue-700 dark:text-blue-400 font-headline leading-tight">Guardian Admin</h1>
+<p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Institutional Steward</p>
+</div>
+</div>
+<nav class="space-y-2">
+<!-- Dashboard Active -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-700 dark:text-blue-400 border-r-4 border-blue-700 dark:border-blue-400 bg-blue-50/50 dark:bg-blue-900/20 font-manrope font-semibold tracking-tight transition-all scale-98 active:opacity-80" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope font-semibold tracking-tight transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined">campaign</span>
+<span>Campaigns</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope font-semibold tracking-tight transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Users</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope font-semibold tracking-tight transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined">volunteer_activism</span>
+<span>Charities</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-8 space-y-4">
+<button class="w-full bg-primary text-on-primary py-3 rounded-xl font-headline font-bold text-sm editorial-shadow hover:opacity-90 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span>
+                Create Campaign
+            </button>
+<div class="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-slate-500 dark:text-slate-400 hover:text-blue-600 font-manrope font-semibold tracking-tight transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-slate-500 dark:text-slate-400 hover:text-blue-600 font-manrope font-semibold tracking-tight transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Support</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="flex justify-between items-center h-16 px-8 ml-64 w-[calc(100%-16rem)] fixed top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl z-40">
+<div class="flex items-center flex-1 max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-900 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/20" placeholder="Search across campaigns, donors, or transactions..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 text-slate-600 dark:text-slate-400">
+<button class="hover:text-blue-600 transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="hover:text-blue-600 transition-all">
+<span class="material-symbols-outlined">history</span>
+</button>
+</div>
+<button class="bg-secondary-container text-on-secondary-container px-5 py-2 rounded-lg font-headline font-bold text-sm hover:opacity-90 transition-all">
+                Impact Report
+            </button>
+<div class="flex items-center gap-3 pl-4 border-l border-slate-200 dark:border-slate-800">
+<img class="w-9 h-9 rounded-full object-cover grayscale brightness-110" data-alt="professional portrait of an administrative director in a clean modern office setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV3HDspItiUYFEsX0n3VAmkya8wTqxgcb5398SqEfzJYOzBWs0Q2T7ZiFxbWizXDyZprS_IJiOjkma2vn1wX0j18GdqBUTWEzRXFlbZZSbOcMPfHs_tIAjMYfdxYOOY4SXh62d7je8BJgxGTsXpTFpPeXpSXde70LZRFBrI-Xn8ZX_HXYEtqLXeoi9jEMO2ka5_W83fW11gfyIFYYawmtXTBLNXtiFKtXUWgzfpFN5J_QfHBRqzRSoUTpa9-3MVzOMRS77RoIrBdph"/>
+<div class="hidden lg:block text-right">
+<p class="text-sm font-bold font-headline leading-none">The Transparent Guardian</p>
+<p class="text-[10px] text-slate-500 font-medium mt-1">Administrator</p>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-64 pt-24 px-8 pb-12">
+<!-- Header Section -->
+<section class="mb-12">
+<div class="flex justify-between items-end">
+<div>
+<span class="bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3 inline-block">Institutional Overview</span>
+<h2 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface">Dashboard Dashboard</h2>
+<p class="text-slate-500 font-medium mt-2 max-w-xl">Monitor your organization's impact metrics and active stewardship efforts across all verified channels.</p>
+</div>
+<div class="flex gap-3">
+<div class="bg-surface-container-low p-1 rounded-lg flex">
+<button class="px-4 py-1.5 text-xs font-bold rounded-md bg-white shadow-sm text-primary">Live View</button>
+<button class="px-4 py-1.5 text-xs font-bold text-slate-500">Historical</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Metrics Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+<!-- Metric 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl editorial-shadow group border-l-4 border-primary">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<span class="text-xs font-bold text-emerald-600 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span> +12.5%
+                    </span>
+</div>
+<p class="text-slate-500 text-sm font-medium">Total Funds Raised</p>
+<h3 class="text-2xl font-headline font-extrabold mt-1">$4,281,090</h3>
+<div class="mt-4 h-1 w-full bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[75%]"></div>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl editorial-shadow border-l-4 border-secondary-container">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">campaign</span>
+</div>
+<span class="text-xs font-bold text-slate-400">8 New Today</span>
+</div>
+<p class="text-slate-500 text-sm font-medium">Active Campaigns</p>
+<h3 class="text-2xl font-headline font-extrabold mt-1">142</h3>
+<div class="mt-4 flex -space-x-2">
+<img class="w-6 h-6 rounded-full border-2 border-white object-cover" data-alt="portrait of a young female activist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtNkhqANz3zWWNt45Rw5VRJpuOHXVuhCOucIPGCNV-F4TzyWty399K1YDM8sHNVF0jAKi66Dq2LDZ7ZZrfwrgGBMDxp9-jX1gQao-OK3Lbj8Aoh2_-Oodrb1MOmq-EEHTa-A__vQX92j4uFnWCHIuIRt3xKHWn1suSsMZRDwT4CNVdueONCOx-2-KmC5fAGfYklqXTE2lo82NFjhomo-YYBMjJAiQKxXPr-xMp68zXF-sgEXTmzVgdSx4wnR-hQnL6UM91RdUFThs0"/>
+<img class="w-6 h-6 rounded-full border-2 border-white object-cover" data-alt="portrait of an elderly man with kind eyes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCA-8tZmwPO6DQkL5GlG_c6ppIgcfpSt2IIt0LDOTOwXL77r5sOMo9KtlBKIh9oSr5AJoG844Kz3PHMOlgAtLpo8YzNXGYzWgIENy4it46OWhfmJrAQp3BLpIDY8vmpB2wtbiVOlDVTZxEPDCMxMOkWFrRngxqJGrAG3OIbX795xQ7J8ZRlCbnn9h36PHDFr36d-zspt8whPjwhTUJvXv2QzGbyOJExdu5KdwjTmFHAQJT-kQ_GAJkch8FCRq4FNC9yj53ICcPNGd0T"/>
+<img class="w-6 h-6 rounded-full border-2 border-white object-cover" data-alt="portrait of a street artist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUajcwFNYu6azQ4YJg5SpwLpcQtk_TyUuFNZ1iQE7aIp01-Rn7CMow5vh7FPsoZ1IPKukBE9c85RRlZkU9syAHg4YuFmiCxXgNTYz6uyeSy7RxUHbwyLDSE_aggSVq4YuSKQmkmJF2sOh8kVPwIuMZqBD5TXDYznqthsllZEPfkdxgbk5wWBMqm6bPvG8_EdrS8Hw3CEegTHa3xlpoTAVaZNY8bYH1IWwMYZPk6bvdxh9xmdbbSKt-leanAyeNQev3nZdWCV4H39jX"/>
+<div class="w-6 h-6 rounded-full bg-slate-100 border-2 border-white flex items-center justify-center text-[8px] font-bold text-slate-500">+12</div>
+</div>
+</div>
+<!-- Metric 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl editorial-shadow border-l-4 border-blue-400">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+<span class="material-symbols-outlined">verified_user</span>
+</div>
+<span class="text-xs font-bold text-emerald-600 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">check_circle</span> 99.8%
+                    </span>
+</div>
+<p class="text-slate-500 text-sm font-medium">Verified Users</p>
+<h3 class="text-2xl font-headline font-extrabold mt-1">12,403</h3>
+<p class="text-[10px] text-slate-400 mt-4 uppercase tracking-tighter font-bold">Identity verified by Guardian Shield</p>
+</div>
+<!-- Metric 4 -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl editorial-shadow border-l-4 border-tertiary">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 rounded-lg bg-tertiary-fixed flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">volunteer_activism</span>
+</div>
+</div>
+<p class="text-slate-500 text-sm font-medium">Partner Charities</p>
+<h3 class="text-2xl font-headline font-extrabold mt-1">86</h3>
+<div class="mt-4 flex items-center gap-2 text-[10px] font-bold text-tertiary">
+<span class="material-symbols-outlined text-xs">location_on</span> Global Network Reach
+                </div>
+</div>
+</section>
+<!-- Middle Section: Trends & Featured -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+<!-- Donation Trend Chart Visual -->
+<div class="lg:col-span-2 bg-surface-container-lowest p-8 rounded-3xl editorial-shadow relative overflow-hidden">
+<div class="flex justify-between items-start mb-8">
+<div>
+<h3 class="text-xl font-headline font-bold">Donation Momentum</h3>
+<p class="text-sm text-slate-500">Weekly accumulation vs. forecasted goals</p>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-2 text-xs font-bold">
+<span class="w-3 h-3 rounded-full bg-primary"></span> Actual
+                        </div>
+<div class="flex items-center gap-2 text-xs font-bold">
+<span class="w-3 h-3 rounded-full bg-slate-200"></span> Goal
+                        </div>
+</div>
+</div>
+<!-- SVG Chart Mockup -->
+<div class="h-64 w-full relative">
+<svg class="w-full h-full" viewbox="0 0 800 250">
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#0057cd" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#0057cd" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,200 Q100,180 200,190 T400,140 T600,120 T800,40" fill="none" stroke="#0057cd" stroke-linecap="round" stroke-width="4"></path>
+<path d="M0,200 Q100,180 200,190 T400,140 T600,120 T800,40 L800,250 L0,250 Z" fill="url(#chartGradient)"></path>
+<path d="M0,210 Q150,205 300,190 T600,170 T800,160" fill="none" stroke="#e1e3e4" stroke-dasharray="8,8" stroke-width="2"></path>
+<!-- Data Points -->
+<circle cx="200" cy="190" fill="#0057cd" r="4"></circle>
+<circle cx="400" cy="140" fill="#0057cd" r="4"></circle>
+<circle cx="600" cy="120" fill="#0057cd" r="4"></circle>
+<circle cx="800" cy="40" fill="#0057cd" r="6"></circle>
+</svg>
+<!-- Floating Data Tooltip -->
+<div class="absolute top-4 right-10 bg-on-surface text-white p-3 rounded-xl text-xs font-bold editorial-shadow">
+                        Peak: $84.2k
+                    </div>
+</div>
+<div class="flex justify-between mt-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+</div>
+</div>
+<!-- Spotlight Card -->
+<div class="bg-primary text-white rounded-3xl p-8 flex flex-col justify-between relative overflow-hidden">
+<div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+<div class="relative z-10">
+<span class="bg-white/20 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full inline-block mb-6">Critical Update</span>
+<h3 class="text-2xl font-headline font-bold leading-tight mb-4">Amazon Basin Restoration Project</h3>
+<p class="text-white/80 text-sm leading-relaxed mb-6">Reached 94% of funding goal. Requires immediate steward verification for phase two disbursement.</p>
+</div>
+<div class="relative z-10 space-y-4">
+<div class="bg-white/10 rounded-2xl p-4 flex items-center justify-between">
+<div>
+<p class="text-[10px] text-white/60 font-bold uppercase">Target</p>
+<p class="font-bold">$2.5M</p>
+</div>
+<div class="text-right">
+<p class="text-[10px] text-white/60 font-bold uppercase">Raised</p>
+<p class="font-bold">$2.38M</p>
+</div>
+</div>
+<button class="w-full bg-white text-primary py-3 rounded-xl font-headline font-bold text-sm">Review Disbursement</button>
+</div>
+</div>
+</section>
+<!-- Table: Latest Campaigns -->
+<section class="bg-surface-container-lowest rounded-3xl editorial-shadow overflow-hidden">
+<div class="p-8 flex justify-between items-center border-b border-slate-50">
+<div>
+<h3 class="text-xl font-headline font-bold">Latest Campaigns</h3>
+<p class="text-sm text-slate-500">Real-time status of recently launched initiatives</p>
+</div>
+<button class="text-primary font-bold text-sm flex items-center gap-1 hover:underline">
+                    View All <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="text-[10px] uppercase tracking-widest font-bold text-slate-400 bg-slate-50/50">
+<th class="px-8 py-4">Campaign Name</th>
+<th class="px-8 py-4">Lead Organization</th>
+<th class="px-8 py-4">Progress</th>
+<th class="px-8 py-4">Status</th>
+<th class="px-8 py-4">Urgency</th>
+<th class="px-8 py-4 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-8 py-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-slate-200">
+<img class="w-full h-full object-cover" data-alt="clean water filtering system being installed in a village" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCynRD7fpS1wKSETDX5hlrILcsiPIVp0PO5pU-9Ny-wDgRJJa_kF1m0QZCAwZDBnZt4Y_KBMrefITAYJzCcSv42jOVWHhk8HoB1vjisrDqGM4UjXjob_Ey5GrCcweUaiJQSeUF4PzgogN3Z8c0PPi_st3jVIO2JRmtccRff11DHm2Kh5r95dqEvi0HfExnqj6eGvkIaaipkR9ysnnMerljQ36SdYAaAm7j3-lrffIC1kXR_rDawTeblq7VCPt7x6x1psngOMnALoUhz"/>
+</div>
+<div>
+<p class="font-bold text-sm">Pure Flow: Village Hydration</p>
+<p class="text-[10px] text-slate-400">ID: CA-9821</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<p class="text-sm font-medium">H2O Global Partners</p>
+</td>
+<td class="px-8 py-6 w-48">
+<div class="flex items-center gap-3">
+<div class="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[65%]"></div>
+</div>
+<span class="text-[10px] font-bold text-slate-600">65%</span>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="px-2 py-1 rounded-md bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase tracking-tight">Active</span>
+</td>
+<td class="px-8 py-6">
+<div class="flex gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-slate-200"></span>
+</div>
+</td>
+<td class="px-8 py-6 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-8 py-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-slate-200">
+<img class="w-full h-full object-cover" data-alt="happy children in an educational classroom setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvcz79_1vb5OhQP5JEZa-PMZqCSn2agpswnr5IDaqiys1629xveQ7O92H4Znju-arZHnSYhWmvIfykfrHEsCOMmx3Rwpwkpgsr4XGPrViBkk-IfAeH31bMD7Q4AC-kUk4JBJuraoHHsEZGKFH_gRGf6uuqyAn6CSEQNFtqjjoLFz64zG7eGFKidgENI1lQxJ677eZXeFJM4GiKPSS_MhYkQRxahGXOiCn-WKh4xLzAxQuZ8jzthke4NkVD_Suz3pR7cb3VRNlSPO5W"/>
+</div>
+<div>
+<p class="font-bold text-sm">Bright Future Scholarships</p>
+<p class="text-[10px] text-slate-400">ID: CA-4412</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<p class="text-sm font-medium">EduFoundation Int.</p>
+</td>
+<td class="px-8 py-6 w-48">
+<div class="flex items-center gap-3">
+<div class="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[32%]"></div>
+</div>
+<span class="text-[10px] font-bold text-slate-600">32%</span>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="px-2 py-1 rounded-md bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase tracking-tight">Active</span>
+</td>
+<td class="px-8 py-6">
+<div class="flex gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-slate-200"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-slate-200"></span>
+</div>
+</td>
+<td class="px-8 py-6 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-8 py-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-slate-200">
+<img class="w-full h-full object-cover" data-alt="lush forest landscape with mountain range in background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBx_xZf2PoM-4xq4FTYH2mYZAJ9vHuik-ZLGxZtymgJpCxQzVEQT_xNZrdyoQZTU5lxPJfrcW0ebql3IiizPE9MsBP6EHr6oBsiHkIjeZXsLFeuamN_fxCwlQWfNEgTWN-S7ugBCXsB1bEo0yyzBnMYaI0JqGAMhEhhsvlk0mT7DWxLus4wCbSa3sv2a_G-qybT8cCxom2o2AZIbtYQmlajOBBwYDZyRwpLLlI_Q97gqwXdTdCGFVxoaEeDGeccaUZi-l2A5C-kqWoU"/>
+</div>
+<div>
+<p class="font-bold text-sm">Carbon Capture Initiative</p>
+<p class="text-[10px] text-slate-400">ID: CA-2109</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<p class="text-sm font-medium">Terra Stewardship</p>
+</td>
+<td class="px-8 py-6 w-48">
+<div class="flex items-center gap-3">
+<div class="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-[88%]"></div>
+</div>
+<span class="text-[10px] font-bold text-slate-600">88%</span>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="px-2 py-1 rounded-md bg-blue-100 text-blue-700 text-[10px] font-bold uppercase tracking-tight">Reviewing</span>
+</td>
+<td class="px-8 py-6">
+<div class="flex gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+</div>
+</td>
+<td class="px-8 py-6 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<!-- Floating Donation Ready Widget -->
+<div class="fixed bottom-8 right-8 bg-surface-container-lowest/90 backdrop-blur-xl editorial-shadow p-6 rounded-2xl flex items-center gap-6 z-50 border border-white/20">
+<div class="flex -space-x-3">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white border-4 border-white">
+<span class="material-symbols-outlined text-sm">bolt</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-white border-4 border-white">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+<div>
+<p class="text-[10px] font-bold uppercase text-slate-400 tracking-widest">Global Status</p>
+<p class="text-sm font-bold">14 High-Impact Events Live</p>
+</div>
+<button class="bg-primary text-white px-4 py-2 rounded-lg text-xs font-bold hover:opacity-90 transition-all">
+            Audit Now
+        </button>
+</div>
+</body></html>

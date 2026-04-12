@@ -169,35 +169,44 @@
         </nav>
         <main class="pt-24">
             <!-- Hero Section -->
-            <section class="max-w-7xl mx-auto px-6 mb-20">
-            <div class="editorial-grid items-center">
-            <div class="col-span-12 lg:col-span-7 mb-12 lg:mb-0">
-            <span class="inline-block px-4 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-sm font-bold mb-6">Tình thương của chúng ta</span>
+            <section class="max-w-7xl mx-auto px-6 mb-20 overflow-hidden">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative">
+        
+        <div class="col-span-1 lg:col-span-7 relative z-10">
+            <span class="inline-block px-4 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-sm font-bold mb-6">
+                Tình thương của chúng ta
+            </span>
             <h1 class="font-headline text-5xl md:text-7xl font-extrabold tracking-tight text-on-surface leading-[1.1] mb-8">
-                                    Hạnh phúc từ tâm là <br/><span class="text-primary italic">cho đi nhiều thứ.</span>
+                Hạnh phúc từ tâm là <br/>
+                <span class="text-primary italic">cho đi nhiều thứ.</span>
             </h1>
-            <div class="bg-surface-container-low p-8 rounded-xl relative overflow-hidden">
-            <div class="relative z-10">
-            <p class="text-on-surface-variant font-medium text-lg mb-2">Tổng số tiền quyên góp được</p>
-            <p class="text-4xl md:text-6xl font-headline font-extrabold text-on-surface flex items-baseline gap-2">
-                                            2,500,000,000 <span class="text-xl md:text-2xl font-bold text-primary">VNĐ</span>
-            </p>
-            </div>
-            <div class="absolute top-0 right-0 p-4 opacity-10">
-            <span class="material-symbols-outlined text-9xl">guardian</span>
-            </div>
-            </div>
-            </div>
-            <div class="col-span-12 lg:col-span-5 relative">
-            <div class="aspect-[4/5] rounded-xl overflow-hidden shadow-2xl relative z-10 transform lg:translate-x-8">
-
-            <img class="w-full h-full object-cover" data-alt="Candid portrait of smiling children in a community school setting with warm sunlight and soft background focus" src="/Charity/templates/assets/image/Charity.jpg"/>
             
+            <?php 
+                // Gọi hàm để lấy tổng số tiền
+                $total_amount = get_total_donations_amount(); 
+            ?>
+
+            <div class="relative z-10">
+                <p class="text-on-surface-variant font-medium text-lg mb-2">Tổng số tiền quyên góp được</p>
+                <p class="text-4xl md:text-6xl font-headline font-extrabold text-on-surface flex items-baseline gap-2">
+                    <span id="animated-total" data-target="<?= $total_amount ?>">0</span>
+                    <span class="text-xl md:text-2xl font-bold text-primary">VNĐ</span>
+                </p>
             </div>
-            <div class="absolute -bottom-6 -left-6 w-48 h-48 bg-secondary-container/20 rounded-xl -z-10 backdrop-blur-3xl"></div>
+            
+            <div class="absolute top-0 right-10 opacity-10 -z-10">
+                <span class="material-symbols-outlined text-9xl">guardian</span>
             </div>
+        </div>
+        <div class="col-span-1 lg:col-span-5 relative mt-12 lg:mt-0">
+            <div class="aspect-[4/5] rounded-xl overflow-hidden shadow-2xl relative z-10">
+                <img class="w-full h-full object-cover" alt="Candid portrait of smiling children in a community school setting" src="/Charity/templates/assets/image/Charity.jpg"/>
             </div>
-            </section>
+            <div class="absolute -bottom-6 -left-6 w-48 h-48 bg-secondary-container/50 rounded-xl -z-10 backdrop-blur-3xl"></div>
+        </div>
+        
+    </div>
+</section>
             <!-- Ongoing Campaigns Section -->
             <section class="bg-surface-container-low py-20">
             <div class="max-w-7xl mx-auto px-6">
@@ -316,3 +325,41 @@
         </footer>
     </body>
 </html>
+<script>
+/**
+ * Hàm định dạng số có dấu phẩy ngăn cách hàng nghìn (ví dụ: 1.000.000)
+ */
+function formatNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function animateCounter() {
+    const counter = document.getElementById('animated-total');
+    const target = parseFloat(counter.getAttribute('data-target'));
+    const duration = 2000; // Thời gian chạy (2 giây)
+    const frameRate = 1000 / 60; // 60 khung hình trên giây
+    const totalFrames = Math.round(duration / frameRate);
+    
+    let currentFrame = 0;
+
+    const updateCounter = () => {
+        currentFrame++;
+        // Sử dụng hàm Ease Out để hiệu ứng mượt mà hơn (chậm dần khi gần đến đích)
+        const progress = 1 - Math.pow(1 - currentFrame / totalFrames, 3);
+        const currentValue = Math.floor(progress * target);
+
+        counter.innerText = formatNumber(currentValue);
+
+        if (currentFrame < totalFrames) {
+            requestAnimationFrame(updateCounter);
+        } else {
+            counter.innerText = formatNumber(target); // Đảm bảo số cuối cùng chính xác
+        }
+    };
+
+    requestAnimationFrame(updateCounter);
+}
+
+// Chạy hiệu ứng khi trang web tải xong
+document.addEventListener('DOMContentLoaded', animateCounter);
+</script>

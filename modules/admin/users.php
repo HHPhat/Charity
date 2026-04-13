@@ -1,3 +1,10 @@
+<?php
+    // if (!defined('_HIENU')){
+    //     die('Truy cập không hợp lệ');
+    // }
+    session_start(); // Bắt buộc phải có ở đầu file để dùng Session hiển thị thông báo
+
+?>
 <!DOCTYPE html>
 
 <html lang="vi"><head>
@@ -89,12 +96,10 @@
 <aside class="fixed left-0 top-0 h-full w-64 flex flex-col py-8 bg-slate-50 dark:bg-slate-950 z-50">
 <div class="px-6 mb-10">
 <div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-<span class="material-symbols-outlined text-white" data-icon="verified_user">verified_user</span>
 </div>
 <div>
-<h1 class="text-2xl font-black text-blue-700 dark:text-blue-500 tracking-tighter font-headline">Guardian Admin</h1>
-<p class="text-[10px] uppercase tracking-widest font-bold text-slate-400">Stewardship Portal</p>
+<h1 class="text-xl font-bold text-blue-700 dark:text-blue-400 font-headline leading-tight">Guardian Admin</h1>
+<p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Institutional Steward</p>
 </div>
 </div>
 </div>
@@ -113,8 +118,17 @@
 <span>Users</span>
 </a>
 <a class="flex items-center gap-4 py-3 text-slate-500 dark:text-slate-400 pl-5 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors duration-400 ease-out rounded-xl font-medium" href="#">
-<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+<span class="material-symbols-outlined" data-icon="account_balance">account_balance</span>
 <span>Charities</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope text-sm font-semibold tracking-tight rounded-xl scale-98-active transition-all duration-400" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Impact Reports</span>
+</a>
+<!-- Settings (Inactive) -->
+<a class="flex items-center gap-3 px-4 py-3 transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope text-sm font-semibold tracking-tight rounded-xl scale-98-active transition-all duration-400" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
 </a>
 </nav>
 <div class="px-6 mb-8">
@@ -152,17 +166,35 @@
 <span class="material-symbols-outlined" data-icon="history">history</span>
 </button>
 </div>
-<div class="h-8 w-[1px] bg-slate-200 mx-2"></div>
-<button class="flex items-center gap-3 group">
-<div class="text-right">
-<p class="text-xs font-bold text-on-surface">Admin Console</p>
-<p class="text-[10px] text-slate-500">System Administrator</p>
-</div>
-<img alt="Administrator Profile" class="w-10 h-10 rounded-full border-2 border-primary/10 group-hover:border-primary transition-colors" data-alt="professional portrait of a confident male executive in a neutral studio setting with soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2Nut19_QGTKy9p4psBZ0u_1p0I4VQ-wyX7W36neoCyfJfnd44QnUwMbi7cnJf_ldi5y0zYs638dca-QvtLErflzonpoMIG2JBGOiSnKXMf28iYX20cXpnt95y9aE5enCHPybT55tc9Rz95wfEAcYttDs2qW2z2KXFmnvg7RTARZs7VWzNc7d2byyUgTs0FylgoIao-y6lbHaW5UQzQh90GPjDb-WfkTBClYbRyMSFFRY2wc75LJwNpQEUGo7on1qQPiFEfWoFAiEQ"/>
-</button>
-<button class="bg-primary text-on-primary px-6 py-2.5 rounded-xl font-bold text-sm shadow-sm hover:shadow-md transition-all active:scale-95">
-                    Impact Report
-                </button>
+<div class="flex items-center gap-4">
+
+<?php if (empty($_SESSION['account_id'])): ?>
+    <div class="flex items-center gap-2">
+        <button onclick="window.location.href='../../pages/login.php'" class="text-slate-600 dark:text-slate-400 hover:text-blue-600 font-manrope font-bold text-sm tracking-tight scale-95 active:scale-90 transition-transform">
+            Login
+        </button>
+        <button onclick="window.location.href='../../pages/register.php'" class="bg-primary text-on-primary px-6 py-2 rounded-xl font-manrope font-bold text-sm tracking-tight scale-95 active:scale-90 transition-transform shadow-[0_2px_0_0_rgba(0,65,158,1)]">
+            Sign Up
+        </button>
+    </div>
+
+<?php else: ?>
+    <div class="flex items-center gap-5">
+        <div class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity" onclick="window.location.href=*../../'modules/accounts/'">
+            <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">person</span>
+            </div>
+            <span class="font-manrope font-bold text-sm text-on-surface tracking-tight">
+                <?= htmlspecialchars($_SESSION['account_id'] ?? 'User') ?>
+            </span>
+        </div>
+        
+        <button onclick="window.location.href='../../modules/auth/logout.php'" class="text-red-500 hover:text-red-600 font-manrope font-bold text-sm tracking-tight flex items-center gap-1 scale-95 active:scale-90 transition-transform">
+            <span class="material-symbols-outlined text-sm">logout</span>
+            Logout
+        </button>
+    </div>
+<?php endif; ?>
 </div>
 </header>
 <!-- Main Content Canvas -->

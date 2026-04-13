@@ -1,8 +1,8 @@
 <?php 
     session_start();
-    if (!isset($_SESSION["role"]) || $_SESSION["role"] != "Admin" ) {
-        die('Truy cập không hợp lệ');
-    }
+    // if (!isset($_SESSION["role"]) || $_SESSION["role"] != "Admin" ) {
+    //     die('Truy cập không hợp lệ');
+    // }
 ?>
 <!DOCTYPE html>
 
@@ -99,21 +99,20 @@
 </head>
 <body class="bg-surface font-body text-on-surface">
 <!-- SideNavBar -->
-<aside class="flex flex-col fixed left-0 top-0 h-full h-screen w-64 border-r-0 bg-slate-50 dark:bg-slate-900 z-50">
-<div class="p-8">
-<div class="flex items-center gap-3 mb-10">
-<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">security</span>
+<aside class="fixed left-0 top-0 h-full w-64 flex flex-col py-8 bg-slate-50 dark:bg-slate-950 z-50">
+<div class="px-6 mb-10">
+<div class="flex items-center gap-3">
 </div>
 <div>
 <h1 class="text-xl font-bold text-blue-700 dark:text-blue-400 font-headline leading-tight">Guardian Admin</h1>
 <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Institutional Steward</p>
 </div>
 </div>
-<nav class="space-y-2">
+</div>
+<nav class="flex-1 space-y-1">
 <!-- Dashboard Active -->
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-700 dark:text-blue-400 border-r-4 border-blue-700 dark:border-blue-400 bg-blue-50/50 dark:bg-blue-900/20 font-manrope font-semibold tracking-tight transition-all scale-98 active:opacity-80" href="#">
-<span class="material-symbols-outlined">dashboard</span>
+<a class="flex items-center gap-4 py-3 text-blue-700 dark:text-blue-400 font-bold border-l-4 border-blue-700 dark:border-blue-400 pl-4 bg-slate-100 dark:bg-slate-900 rounded-r-xl sidebar-active" href="#">
+<span class="material-symbols-outlined" data-icon="group" style="font-variation-settings: 'FILL' 1;">dashboard</span>
 <span>Dashboard</span>
 </a>
 <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope font-semibold tracking-tight transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
@@ -125,8 +124,17 @@
 <span>Users</span>
 </a>
 <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope font-semibold tracking-tight transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
-<span class="material-symbols-outlined">volunteer_activism</span>
+<span class="material-symbols-outlined">account_balance</span>
 <span>Charities</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope text-sm font-semibold tracking-tight rounded-xl scale-98-active transition-all duration-400" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Impact Reports</span>
+</a>
+<!-- Settings (Inactive) -->
+<a class="flex items-center gap-3 px-4 py-3 transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope text-sm font-semibold tracking-tight rounded-xl scale-98-active transition-all duration-400" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
 </a>
 </nav>
 </div>
@@ -164,15 +172,35 @@
 <span class="material-symbols-outlined">history</span>
 </button>
 </div>
-<button class="bg-secondary-container text-on-secondary-container px-5 py-2 rounded-lg font-headline font-bold text-sm hover:opacity-90 transition-all">
-                Impact Report
-            </button>
-<div class="flex items-center gap-3 pl-4 border-l border-slate-200 dark:border-slate-800">
-<img class="w-9 h-9 rounded-full object-cover grayscale brightness-110" data-alt="professional portrait of an administrative director in a clean modern office setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV3HDspItiUYFEsX0n3VAmkya8wTqxgcb5398SqEfzJYOzBWs0Q2T7ZiFxbWizXDyZprS_IJiOjkma2vn1wX0j18GdqBUTWEzRXFlbZZSbOcMPfHs_tIAjMYfdxYOOY4SXh62d7je8BJgxGTsXpTFpPeXpSXde70LZRFBrI-Xn8ZX_HXYEtqLXeoi9jEMO2ka5_W83fW11gfyIFYYawmtXTBLNXtiFKtXUWgzfpFN5J_QfHBRqzRSoUTpa9-3MVzOMRS77RoIrBdph"/>
-<div class="hidden lg:block text-right">
-<p class="text-sm font-bold font-headline leading-none">The Transparent Guardian</p>
-<p class="text-[10px] text-slate-500 font-medium mt-1">Administrator</p>
-</div>
+<div class="flex items-center gap-4">
+
+<?php if (empty($_SESSION['account_id'])): ?>
+    <div class="flex items-center gap-2">
+        <button onclick="window.location.href='../../pages/login.php'" class="text-slate-600 dark:text-slate-400 hover:text-blue-600 font-manrope font-bold text-sm tracking-tight scale-95 active:scale-90 transition-transform">
+            Login
+        </button>
+        <button onclick="window.location.href='../../pages/register.php'" class="bg-primary text-on-primary px-6 py-2 rounded-xl font-manrope font-bold text-sm tracking-tight scale-95 active:scale-90 transition-transform shadow-[0_2px_0_0_rgba(0,65,158,1)]">
+            Sign Up
+        </button>
+    </div>
+
+<?php else: ?>
+    <div class="flex items-center gap-5">
+        <div class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity" onclick="window.location.href=*../../'modules/accounts/'">
+            <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">person</span>
+            </div>
+            <span class="font-manrope font-bold text-sm text-on-surface tracking-tight">
+                <?= htmlspecialchars($_SESSION['account_id'] ?? 'User') ?>
+            </span>
+        </div>
+        
+        <button onclick="window.location.href='../../modules/auth/logout.php'" class="text-red-500 hover:text-red-600 font-manrope font-bold text-sm tracking-tight flex items-center gap-1 scale-95 active:scale-90 transition-transform">
+            <span class="material-symbols-outlined text-sm">logout</span>
+            Logout
+        </button>
+    </div>
+<?php endif; ?>
 </div>
 </div>
 </header>

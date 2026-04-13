@@ -3,6 +3,14 @@
     // if (!isset($_SESSION["role"]) || $_SESSION["role"] != "Admin" ) {
     //     die('Truy cập không hợp lệ');
     // }
+    include("../../includes/database.php");
+    // Lấy dữ liệu từ database
+    $total_amount = get_total_donations_amount(); 
+
+    $active_campaigns = get_active_campaigns_count();
+
+    $total_donors = get_total_donors_count();
+    $total_orgs = get_total_organizations_count();
 ?>
 <!DOCTYPE html>
 
@@ -115,21 +123,17 @@
 <span class="material-symbols-outlined" data-icon="group" style="font-variation-settings: 'FILL' 1;">dashboard</span>
 <span>Dashboard</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope font-semibold tracking-tight transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope font-semibold tracking-tight transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800" href="campaigns.php">
 <span class="material-symbols-outlined">campaign</span>
 <span>Campaigns</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope font-semibold tracking-tight transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope font-semibold tracking-tight transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800" href="users.php">
 <span class="material-symbols-outlined">group</span>
 <span>Users</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope font-semibold tracking-tight transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope font-semibold tracking-tight transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800" href="charities.php">
 <span class="material-symbols-outlined">account_balance</span>
 <span>Charities</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope text-sm font-semibold tracking-tight rounded-xl scale-98-active transition-all duration-400" href="#">
-<span class="material-symbols-outlined">analytics</span>
-<span>Impact Reports</span>
 </a>
 <!-- Settings (Inactive) -->
 <a class="flex items-center gap-3 px-4 py-3 transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope text-sm font-semibold tracking-tight rounded-xl scale-98-active transition-all duration-400" href="#">
@@ -224,66 +228,67 @@
 </section>
 <!-- Metrics Bento Grid -->
 <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-<!-- Metric 1 -->
-<div class="bg-surface-container-lowest p-6 rounded-2xl editorial-shadow group border-l-4 border-primary">
-<div class="flex justify-between items-start mb-4">
-<div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
-<span class="material-symbols-outlined">payments</span>
-</div>
-<span class="text-xs font-bold text-emerald-600 flex items-center gap-1">
-<span class="material-symbols-outlined text-sm">trending_up</span> +12.5%
-                    </span>
-</div>
-<p class="text-slate-500 text-sm font-medium">Total Funds Raised</p>
-<h3 class="text-2xl font-headline font-extrabold mt-1">$4,281,090</h3>
-<div class="mt-4 h-1 w-full bg-slate-100 rounded-full overflow-hidden">
-<div class="h-full bg-primary w-[75%]"></div>
-</div>
-</div>
-<!-- Metric 2 -->
-<div class="bg-surface-container-lowest p-6 rounded-2xl editorial-shadow border-l-4 border-secondary-container">
-<div class="flex justify-between items-start mb-4">
-<div class="w-10 h-10 rounded-lg bg-secondary-fixed flex items-center justify-center text-secondary">
-<span class="material-symbols-outlined">campaign</span>
-</div>
-<span class="text-xs font-bold text-slate-400">8 New Today</span>
-</div>
-<p class="text-slate-500 text-sm font-medium">Active Campaigns</p>
-<h3 class="text-2xl font-headline font-extrabold mt-1">142</h3>
-<div class="mt-4 flex -space-x-2">
-<img class="w-6 h-6 rounded-full border-2 border-white object-cover" data-alt="portrait of a young female activist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtNkhqANz3zWWNt45Rw5VRJpuOHXVuhCOucIPGCNV-F4TzyWty399K1YDM8sHNVF0jAKi66Dq2LDZ7ZZrfwrgGBMDxp9-jX1gQao-OK3Lbj8Aoh2_-Oodrb1MOmq-EEHTa-A__vQX92j4uFnWCHIuIRt3xKHWn1suSsMZRDwT4CNVdueONCOx-2-KmC5fAGfYklqXTE2lo82NFjhomo-YYBMjJAiQKxXPr-xMp68zXF-sgEXTmzVgdSx4wnR-hQnL6UM91RdUFThs0"/>
-<img class="w-6 h-6 rounded-full border-2 border-white object-cover" data-alt="portrait of an elderly man with kind eyes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCA-8tZmwPO6DQkL5GlG_c6ppIgcfpSt2IIt0LDOTOwXL77r5sOMo9KtlBKIh9oSr5AJoG844Kz3PHMOlgAtLpo8YzNXGYzWgIENy4it46OWhfmJrAQp3BLpIDY8vmpB2wtbiVOlDVTZxEPDCMxMOkWFrRngxqJGrAG3OIbX795xQ7J8ZRlCbnn9h36PHDFr36d-zspt8whPjwhTUJvXv2QzGbyOJExdu5KdwjTmFHAQJT-kQ_GAJkch8FCRq4FNC9yj53ICcPNGd0T"/>
-<img class="w-6 h-6 rounded-full border-2 border-white object-cover" data-alt="portrait of a street artist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUajcwFNYu6azQ4YJg5SpwLpcQtk_TyUuFNZ1iQE7aIp01-Rn7CMow5vh7FPsoZ1IPKukBE9c85RRlZkU9syAHg4YuFmiCxXgNTYz6uyeSy7RxUHbwyLDSE_aggSVq4YuSKQmkmJF2sOh8kVPwIuMZqBD5TXDYznqthsllZEPfkdxgbk5wWBMqm6bPvG8_EdrS8Hw3CEegTHa3xlpoTAVaZNY8bYH1IWwMYZPk6bvdxh9xmdbbSKt-leanAyeNQev3nZdWCV4H39jX"/>
-<div class="w-6 h-6 rounded-full bg-slate-100 border-2 border-white flex items-center justify-center text-[8px] font-bold text-slate-500">+12</div>
-</div>
-</div>
-<!-- Metric 3 -->
-<div class="bg-surface-container-lowest p-6 rounded-2xl editorial-shadow border-l-4 border-blue-400">
-<div class="flex justify-between items-start mb-4">
-<div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
-<span class="material-symbols-outlined">verified_user</span>
-</div>
-<span class="text-xs font-bold text-emerald-600 flex items-center gap-1">
-<span class="material-symbols-outlined text-sm">check_circle</span> 99.8%
-                    </span>
-</div>
-<p class="text-slate-500 text-sm font-medium">Verified Users</p>
-<h3 class="text-2xl font-headline font-extrabold mt-1">12,403</h3>
-<p class="text-[10px] text-slate-400 mt-4 uppercase tracking-tighter font-bold">Identity verified by Guardian Shield</p>
-</div>
-<!-- Metric 4 -->
-<div class="bg-surface-container-lowest p-6 rounded-2xl editorial-shadow border-l-4 border-tertiary">
-<div class="flex justify-between items-start mb-4">
-<div class="w-10 h-10 rounded-lg bg-tertiary-fixed flex items-center justify-center text-tertiary">
-<span class="material-symbols-outlined">volunteer_activism</span>
-</div>
-</div>
-<p class="text-slate-500 text-sm font-medium">Partner Charities</p>
-<h3 class="text-2xl font-headline font-extrabold mt-1">86</h3>
-<div class="mt-4 flex items-center gap-2 text-[10px] font-bold text-tertiary">
-<span class="material-symbols-outlined text-xs">location_on</span> Global Network Reach
-                </div>
-</div>
+    <div class="bg-surface-container-lowest p-6 rounded-2xl editorial-shadow group border-l-4 border-primary">
+        <div class="flex justify-between items-start mb-4">
+            <div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">payments</span>
+            </div>
+            <span class="text-xs font-bold text-emerald-600 flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">trending_up</span> +12.5%
+            </span>
+        </div>
+        <p class="text-slate-500 text-sm font-medium">Tổng tiền quyên góp</p>
+        <h3 class="text-2xl font-headline font-extrabold mt-1">
+            <span class="animate-number" data-target="<?= $total_amount ?>">0</span> <span class="text-sm">VNĐ</span>
+        </h3>
+        <div class="mt-4 h-1 w-full bg-slate-100 rounded-full overflow-hidden">
+            <div class="h-full bg-primary w-[75%]"></div>
+        </div>
+    </div>
+
+    <div class="bg-surface-container-lowest p-6 rounded-2xl editorial-shadow border-l-4 border-secondary-container">
+        <div class="flex justify-between items-start mb-4">
+            <div class="w-10 h-10 rounded-lg bg-secondary-fixed flex items-center justify-center text-secondary">
+                <span class="material-symbols-outlined">campaign</span>
+            </div>
+            <span class="text-xs font-bold text-slate-400">Đang thực hiện</span>
+        </div>
+        <p class="text-slate-500 text-sm font-medium">Chiến dịch hoạt động</p>
+        <h3 class="text-2xl font-headline font-extrabold mt-1">
+            <span class="animate-number" data-target="<?= $active_campaigns ?>">0</span>
+        </h3>
+        </div>
+
+    <div class="bg-surface-container-lowest p-6 rounded-2xl editorial-shadow border-l-4 border-blue-400">
+        <div class="flex justify-between items-start mb-4">
+            <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+                <span class="material-symbols-outlined">verified_user</span>
+            </div>
+            <span class="text-xs font-bold text-emerald-600 flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">check_circle</span> 99.8%
+            </span>
+        </div>
+        <p class="text-slate-500 text-sm font-medium">Nhà tài trợ xác thực</p>
+        <h3 class="text-2xl font-headline font-extrabold mt-1">
+            <span class="animate-number" data-target="<?= $total_donors ?>">0</span>
+        </h3>
+        <p class="text-[10px] text-slate-400 mt-4 uppercase tracking-tighter font-bold">Identity verified by Guardian Shield</p>
+    </div>
+
+    <div class="bg-surface-container-lowest p-6 rounded-2xl editorial-shadow border-l-4 border-tertiary">
+        <div class="flex justify-between items-start mb-4">
+            <div class="w-10 h-10 rounded-lg bg-tertiary-fixed flex items-center justify-center text-tertiary">
+                <span class="material-symbols-outlined">volunteer_activism</span>
+            </div>
+        </div>
+        <p class="text-slate-500 text-sm font-medium">Tổ chức đối tác</p>
+        <h3 class="text-2xl font-headline font-extrabold mt-1">
+            <span class="animate-number" data-target="<?= $total_orgs ?>">0</span>
+        </h3>
+        <div class="mt-4 flex items-center gap-2 text-[10px] font-bold text-tertiary">
+            <span class="material-symbols-outlined text-xs">location_on</span> Global Network Reach
+        </div>
+    </div>
 </section>
 <!-- Middle Section: Trends & Featured -->
 <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
@@ -365,156 +370,151 @@
 </button>
 </div>
 <div class="overflow-x-auto">
+<?php
+require_once '../../includes/database.php';
+
+// Lấy 3 chiến dịch mới nhận được quyên góp
+$latest_campaigns = get_latest_donated_campaigns(3);
+?>
+
 <table class="w-full text-left">
-<thead>
-<tr class="text-[10px] uppercase tracking-widest font-bold text-slate-400 bg-slate-50/50">
-<th class="px-8 py-4">Campaign Name</th>
-<th class="px-8 py-4">Lead Organization</th>
-<th class="px-8 py-4">Progress</th>
-<th class="px-8 py-4">Status</th>
-<th class="px-8 py-4">Urgency</th>
-<th class="px-8 py-4 text-right">Action</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-100">
-<tr class="hover:bg-slate-50/50 transition-colors">
-<td class="px-8 py-6">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-slate-200">
-<img class="w-full h-full object-cover" data-alt="clean water filtering system being installed in a village" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCynRD7fpS1wKSETDX5hlrILcsiPIVp0PO5pU-9Ny-wDgRJJa_kF1m0QZCAwZDBnZt4Y_KBMrefITAYJzCcSv42jOVWHhk8HoB1vjisrDqGM4UjXjob_Ey5GrCcweUaiJQSeUF4PzgogN3Z8c0PPi_st3jVIO2JRmtccRff11DHm2Kh5r95dqEvi0HfExnqj6eGvkIaaipkR9ysnnMerljQ36SdYAaAm7j3-lrffIC1kXR_rDawTeblq7VCPt7x6x1psngOMnALoUhz"/>
-</div>
-<div>
-<p class="font-bold text-sm">Pure Flow: Village Hydration</p>
-<p class="text-[10px] text-slate-400">ID: CA-9821</p>
-</div>
-</div>
-</td>
-<td class="px-8 py-6">
-<p class="text-sm font-medium">H2O Global Partners</p>
-</td>
-<td class="px-8 py-6 w-48">
-<div class="flex items-center gap-3">
-<div class="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-<div class="h-full bg-primary w-[65%]"></div>
-</div>
-<span class="text-[10px] font-bold text-slate-600">65%</span>
-</div>
-</td>
-<td class="px-8 py-6">
-<span class="px-2 py-1 rounded-md bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase tracking-tight">Active</span>
-</td>
-<td class="px-8 py-6">
-<div class="flex gap-1">
-<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
-<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
-<span class="w-1.5 h-1.5 rounded-full bg-slate-200"></span>
-</div>
-</td>
-<td class="px-8 py-6 text-right">
-<button class="text-slate-400 hover:text-primary transition-colors">
-<span class="material-symbols-outlined">more_vert</span>
-</button>
-</td>
-</tr>
-<tr class="hover:bg-slate-50/50 transition-colors">
-<td class="px-8 py-6">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-slate-200">
-<img class="w-full h-full object-cover" data-alt="happy children in an educational classroom setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvcz79_1vb5OhQP5JEZa-PMZqCSn2agpswnr5IDaqiys1629xveQ7O92H4Znju-arZHnSYhWmvIfykfrHEsCOMmx3Rwpwkpgsr4XGPrViBkk-IfAeH31bMD7Q4AC-kUk4JBJuraoHHsEZGKFH_gRGf6uuqyAn6CSEQNFtqjjoLFz64zG7eGFKidgENI1lQxJ677eZXeFJM4GiKPSS_MhYkQRxahGXOiCn-WKh4xLzAxQuZ8jzthke4NkVD_Suz3pR7cb3VRNlSPO5W"/>
-</div>
-<div>
-<p class="font-bold text-sm">Bright Future Scholarships</p>
-<p class="text-[10px] text-slate-400">ID: CA-4412</p>
-</div>
-</div>
-</td>
-<td class="px-8 py-6">
-<p class="text-sm font-medium">EduFoundation Int.</p>
-</td>
-<td class="px-8 py-6 w-48">
-<div class="flex items-center gap-3">
-<div class="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-<div class="h-full bg-primary w-[32%]"></div>
-</div>
-<span class="text-[10px] font-bold text-slate-600">32%</span>
-</div>
-</td>
-<td class="px-8 py-6">
-<span class="px-2 py-1 rounded-md bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase tracking-tight">Active</span>
-</td>
-<td class="px-8 py-6">
-<div class="flex gap-1">
-<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
-<span class="w-1.5 h-1.5 rounded-full bg-slate-200"></span>
-<span class="w-1.5 h-1.5 rounded-full bg-slate-200"></span>
-</div>
-</td>
-<td class="px-8 py-6 text-right">
-<button class="text-slate-400 hover:text-primary transition-colors">
-<span class="material-symbols-outlined">more_vert</span>
-</button>
-</td>
-</tr>
-<tr class="hover:bg-slate-50/50 transition-colors">
-<td class="px-8 py-6">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-slate-200">
-<img class="w-full h-full object-cover" data-alt="lush forest landscape with mountain range in background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBx_xZf2PoM-4xq4FTYH2mYZAJ9vHuik-ZLGxZtymgJpCxQzVEQT_xNZrdyoQZTU5lxPJfrcW0ebql3IiizPE9MsBP6EHr6oBsiHkIjeZXsLFeuamN_fxCwlQWfNEgTWN-S7ugBCXsB1bEo0yyzBnMYaI0JqGAMhEhhsvlk0mT7DWxLus4wCbSa3sv2a_G-qybT8cCxom2o2AZIbtYQmlajOBBwYDZyRwpLLlI_Q97gqwXdTdCGFVxoaEeDGeccaUZi-l2A5C-kqWoU"/>
-</div>
-<div>
-<p class="font-bold text-sm">Carbon Capture Initiative</p>
-<p class="text-[10px] text-slate-400">ID: CA-2109</p>
-</div>
-</div>
-</td>
-<td class="px-8 py-6">
-<p class="text-sm font-medium">Terra Stewardship</p>
-</td>
-<td class="px-8 py-6 w-48">
-<div class="flex items-center gap-3">
-<div class="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-<div class="h-full bg-secondary-container w-[88%]"></div>
-</div>
-<span class="text-[10px] font-bold text-slate-600">88%</span>
-</div>
-</td>
-<td class="px-8 py-6">
-<span class="px-2 py-1 rounded-md bg-blue-100 text-blue-700 text-[10px] font-bold uppercase tracking-tight">Reviewing</span>
-</td>
-<td class="px-8 py-6">
-<div class="flex gap-1">
-<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
-<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
-<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
-</div>
-</td>
-<td class="px-8 py-6 text-right">
-<button class="text-slate-400 hover:text-primary transition-colors">
-<span class="material-symbols-outlined">more_vert</span>
-</button>
-</td>
-</tr>
-</tbody>
+    <thead>
+        <tr class="text-[10px] uppercase tracking-widest font-bold text-slate-400 bg-slate-50/50">
+            <th class="px-8 py-4">Campaign Name</th>
+            <th class="px-8 py-4">Lead Organization</th>
+            <th class="px-8 py-4">Progress</th>
+            <th class="px-8 py-4">Status</th>
+            <th class="px-8 py-4">Timeline</th>
+            <th class="px-8 py-4 text-right">Action</th>
+        </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+        
+        <?php if (empty($latest_campaigns)): ?>
+            <tr>
+                <td colspan="6" class="px-8 py-6 text-center text-slate-500">Chưa có dữ liệu chiến dịch.</td>
+            </tr>
+        <?php else: ?>
+            <?php foreach ($latest_campaigns as $camp): 
+                $id = $camp['campaign_id'];
+                $img_path = "/Charity/templates/assets/image/campaigns/{$id}/campaign_{$id}.jpg";
+                
+                $c_name = htmlspecialchars($camp['campaign_name']);
+                $org_name = htmlspecialchars($camp['org_name']);
+                
+                // Tính phần trăm tiến độ
+                $target = $camp['target_amount'];
+                $raised = $camp['total_raised'];
+                $percent = ($target > 0) ? min(100, round(($raised / $target) * 100)) : 0;
+                
+                // Định dạng thời gian
+                $start_date = date('d/m/Y', strtotime($camp['start_date']));
+                $end_date = date('d/m/Y', strtotime($camp['end_date']));
+                
+                // Xử lý hiển thị trạng thái
+                $status_raw = strtolower($camp['status']);
+                if ($status_raw === 'ongoing') {
+                    $status_text = 'Đang hoạt động';
+                    $status_class = 'bg-emerald-100 text-emerald-700';
+                } elseif ($status_raw === 'completed' || $percent >= 100) {
+                    $status_text = 'Đã hoàn thành';
+                    $status_class = 'bg-blue-100 text-blue-700';
+                } else {
+                    $status_text = 'Đã kết thúc';
+                    $status_class = 'bg-slate-100 text-slate-600';
+                }
+            ?>
+            
+            <tr class="hover:bg-slate-50/50 transition-colors">
+                <td class="px-8 py-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-slate-200">
+                            <img class="w-full h-full object-cover" 
+                                 src="<?= $img_path ?>" 
+                                 onerror="this.src='/Charity/templates/assets/image/default_campaign.jpg'" 
+                                 alt="<?= $c_name ?>"/>
+                        </div>
+                        <div>
+                            <p class="font-bold text-sm text-on-surface line-clamp-1" title="<?= $c_name ?>"><?= $c_name ?></p>
+                            <p class="text-[10px] text-slate-400">ID: CA-<?= str_pad($id, 4, '0', STR_PAD_LEFT) ?></p>
+                        </div>
+                    </div>
+                </td>
+                
+                <td class="px-8 py-6">
+                    <p class="text-sm font-medium text-slate-700"><?= $org_name ?></p>
+                </td>
+                
+                <td class="px-8 py-6 w-48">
+                    <div class="flex items-center gap-3">
+                        <div class="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden" title="<?= number_format($raised, 0, ',', '.') ?> VNĐ">
+                            <div class="h-full <?= $percent >= 100 ? 'bg-green-500' : 'bg-primary' ?>" style="width: <?= $percent ?>%"></div>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-600"><?= $percent ?>%</span>
+                    </div>
+                </td>
+                
+                <td class="px-8 py-6">
+                    <span class="px-2 py-1 rounded-md <?= $status_class ?> text-[10px] font-bold uppercase tracking-tight">
+                        <?= $status_text ?>
+                    </span>
+                </td>
+                
+                <td class="px-8 py-6">
+                    <div class="flex flex-col">
+                        <span class="text-xs font-bold text-slate-700"><?= $start_date ?></span>
+                        <span class="text-[10px] text-slate-400">Đến <?= $end_date ?></span>
+                    </div>
+                </td>
+                
+                <td class="px-8 py-6 text-right">
+                    <button class="text-slate-400 hover:text-primary transition-colors" onclick="window.location.href='../campaign_detail/?id=<?= $id ?>'">
+                        <span class="material-symbols-outlined">more_vert</span>
+                    </button>
+                </td>
+            </tr>
+            
+            <?php endforeach; ?>
+        <?php endif; ?>
+        
+    </tbody>
 </table>
 </div>
 </section>
 </main>
-<!-- Floating Donation Ready Widget -->
-<div class="fixed bottom-8 right-8 bg-surface-container-lowest/90 backdrop-blur-xl editorial-shadow p-6 rounded-2xl flex items-center gap-6 z-50 border border-white/20">
-<div class="flex -space-x-3">
-<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white border-4 border-white">
-<span class="material-symbols-outlined text-sm">bolt</span>
-</div>
-<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-white border-4 border-white">
-<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
-</div>
-</div>
-<div>
-<p class="text-[10px] font-bold uppercase text-slate-400 tracking-widest">Global Status</p>
-<p class="text-sm font-bold">14 High-Impact Events Live</p>
-</div>
-<button class="bg-primary text-white px-4 py-2 rounded-lg text-xs font-bold hover:opacity-90 transition-all">
-            Audit Now
-        </button>
-</div>
+
 </body></html>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Hàm định dạng số hàng nghìn (vd: 1.000.000)
+    const formatNumber = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+    // Lấy tất cả các thẻ có class animate-number
+    const counters = document.querySelectorAll('.animate-number');
+    const duration = 2000; // Tổng thời gian chạy 2 giây
+    const frameRate = 1000 / 60; // 60 khung hình/giây
+    const totalFrames = Math.round(duration / frameRate);
+
+    counters.forEach(counter => {
+        const target = parseFloat(counter.getAttribute('data-target')) || 0;
+        let currentFrame = 0;
+
+        const updateCounter = () => {
+            currentFrame++;
+            // Thuật toán ease-out: giúp số chạy mượt, chậm dần về cuối
+            const progress = 1 - Math.pow(1 - currentFrame / totalFrames, 3);
+            const currentValue = Math.floor(progress * target);
+
+            counter.innerText = formatNumber(currentValue);
+
+            if (currentFrame < totalFrames) {
+                requestAnimationFrame(updateCounter);
+            } else {
+                counter.innerText = formatNumber(target); // Fix số cuối cùng
+            }
+        };
+
+        requestAnimationFrame(updateCounter);
+    });
+});
+</script>

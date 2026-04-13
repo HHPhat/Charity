@@ -3,7 +3,7 @@
     //     die('Truy cập không hợp lệ');
     // }
     session_start(); // Bắt buộc phải có ở đầu file để dùng Session hiển thị thông báo
-
+    include("../../includes/database.php");
 ?>
 <!DOCTYPE html>
 
@@ -104,15 +104,15 @@
 </div>
 <nav class="flex-1 space-y-1">
 <!-- Dashboard (Inactive) -->
-<a class="flex items-center gap-3 px-4 py-3 transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope text-sm font-semibold tracking-tight rounded-xl scale-98-active transition-all duration-400" href="#">
+<a class="flex items-center gap-3 px-4 py-3 transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope text-sm font-semibold tracking-tight rounded-xl scale-98-active transition-all duration-400" href="index.php">
 <span class="material-symbols-outlined">dashboard</span>
 <span>Dashboard</span>
 </a>
-<a class="flex items-center gap-4 py-3 text-slate-500 dark:text-slate-400 pl-5 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors duration-400 ease-out rounded-xl font-medium" href="#">
+<a class="flex items-center gap-4 py-3 text-slate-500 dark:text-slate-400 pl-5 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors duration-400 ease-out rounded-xl font-medium" href="campaigns.php">
 <span class="material-symbols-outlined" data-icon="campaign">campaign</span>
 <span>Campaigns</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope text-sm font-semibold tracking-tight rounded-xl scale-98-active transition-all duration-400" href="#">
+<a class="flex items-center gap-3 px-4 py-3 transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope text-sm font-semibold tracking-tight rounded-xl scale-98-active transition-all duration-400" href="users.php">
 <span class="material-symbols-outlined">group</span>
 <span>User</span>
 </a>
@@ -208,31 +208,45 @@
 </div>
 </div>
 <!-- Dashboard Statistics Bento -->
+<?php
+// Gọi các hàm lấy dữ liệu từ database (đảm bảo bạn đã có các hàm này)
+$total_amount = get_total_donations_amount(); 
+$total_orgs = get_total_organizations_count(); // Nếu bạn muốn dùng cho ô khác
+?>
+
 <div class="grid grid-cols-12 gap-6">
-<div class="col-span-12 lg:col-span-4 bg-surface-container-lowest p-6 rounded-3xl border-none shadow-sm flex flex-col justify-between">
-<div>
-<p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Tổng quỹ huy động</p>
-<h3 class="text-3xl font-extrabold text-primary">15.420.000.000 ₫</h3>
-</div>
-<div class="mt-4 flex items-center gap-2 text-green-600 text-sm font-bold">
-<span class="material-symbols-outlined text-sm">trending_up</span>
-                        +12.5% tháng này
-                    </div>
-</div>
-<div class="col-span-6 lg:col-span-4 bg-surface-container-lowest p-6 rounded-3xl border-none shadow-sm">
-<p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Chiến dịch mới</p>
-<h3 class="text-3xl font-extrabold text-secondary">42</h3>
-<div class="mt-4 h-1.5 w-full bg-surface-variant rounded-full overflow-hidden">
-<div class="h-full bg-secondary w-2/3"></div>
-</div>
-</div>
-<div class="col-span-6 lg:col-span-4 bg-tertiary-container text-on-tertiary p-6 rounded-3xl border-none shadow-sm flex items-center justify-between">
-<div>
-<p class="text-xs font-bold opacity-80 uppercase tracking-widest mb-1">Trạng thái hệ thống</p>
-<h3 class="text-2xl font-bold">Ổn định</h3>
-</div>
-<span class="material-symbols-outlined text-4xl opacity-50">verified_user</span>
-</div>
+    
+    <div class="col-span-12 lg:col-span-4 bg-surface-container-lowest p-6 rounded-3xl border-none shadow-sm flex flex-col justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Tổng quỹ huy động</p>
+            <h3 class="text-3xl font-extrabold text-primary">
+                <span class="animate-number" data-target="<?= $total_amount ?>">0</span> ₫
+            </h3>
+        </div>
+        <div class="mt-4 flex items-center gap-2 text-green-600 text-sm font-bold">
+            <span class="material-symbols-outlined text-sm">trending_up</span>
+            +12.5% tháng này
+        </div>
+    </div>
+
+    <div class="col-span-6 lg:col-span-4 bg-surface-container-lowest p-6 rounded-3xl border-none shadow-sm">
+        <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Đối tác</p>
+        <h3 class="text-3xl font-extrabold text-secondary">
+            <span class="animate-number" data-target="<?= $total_orgs ?>">0</span>
+        </h3>
+        <div class="mt-4 h-1.5 w-full bg-surface-variant rounded-full overflow-hidden">
+            <div class="h-full bg-secondary w-2/3"></div>
+        </div>
+    </div>
+
+    <div class="col-span-6 lg:col-span-4 bg-tertiary-container text-on-tertiary p-6 rounded-3xl border-none shadow-sm flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold opacity-80 uppercase tracking-widest mb-1">Trạng thái hệ thống</p>
+            <h3 class="text-2xl font-bold">Ổn định</h3>
+        </div>
+        <span class="material-symbols-outlined text-4xl opacity-50">verified_user</span>
+    </div>
+
 </div>
 <!-- Table Container -->
 <div class="bg-surface-container-lowest rounded-3xl shadow-sm overflow-hidden border-none">
@@ -248,102 +262,79 @@
 </div>
 </div>
 <div class="overflow-x-auto">
+<?php
+// Lấy dữ liệu các tổ chức
+$organizations = get_organizations_summary();
+?>
+
 <table class="w-full text-left">
-<thead>
-<tr class="bg-surface-container-low text-slate-500 text-[10px] uppercase font-bold tracking-widest">
-<th class="px-8 py-4">Tên tổ chức</th>
-<th class="px-8 py-4">Tài khoản</th>
-<th class="px-8 py-4">Số chiến dịch</th>
-<th class="px-8 py-4">Tổng tiền quyên góp</th>
-<th class="px-8 py-4 text-right">Hành động</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-surface-container">
-<tr class="hover:bg-slate-50/50 transition-colors group">
-<td class="px-8 py-5">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold text-lg">
-                                            BH
-                                        </div>
-<div>
-<p class="font-bold text-on-surface">Bếp Hát Hòa Bình</p>
-<p class="text-xs text-slate-400">NGO Quốc tế</p>
-</div>
-</div>
-</td>
-<td class="px-8 py-5 font-medium text-slate-600">bephathoabinh_vn</td>
-<td class="px-8 py-5">
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700">12 Chiến dịch</span>
-</td>
-<td class="px-8 py-5 font-bold text-on-surface">3.450.000.000 ₫</td>
-<td class="px-8 py-5 text-right">
-<button class="text-slate-400 hover:text-primary transition-colors material-symbols-outlined">more_vert</button>
-</td>
-</tr>
-<tr class="hover:bg-slate-50/50 transition-colors group">
-<td class="px-8 py-5">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary font-bold text-lg">
-                                            HT
-                                        </div>
-<div>
-<p class="font-bold text-on-surface">Hoa Sen Trắng</p>
-<p class="text-xs text-slate-400">Cứu trợ Xã hội</p>
-</div>
-</div>
-</td>
-<td class="px-8 py-5 font-medium text-slate-600">hoasentrang_charity</td>
-<td class="px-8 py-5">
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700">8 Chiến dịch</span>
-</td>
-<td class="px-8 py-5 font-bold text-on-surface">1.120.000.000 ₫</td>
-<td class="px-8 py-5 text-right">
-<button class="text-slate-400 hover:text-primary transition-colors material-symbols-outlined">more_vert</button>
-</td>
-</tr>
-<tr class="hover:bg-slate-50/50 transition-colors group">
-<td class="px-8 py-5">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-xl bg-tertiary/10 flex items-center justify-center text-tertiary font-bold text-lg">
-                                            XN
-                                        </div>
-<div>
-<p class="font-bold text-on-surface">Xanh &amp; Năng Lượng</p>
-<p class="text-xs text-slate-400">Môi trường</p>
-</div>
-</div>
-</td>
-<td class="px-8 py-5 font-medium text-slate-600">xanhnagluong_eco</td>
-<td class="px-8 py-5">
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700">5 Chiến dịch</span>
-</td>
-<td class="px-8 py-5 font-bold text-on-surface">890.000.000 ₫</td>
-<td class="px-8 py-5 text-right">
-<button class="text-slate-400 hover:text-primary transition-colors material-symbols-outlined">more_vert</button>
-</td>
-</tr>
-<tr class="hover:bg-slate-50/50 transition-colors group">
-<td class="px-8 py-5">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold text-lg">
-                                            VC
-                                        </div>
-<div>
-<p class="font-bold text-on-surface">Vòng Tay Cha</p>
-<p class="text-xs text-slate-400">Trẻ em &amp; Giáo dục</p>
-</div>
-</div>
-</td>
-<td class="px-8 py-5 font-medium text-slate-600">vongtaycha_foundation</td>
-<td class="px-8 py-5">
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700">19 Chiến dịch</span>
-</td>
-<td class="px-8 py-5 font-bold text-on-surface">5.200.000.000 ₫</td>
-<td class="px-8 py-5 text-right">
-<button class="text-slate-400 hover:text-primary transition-colors material-symbols-outlined">more_vert</button>
-</td>
-</tr>
-</tbody>
+    <thead>
+        <tr class="bg-surface-container-low text-slate-500 text-[10px] uppercase font-bold tracking-widest">
+            <th class="px-8 py-4">Tên tổ chức</th>
+            <th class="px-8 py-4">Tài khoản</th>
+            <th class="px-8 py-4">Số chiến dịch</th>
+            <th class="px-8 py-4">Tổng tiền kêu gọi được</th>
+            <th class="px-8 py-4 text-right">Hành động</th>
+        </tr>
+    </thead>
+    <tbody class="divide-y divide-surface-container">
+        
+        <?php if (empty($organizations)): ?>
+            <tr>
+                <td colspan="5" class="px-8 py-6 text-center text-slate-500">Chưa có dữ liệu tổ chức.</td>
+            </tr>
+        <?php else: ?>
+            <?php foreach ($organizations as $org): 
+                $org_name = htmlspecialchars($org['org_name']);
+                $account = htmlspecialchars($org['account']);
+                $total_campaigns = $org['total_campaigns'];
+                $total_raised = $org['total_raised'];
+                
+                // Tạo Avatar từ 2 chữ cái đầu của Tên tổ chức
+                $words = explode(" ", $org_name);
+                $initials = "";
+                if (count($words) >= 2) {
+                    $initials = mb_substr($words[0], 0, 1) . mb_substr($words[1], 0, 1);
+                } else {
+                    $initials = mb_substr($org_name, 0, 2);
+                }
+                $initials = mb_strtoupper($initials);
+            ?>
+            <tr class="hover:bg-slate-50/50 transition-colors group">
+                <td class="px-8 py-5">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold text-lg">
+                            <?= $initials ?>
+                        </div>
+                        <div>
+                            <p class="font-bold text-on-surface"><?= $org_name ?></p>
+                            <p class="text-xs text-slate-400">ID Tổ chức: #<?= $org['org_id'] ?></p>
+                        </div>
+                    </div>
+                </td>
+                
+                <td class="px-8 py-5 font-medium text-slate-600">
+                    <?= $account ?>
+                </td>
+                
+                <td class="px-8 py-5">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700">
+                        <?= $total_campaigns ?> Chiến dịch
+                    </span>
+                </td>
+                
+                <td class="px-8 py-5 font-bold text-on-surface">
+                    <?= number_format($total_raised, 0, ',', '.') ?> ₫
+                </td>
+                
+                <td class="px-8 py-5 text-right">
+                    <button class="text-slate-400 hover:text-primary transition-colors material-symbols-outlined">more_vert</button>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
+        
+    </tbody>
 </table>
 </div>
 <div class="p-6 bg-surface-container-low/30 flex items-center justify-between border-t border-surface-container">
@@ -371,3 +362,37 @@
 <div class="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-secondary rounded-full blur-[140px] translate-y-1/2"></div>
 </div>
 </body></html>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Hàm định dạng số hàng nghìn (vd: 1.000.000)
+    const formatNumber = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+    // Lấy tất cả các thẻ có class animate-number
+    const counters = document.querySelectorAll('.animate-number');
+    const duration = 2000; // Tổng thời gian chạy 2 giây
+    const frameRate = 1000 / 60; // 60 khung hình/giây
+    const totalFrames = Math.round(duration / frameRate);
+
+    counters.forEach(counter => {
+        const target = parseFloat(counter.getAttribute('data-target')) || 0;
+        let currentFrame = 0;
+
+        const updateCounter = () => {
+            currentFrame++;
+            // Thuật toán ease-out: giúp số chạy mượt, chậm dần về cuối
+            const progress = 1 - Math.pow(1 - currentFrame / totalFrames, 3);
+            const currentValue = Math.floor(progress * target);
+
+            counter.innerText = formatNumber(currentValue);
+
+            if (currentFrame < totalFrames) {
+                requestAnimationFrame(updateCounter);
+            } else {
+                counter.innerText = formatNumber(target); // Fix số cuối cùng
+            }
+        };
+
+        requestAnimationFrame(updateCounter);
+    });
+});
+</script>

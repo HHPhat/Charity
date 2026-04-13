@@ -424,4 +424,187 @@ function get_total_donations_amount() {
         return 0;
     }
 }
+
+// 1. Hàm đếm số chiến dịch đang hoạt động (status = 'ongoing')
+function get_active_campaigns_count() {
+    global $conn;
+    try {
+        $sql = "SELECT COUNT(*) FROM CharityCampaign WHERE LOWER(status) = 'ongoing'";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    } catch (PDOException $e) {
+        return 0;
+    }
+}
+
+// 2. Hàm đếm tổng số nhà tài trợ (Verified Users)
+function get_total_donors_count() {
+    global $conn;
+    try {
+        $sql = "SELECT COUNT(*) FROM Donor";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    } catch (PDOException $e) {
+        return 0;
+    }
+}
+
+// 3. Hàm đếm tổng số tổ chức từ thiện (Partner Charities)
+function get_total_organizations_count() {
+    global $conn;
+    try {
+        $sql = "SELECT COUNT(*) FROM CharityOrganization";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    } catch (PDOException $e) {
+        return 0;
+    }
+}
+
+// Hàm lấy 3 chiến dịch mới nhất vừa nhận được quyên góp
+function get_latest_donated_campaigns($limit = 3) {
+    global $conn;
+    try {
+        // Truy vấn gộp 3 bảng: Campaign, Organization, và Donation
+        $sql = "SELECT 
+                    c.campaign_id, 
+                    c.campaign_name, 
+                    c.target_amount, 
+                    c.start_date, 
+                    c.end_date, 
+                    c.status,
+                    o.org_name,
+                    MAX(d.donation_time) as latest_donation_time,
+                    (SELECT COALESCE(SUM(amount), 0) FROM Donation WHERE campaign_id = c.campaign_id) as total_raised
+                FROM CharityCampaign c
+                INNER JOIN CharityOrganization o ON c.org_id = o.org_id
+                INNER JOIN Donation d ON c.campaign_id = d.campaign_id
+                GROUP BY 
+                    c.campaign_id, 
+                    c.campaign_name, 
+                    c.target_amount, 
+                    c.start_date, 
+                    c.end_date, 
+                    c.status, 
+                    o.org_name
+                ORDER BY latest_donation_time DESC
+                LIMIT :limit";
+                
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Lỗi lấy danh sách chiến dịch: " . $e->getMessage());
+        return [];
+    }
+}
+
+// Hàm lấy danh sách tổ chức kèm theo số chiến dịch và tổng tiền kêu gọi được
+function get_organizations_summary() {
+    global $conn;
+    try {
+        $sql = "SELECT 
+                    o.org_id,
+                    o.org_name,
+                    o.account,
+                    COUNT(DISTINCT c.campaign_id) AS total_campaigns,
+                    COALESCE(SUM(d.amount), 0) AS total_raised
+                FROM CharityOrganization o
+                LEFT JOIN CharityCampaign c ON o.org_id = c.org_id
+                LEFT JOIN Donation d ON c.campaign_id = d.campaign_id
+                GROUP BY 
+                    o.org_id, 
+                    o.org_name, 
+                    o.account
+                ORDER BY total_raised DESC"; // Sắp xếp tổ chức kêu gọi được nhiều tiền nhất lên đầu
+                
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Lỗi lấy danh sách tổ chức: " . $e->getMessage());
+        return [];
+    }
+}
+
+// Hàm lấy danh sách nhà tài trợ có phân trang
+function get_donors_paginated($limit = 10, $offset = 0) {
+    global $conn;
+    try {
+        $sql = "SELECT d.donor_id, d.full_name, d.email, d.phone, d.citizen_id, d.account, a.creation_date
+                FROM Donor d
+                LEFT JOIN Account a ON d.account = a.account
+                ORDER BY d.donor_id DESC
+                LIMIT :limit OFFSET :offset";
+                
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Lỗi lấy danh sách Donor: " . $e->getMessage());
+        return [];
+    }
+}
+
+// ... Các hàm trước đó ...
+
+// 1. Hàm đếm tổng số chiến dịch (Dùng để tính số trang)
+function get_total_campaigns_count2() {
+    global $conn;
+    try {
+        $sql = "SELECT COUNT(*) FROM CharityCampaign";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    } catch (PDOException $e) {
+        error_log("Lỗi đếm số chiến dịch: " . $e->getMessage());
+        return 0;
+    }
+}
+
+// 2. Hàm lấy danh sách chiến dịch có phân trang
+function get_paginated_campaigns($limit = 10, $offset = 0) {
+    global $conn;
+    try {
+        $sql = "SELECT 
+                    c.campaign_id, 
+                    c.campaign_name, 
+                    c.target_amount, 
+                    c.end_date, 
+                    c.status, 
+                    o.org_name,
+                    COALESCE(SUM(d.amount), 0) AS total_raised
+                FROM CharityCampaign c
+                LEFT JOIN CharityOrganization o ON c.org_id = o.org_id
+                LEFT JOIN Donation d ON c.campaign_id = d.campaign_id
+                GROUP BY 
+                    c.campaign_id, 
+                    c.campaign_name, 
+                    c.target_amount, 
+                    c.end_date, 
+                    c.status, 
+                    o.org_name
+                ORDER BY c.campaign_id DESC
+                LIMIT :limit OFFSET :offset";
+                
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Lỗi lấy danh sách chiến dịch: " . $e->getMessage());
+        return [];
+    }
+}
 ?>

@@ -1,9 +1,16 @@
-<?php
-    // if (!defined('_HIENU')){
+<?php 
+    session_start();
+    // if (!isset($_SESSION["role"]) || $_SESSION["role"] != "Admin" ) {
     //     die('Truy cập không hợp lệ');
     // }
-    session_start(); // Bắt buộc phải có ở đầu file để dùng Session hiển thị thông báo
+    include("../../includes/database.php");
+    // Lấy dữ liệu từ database
+    $total_amount = get_total_donations_amount(); 
+    
+    $active_campaigns = get_active_campaigns_count();
 
+    $total_donors = get_total_donors_count();
+    $total_orgs = get_total_organizations_count();
 ?>
 <!DOCTYPE html>
 
@@ -105,24 +112,20 @@
 </div>
 </div>
 <nav class="flex-1 space-y-1">
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-400 text-slate-600 dark:text-slate-400 font-medium hover:text-blue-600 dark:hover:text-blue-300 hover:bg-slate-100 dark:hover:bg-slate-900" href="#">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-400 text-slate-600 dark:text-slate-400 font-medium hover:text-blue-600 dark:hover:text-blue-300 hover:bg-slate-100 dark:hover:bg-slate-900" href="index.php">
 <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
 <span>Dashboard</span>
 </a>
 <a class="flex items-center gap-4 py-3 text-blue-700 dark:text-blue-400 font-bold border-l-4 border-blue-700 dark:border-blue-400 pl-4 bg-slate-100 dark:bg-slate-900 rounded-r-xl sidebar-active" href="#">
 <span class="material-symbols-outlined" data-icon="group" style="font-variation-settings: 'FILL' 1;">campaign</span>
 <span>Campaigns</span>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-400 text-slate-600 dark:text-slate-400 font-medium hover:text-blue-600 dark:hover:text-blue-300 hover:bg-slate-100 dark:hover:bg-slate-900" href="#">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-400 text-slate-600 dark:text-slate-400 font-medium hover:text-blue-600 dark:hover:text-blue-300 hover:bg-slate-100 dark:hover:bg-slate-900" href="users.php">
 <span class="material-symbols-outlined" data-icon="group">group</span>
 <span>Users</span>
 </a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-400 text-slate-600 dark:text-slate-400 font-medium hover:text-blue-600 dark:hover:text-blue-300 hover:bg-slate-100 dark:hover:bg-slate-900" href="#">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-400 text-slate-600 dark:text-slate-400 font-medium hover:text-blue-600 dark:hover:text-blue-300 hover:bg-slate-100 dark:hover:bg-slate-900" href="charities.php">
 <span class="material-symbols-outlined" data-icon="account_balance">account_balance</span>
 <span>Charities</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope text-sm font-semibold tracking-tight rounded-xl scale-98-active transition-all duration-400" href="#">
-<span class="material-symbols-outlined">analytics</span>
-<span>Impact Reports</span>
 </a>
 <!-- Settings (Inactive) -->
 <a class="flex items-center gap-3 px-4 py-3 transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope text-sm font-semibold tracking-tight rounded-xl scale-98-active transition-all duration-400" href="#">
@@ -210,38 +213,69 @@
 </div>
 </div>
 <!-- Stats Bento Grid -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-<div class="bg-surface-container-lowest p-6 rounded-xl border-b-4 border-primary transition-transform hover:-translate-y-1 duration-400">
-<p class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-4">Total Campaigns</p>
-<div class="flex items-baseline gap-2">
-<span class="text-3xl font-headline font-extrabold">1,284</span>
-<span class="text-xs text-green-600 font-bold">+12%</span>
-</div>
-</div>
-<div class="bg-surface-container-lowest p-6 rounded-xl border-b-4 border-secondary transition-transform hover:-translate-y-1 duration-400">
-<p class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-4">Active</p>
-<div class="flex items-baseline gap-2">
-<span class="text-3xl font-headline font-extrabold">42</span>
-<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">bolt</span>
-</div>
-</div>
-<div class="bg-surface-container-lowest p-6 rounded-xl border-b-4 border-slate-200 transition-transform hover:-translate-y-1 duration-400">
-<p class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-4">Completed</p>
-<div class="flex items-baseline gap-2">
-<span class="text-3xl font-headline font-extrabold">1,242</span>
-</div>
-</div>
-<div class="bg-secondary-fixed p-6 rounded-xl transition-transform hover:-translate-y-1 duration-400 relative overflow-hidden">
-<div class="relative z-10">
-<p class="text-on-secondary-fixed text-xs font-bold uppercase tracking-widest mb-4">Total Raised</p>
-<div class="flex items-baseline gap-1">
-<span class="text-3xl font-headline font-extrabold text-on-secondary-fixed">4.2B</span>
-<span class="text-xs font-bold text-on-secondary-fixed/70">VNĐ</span>
-</div>
-</div>
-<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-8xl text-secondary/10 pointer-events-none" style="font-variation-settings: 'FILL' 1;">favorite</span>
-</div>
-</div>
+<section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+    <div class="bg-surface-container-lowest p-6 rounded-2xl editorial-shadow group border-l-4 border-primary">
+        <div class="flex justify-between items-start mb-4">
+            <div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">payments</span>
+            </div>
+            <span class="text-xs font-bold text-emerald-600 flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">trending_up</span> +12.5%
+            </span>
+        </div>
+        <p class="text-slate-500 text-sm font-medium">Tổng tiền quyên góp</p>
+        <h3 class="text-2xl font-headline font-extrabold mt-1">
+            <span class="animate-number" data-target="<?= $total_amount ?>">0</span> <span class="text-sm">VNĐ</span>
+        </h3>
+        <div class="mt-4 h-1 w-full bg-slate-100 rounded-full overflow-hidden">
+            <div class="h-full bg-primary w-[75%]"></div>
+        </div>
+    </div>
+
+    <div class="bg-surface-container-lowest p-6 rounded-2xl editorial-shadow border-l-4 border-secondary-container">
+        <div class="flex justify-between items-start mb-4">
+            <div class="w-10 h-10 rounded-lg bg-secondary-fixed flex items-center justify-center text-secondary">
+                <span class="material-symbols-outlined">campaign</span>
+            </div>
+            <span class="text-xs font-bold text-slate-400">Đang thực hiện</span>
+        </div>
+        <p class="text-slate-500 text-sm font-medium">Chiến dịch hoạt động</p>
+        <h3 class="text-2xl font-headline font-extrabold mt-1">
+            <span class="animate-number" data-target="<?= $active_campaigns ?>">0</span>
+        </h3>
+        </div>
+
+    <div class="bg-surface-container-lowest p-6 rounded-2xl editorial-shadow border-l-4 border-blue-400">
+        <div class="flex justify-between items-start mb-4">
+            <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+                <span class="material-symbols-outlined">verified_user</span>
+            </div>
+            <span class="text-xs font-bold text-emerald-600 flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">check_circle</span> 99.8%
+            </span>
+        </div>
+        <p class="text-slate-500 text-sm font-medium">Nhà tài trợ xác thực</p>
+        <h3 class="text-2xl font-headline font-extrabold mt-1">
+            <span class="animate-number" data-target="<?= $total_donors ?>">0</span>
+        </h3>
+        <p class="text-[10px] text-slate-400 mt-4 uppercase tracking-tighter font-bold">Identity verified by Guardian Shield</p>
+    </div>
+
+    <div class="bg-surface-container-lowest p-6 rounded-2xl editorial-shadow border-l-4 border-tertiary">
+        <div class="flex justify-between items-start mb-4">
+            <div class="w-10 h-10 rounded-lg bg-tertiary-fixed flex items-center justify-center text-tertiary">
+                <span class="material-symbols-outlined">volunteer_activism</span>
+            </div>
+        </div>
+        <p class="text-slate-500 text-sm font-medium">Tổ chức đối tác</p>
+        <h3 class="text-2xl font-headline font-extrabold mt-1">
+            <span class="animate-number" data-target="<?= $total_orgs ?>">0</span>
+        </h3>
+        <div class="mt-4 flex items-center gap-2 text-[10px] font-bold text-tertiary">
+            <span class="material-symbols-outlined text-xs">location_on</span> Global Network Reach
+        </div>
+    </div>
+</section>
 <!-- Main Table Section -->
 <div class="bg-surface-container-lowest rounded-2xl shadow-sm overflow-hidden">
 <!-- Filter Bar -->
@@ -264,153 +298,153 @@
 </div>
 </div>
 <!-- Table -->
+<?php
+require_once '../../includes/database.php';
+
+// 1. Cài đặt các thông số phân trang
+$limit = 5; // Số chiến dịch hiển thị trên 1 trang
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+if ($page < 1) $page = 1;
+
+$offset = ($page - 1) * $limit;
+
+// 2. Lấy dữ liệu
+$total_campaigns = get_total_campaigns_count2();
+$total_pages = ceil($total_campaigns / $limit);
+$campaigns = get_paginated_campaigns($limit, $offset);
+
+// 3. Tính toán số hiển thị cho dòng "Hiển thị X-Y trong số Z"
+$start_display = ($total_campaigns > 0) ? $offset + 1 : 0;
+$end_display = min($offset + $limit, $total_campaigns);
+?>
+
 <div class="overflow-x-auto">
-<table class="w-full text-left border-collapse">
-<thead>
-<tr class="bg-surface-container-low/50">
-<th class="px-8 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-black">Tên chiến dịch</th>
-<th class="px-6 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-black">Tổ chức</th>
-<th class="px-6 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-black">Tiến trình</th>
-<th class="px-6 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-black">Trạng thái</th>
-<th class="px-6 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-black text-right">Mục tiêu (VNĐ)</th>
-<th class="px-8 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-black text-right">Ngày kết thúc</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-100">
-<!-- Row 1 -->
-<tr class="hover:bg-slate-50/50 transition-colors group">
-<td class="px-8 py-5">
-<div class="flex items-center gap-4">
-<div class="w-10 h-10 rounded-lg overflow-hidden bg-slate-200 shrink-0">
-<img alt="Clean Water Initiative" class="w-full h-full object-cover" data-alt="Clear water being poured into a glass held by a child, soft natural lighting, high contrast" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCi-5xSIdG6hfZ-9059UMnTtvvqOBrKZRDDsXx7XpSaQIPo2UCIiMOJWYjycW6bjeT0OZgGUAE5yXDd6-ll_eucKj23y9aw_sMOJhjxdwdU5FKPK5qwYdCBeQSOmjZ-6W8_3EN9wb2YhJcbSoAVpcrZPiU4OkzijAje3pljT1CRBcByrKlIxaBHRy57uUknxiN2QaIVgb7-CGfzENSsBC4zsO5odpzt-wm5-WBWdX3BilkRXTpTapzo2_ML9k-JBSAF3rHOAlJ5pmDv"/>
+    <table class="w-full text-left border-collapse">
+        <thead>
+            <tr class="bg-surface-container-low/50">
+                <th class="px-8 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-black">Tên chiến dịch</th>
+                <th class="px-6 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-black">Tổ chức</th>
+                <th class="px-6 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-black">Tiến trình</th>
+                <th class="px-6 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-black">Trạng thái</th>
+                <th class="px-6 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-black text-right">Mục tiêu (VNĐ)</th>
+                <th class="px-8 py-4 text-[10px] uppercase tracking-widest text-slate-500 font-black text-right">Ngày kết thúc</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+            
+            <?php if (empty($campaigns)): ?>
+                <tr>
+                    <td colspan="6" class="px-8 py-5 text-center text-slate-500">Không có dữ liệu chiến dịch.</td>
+                </tr>
+            <?php else: ?>
+                <?php foreach ($campaigns as $camp): 
+                    $id = $camp['campaign_id'];
+                    $c_name = htmlspecialchars($camp['campaign_name']);
+                    $org_name = htmlspecialchars($camp['org_name'] ?? 'Tổ chức ẩn danh');
+                    $target = $camp['target_amount'];
+                    $raised = $camp['total_raised'];
+                    
+                    // Tính phần trăm
+                    $percent = ($target > 0) ? min(100, round(($raised / $target) * 100)) : 0;
+                    
+                    // Xử lý Ngày kết thúc
+                    $end_date = date('d Thm, Y', strtotime($camp['end_date'])); // Ví dụ: 30 Th09, 2024
+                    
+                    // Ảnh bìa
+                    $img_path = "/Charity/templates/assets/image/campaigns/{$id}/campaign_{$id}.jpg";
+                    
+                    // Xử lý Trạng thái (Màu sắc và nội dung)
+                    $status_raw = strtolower($camp['status']);
+                    if ($status_raw == 'ongoing') {
+                        $status_label = 'Ongoing';
+                        $status_bg = 'bg-emerald-100 text-emerald-700';
+                        $status_dot = 'bg-emerald-600';
+                    } elseif ($status_raw == 'pending') {
+                        $status_label = 'Pending';
+                        $status_bg = 'bg-orange-100 text-orange-700';
+                        $status_dot = 'bg-orange-600';
+                    } else {
+                        $status_label = 'Completed';
+                        $status_bg = 'bg-blue-100 text-blue-700';
+                        $status_dot = 'bg-blue-600';
+                    }
+                ?>
+                <tr class="hover:bg-slate-50/50 transition-colors group">
+                    <td class="px-8 py-5">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-lg overflow-hidden bg-slate-200 shrink-0">
+                                <img alt="<?= $c_name ?>" class="w-full h-full object-cover" 
+                                     src="<?= $img_path ?>" 
+                                     onerror="this.src='/Charity/templates/assets/image/default_campaign.jpg'"/>
+                            </div>
+                            <div>
+                                <p class="font-headline font-bold text-sm text-on-surface group-hover:text-primary transition-colors line-clamp-1" title="<?= $c_name ?>">
+                                    <?= $c_name ?>
+                                </p>
+                                <p class="text-xs text-slate-400">ID: CA-<?= str_pad($id, 4, '0', STR_PAD_LEFT) ?></p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-5">
+                        <p class="text-xs font-semibold text-slate-600"><?= $org_name ?></p>
+                    </td>
+                    <td class="px-6 py-5">
+                        <div class="w-40">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[10px] font-black <?= $percent >= 100 ? 'text-emerald-600' : 'text-secondary' ?>"><?= $percent ?>%</span>
+                            </div>
+                            <div class="h-1.5 w-full bg-surface-variant rounded-full overflow-hidden" title="<?= number_format($raised, 0, ',', '.') ?> VNĐ">
+                                <div class="h-full <?= $percent >= 100 ? 'bg-emerald-500' : 'bg-secondary' ?> rounded-full" style="width: <?= $percent ?>%"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-5">
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full <?= $status_bg ?> text-[10px] font-bold uppercase tracking-wider">
+                            <span class="w-1 h-1 rounded-full <?= $status_dot ?>"></span>
+                            <?= $status_label ?>
+                        </span>
+                    </td>
+                    <td class="px-6 py-5 text-right">
+                        <p class="font-headline font-bold text-sm"><?= number_format($target, 0, ',', '.') ?></p>
+                    </td>
+                    <td class="px-8 py-5 text-right">
+                        <p class="text-xs text-slate-500"><?= $end_date ?></p>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            
+        </tbody>
+    </table>
 </div>
-<div>
-<p class="font-headline font-bold text-sm text-on-surface group-hover:text-primary transition-colors">Nước sạch cho vùng cao</p>
-<p class="text-xs text-slate-400">ID: KH-2024-001</p>
-</div>
-</div>
-</td>
-<td class="px-6 py-5">
-<p class="text-xs font-semibold text-slate-600">Green Heart NGO</p>
-</td>
-<td class="px-6 py-5">
-<div class="w-40">
-<div class="flex justify-between items-center mb-1">
-<span class="text-[10px] font-black text-primary">75%</span>
-</div>
-<div class="h-1.5 w-full bg-surface-variant rounded-full overflow-hidden">
-<div class="h-full bg-primary rounded-full" style="width: 75%"></div>
-</div>
-</div>
-</td>
-<td class="px-6 py-5">
-<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-green-100 text-green-700 text-[10px] font-bold uppercase tracking-wider">
-<span class="w-1 h-1 rounded-full bg-green-600"></span>
-                                        Active
-                                    </span>
-</td>
-<td class="px-6 py-5 text-right">
-<p class="font-headline font-bold text-sm">500,000,000</p>
-</td>
-<td class="px-8 py-5 text-right">
-<p class="text-xs text-slate-500">15 Th05, 2024</p>
-</td>
-</tr>
-<!-- Row 2 -->
-<tr class="hover:bg-slate-50/50 transition-colors group">
-<td class="px-8 py-5">
-<div class="flex items-center gap-4">
-<div class="w-10 h-10 rounded-lg overflow-hidden bg-slate-200 shrink-0">
-<img alt="Education for All" class="w-full h-full object-cover" data-alt="Group of diverse children laughing in a classroom setting, vibrant colors, warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9Aa0cgptmE5rH4loAfpk_zL6rhaKpVHD902uR2Ag9qpCPRxOvQUeSboz671a9iOHpLcwY0Bq2VxUtcSyBhanDS6QQaNI2I_YKLqFdTQc8QmBDcrk3ywG7tQg4o9Zm9pnH2UFixGgI_fo7Qm932TleI5GVoOwmLbzex-3BKkuDmw7UfP8yBoMvcsjlYpl7axdl8G3t7-ci4DhuiZLMgeG9QsWiIXA8Yd_p47ckLtwJ8LmWnkzh1qhdweXh0ecToym-j8WDN9lUU10u"/>
-</div>
-<div>
-<p class="font-headline font-bold text-sm text-on-surface group-hover:text-primary transition-colors">Áo ấm đến trường</p>
-<p class="text-xs text-slate-400">ID: KH-2024-042</p>
-</div>
-</div>
-</td>
-<td class="px-6 py-5">
-<p class="text-xs font-semibold text-slate-600">Vietnam Charity Foundation</p>
-</td>
-<td class="px-6 py-5">
-<div class="w-40">
-<div class="flex justify-between items-center mb-1">
-<span class="text-[10px] font-black text-slate-400">100%</span>
-</div>
-<div class="h-1.5 w-full bg-surface-variant rounded-full overflow-hidden">
-<div class="h-full bg-slate-400 rounded-full" style="width: 100%"></div>
-</div>
-</div>
-</td>
-<td class="px-6 py-5">
-<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-bold uppercase tracking-wider">
-                                        Completed
-                                    </span>
-</td>
-<td class="px-6 py-5 text-right">
-<p class="font-headline font-bold text-sm">1,200,000,000</p>
-</td>
-<td class="px-8 py-5 text-right">
-<p class="text-xs text-slate-500">01 Th03, 2024</p>
-</td>
-</tr>
-<!-- Row 3 -->
-<tr class="hover:bg-slate-50/50 transition-colors group">
-<td class="px-8 py-5">
-<div class="flex items-center gap-4">
-<div class="w-10 h-10 rounded-lg overflow-hidden bg-slate-200 shrink-0">
-<img alt="Emergency Medical Care" class="w-full h-full object-cover" data-alt="Abstract medical symbols and soft pulse line on a clean white medical background, professional clinical look" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIP9SfY3oTV7WhzsrEvoLdOrG0dVEesKDIHXCs-txd2wx4XIlukU5-Xra9pxm96LRb-3HOZkl2IEGO5NFqFI2PZmnwFh1KOQrKiI4qJMwFEPL8r-XrKdEt3d_d6o9RH_xxThe1mpVusRvd94jpfpiWNq68U51fjFqfX4_zFFcBA1l48V9Fh9VjsE4_G9DWC5RzSjIHO_15zbty_TL48XSA0aNhxjitdrnWCCODR9aTriqf1Qkm7HnEJ0LgLf_NBKGbcklkX1w1h7A-"/>
-</div>
-<div>
-<p class="font-headline font-bold text-sm text-on-surface group-hover:text-primary transition-colors">Cứu trợ y tế khẩn cấp</p>
-<p class="text-xs text-slate-400">ID: KH-2024-089</p>
-</div>
-</div>
-</td>
-<td class="px-6 py-5">
-<p class="text-xs font-semibold text-slate-600">Red Cross Vietnam</p>
-</td>
-<td class="px-6 py-5">
-<div class="w-40">
-<div class="flex justify-between items-center mb-1">
-<span class="text-[10px] font-black text-secondary">15%</span>
-</div>
-<div class="h-1.5 w-full bg-surface-variant rounded-full overflow-hidden">
-<div class="h-full bg-secondary rounded-full" style="width: 15%"></div>
-</div>
-</div>
-</td>
-<td class="px-6 py-5">
-<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-700 text-[10px] font-bold uppercase tracking-wider">
-<span class="w-1 h-1 rounded-full bg-orange-600"></span>
-                                        Pending
-                                    </span>
-</td>
-<td class="px-6 py-5 text-right">
-<p class="font-headline font-bold text-sm">2,000,000,000</p>
-</td>
-<td class="px-8 py-5 text-right">
-<p class="text-xs text-slate-500">30 Th09, 2024</p>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<!-- Pagination -->
+
 <div class="px-8 py-4 bg-surface-container-low/30 border-t border-slate-100 flex items-center justify-between">
-<p class="text-xs text-slate-500 font-medium">Hiển thị <span class="font-bold text-on-surface">1-3</span> trong số <span class="font-bold text-on-surface">1,284</span> chiến dịch</p>
-<div class="flex items-center gap-2">
-<button class="p-2 rounded-lg hover:bg-surface-container transition-colors disabled:opacity-30" disabled="">
-<span class="material-symbols-outlined text-sm">chevron_left</span>
-</button>
-<button class="w-8 h-8 rounded-lg bg-primary text-white text-xs font-bold">1</button>
-<button class="w-8 h-8 rounded-lg hover:bg-surface-container text-xs font-bold transition-colors">2</button>
-<button class="w-8 h-8 rounded-lg hover:bg-surface-container text-xs font-bold transition-colors">3</button>
-<button class="p-2 rounded-lg hover:bg-surface-container transition-colors">
-<span class="material-symbols-outlined text-sm">chevron_right</span>
-</button>
-</div>
-</div>
+    <p class="text-xs text-slate-500 font-medium">
+        Hiển thị <span class="font-bold text-on-surface"><?= $start_display ?>-<?= $end_display ?></span> 
+        trong số <span class="font-bold text-on-surface"><?= number_format($total_campaigns, 0, ',', '.') ?></span> chiến dịch
+    </p>
+    
+    <?php if ($total_pages > 1): ?>
+        <div class="flex items-center gap-2">
+            <a href="?page=<?= max(1, $page - 1) ?>" class="p-2 rounded-lg hover:bg-surface-container transition-colors <?= ($page <= 1) ? 'opacity-30 pointer-events-none' : '' ?>">
+                <span class="material-symbols-outlined text-sm">chevron_left</span>
+            </a>
+            
+            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                <?php if ($i == $page): ?>
+                    <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-white text-xs font-bold"><?= $i ?></span>
+                <?php elseif (abs($page - $i) <= 2 || $i == 1 || $i == $total_pages): ?>
+                    <a href="?page=<?= $i ?>" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-container text-xs font-bold transition-colors"><?= $i ?></a>
+                <?php elseif (abs($page - $i) == 3): ?>
+                    <span class="text-slate-400 text-xs">...</span>
+                <?php endif; ?>
+            <?php endfor; ?>
+            
+            <a href="?page=<?= min($total_pages, $page + 1) ?>" class="p-2 rounded-lg hover:bg-surface-container transition-colors <?= ($page >= $total_pages) ? 'opacity-30 pointer-events-none' : '' ?>">
+                <span class="material-symbols-outlined text-sm">chevron_right</span>
+            </a>
+        </div>
+    <?php endif; ?>
 </div>
 <!-- Contextual Layout Hint: Asymmetry -->
 </div>
@@ -418,3 +452,37 @@
 <!-- Floating Donation Widget (Suppressed on Admin but keeping for Design System consistency) -->
 <!-- Suppressed on Task-Focused Admin Page per Rules -->
 </body></html>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Hàm định dạng số hàng nghìn (vd: 1.000.000)
+    const formatNumber = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+    // Lấy tất cả các thẻ có class animate-number
+    const counters = document.querySelectorAll('.animate-number');
+    const duration = 2000; // Tổng thời gian chạy 2 giây
+    const frameRate = 1000 / 60; // 60 khung hình/giây
+    const totalFrames = Math.round(duration / frameRate);
+
+    counters.forEach(counter => {
+        const target = parseFloat(counter.getAttribute('data-target')) || 0;
+        let currentFrame = 0;
+
+        const updateCounter = () => {
+            currentFrame++;
+            // Thuật toán ease-out: giúp số chạy mượt, chậm dần về cuối
+            const progress = 1 - Math.pow(1 - currentFrame / totalFrames, 3);
+            const currentValue = Math.floor(progress * target);
+
+            counter.innerText = formatNumber(currentValue);
+
+            if (currentFrame < totalFrames) {
+                requestAnimationFrame(updateCounter);
+            } else {
+                counter.innerText = formatNumber(target); // Fix số cuối cùng
+            }
+        };
+
+        requestAnimationFrame(updateCounter);
+    });
+});
+</script>

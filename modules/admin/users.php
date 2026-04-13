@@ -3,7 +3,7 @@
     //     die('Truy cập không hợp lệ');
     // }
     session_start(); // Bắt buộc phải có ở đầu file để dùng Session hiển thị thông báo
-
+    include("../../includes/database.php");
 ?>
 <!DOCTYPE html>
 
@@ -104,11 +104,11 @@
 </div>
 </div>
 <nav class="flex-1 px-4 space-y-2">
-<a class="flex items-center gap-4 py-3 text-slate-500 dark:text-slate-400 pl-5 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors duration-400 ease-out rounded-xl font-medium" href="#">
+<a class="flex items-center gap-4 py-3 text-slate-500 dark:text-slate-400 pl-5 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors duration-400 ease-out rounded-xl font-medium" href="index.php">
 <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
 <span>Dashboard</span>
 </a>
-<a class="flex items-center gap-4 py-3 text-slate-500 dark:text-slate-400 pl-5 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors duration-400 ease-out rounded-xl font-medium" href="#">
+<a class="flex items-center gap-4 py-3 text-slate-500 dark:text-slate-400 pl-5 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors duration-400 ease-out rounded-xl font-medium" href="campaigns.php">
 <span class="material-symbols-outlined" data-icon="campaign">campaign</span>
 <span>Campaigns</span>
 </a>
@@ -117,13 +117,9 @@
 <span class="material-symbols-outlined" data-icon="group" style="font-variation-settings: 'FILL' 1;">group</span>
 <span>Users</span>
 </a>
-<a class="flex items-center gap-4 py-3 text-slate-500 dark:text-slate-400 pl-5 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors duration-400 ease-out rounded-xl font-medium" href="#">
+<a class="flex items-center gap-4 py-3 text-slate-500 dark:text-slate-400 pl-5 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors duration-400 ease-out rounded-xl font-medium" href="charities.php">
 <span class="material-symbols-outlined" data-icon="account_balance">account_balance</span>
 <span>Charities</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope text-sm font-semibold tracking-tight rounded-xl scale-98-active transition-all duration-400" href="#">
-<span class="material-symbols-outlined">analytics</span>
-<span>Impact Reports</span>
 </a>
 <!-- Settings (Inactive) -->
 <a class="flex items-center gap-3 px-4 py-3 transition-colors duration-400 ease-out hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 font-manrope text-sm font-semibold tracking-tight rounded-xl scale-98-active transition-all duration-400" href="#">
@@ -218,45 +214,6 @@
 </div>
 </div>
 <!-- Stats Overview (Asymmetric/Editorial layout) -->
-<div class="grid grid-cols-12 gap-6 mb-10">
-<div class="col-span-12 lg:col-span-4 bg-primary p-8 rounded-[2rem] text-white relative overflow-hidden group">
-<div class="relative z-10">
-<p class="text-primary-fixed text-sm font-bold uppercase tracking-widest opacity-80">Tổng cộng</p>
-<h3 class="text-5xl font-black font-headline mt-2">12,482</h3>
-<p class="mt-4 text-primary-fixed/80 text-sm leading-relaxed">Người dùng tích cực trong hệ thống Guardian.</p>
-</div>
-<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-[12rem] opacity-10 rotate-12 group-hover:rotate-0 transition-transform duration-700" data-icon="group">group</span>
-</div>
-<div class="col-span-12 lg:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-6">
-<div class="bg-surface-container-lowest p-6 rounded-3xl border border-transparent hover:border-primary/10 transition-all flex flex-col justify-between">
-<div class="w-12 h-12 rounded-2xl bg-secondary-fixed flex items-center justify-center mb-4">
-<span class="material-symbols-outlined text-on-secondary-fixed" data-icon="volunteer_activism" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
-</div>
-<div>
-<p class="text-4xl font-bold font-headline">8.2B</p>
-<p class="text-sm text-slate-500 font-medium">VNĐ Tổng quyên góp</p>
-</div>
-</div>
-<div class="bg-surface-container-lowest p-6 rounded-3xl border border-transparent hover:border-primary/10 transition-all flex flex-col justify-between">
-<div class="w-12 h-12 rounded-2xl bg-primary-fixed flex items-center justify-center mb-4">
-<span class="material-symbols-outlined text-on-primary-fixed" data-icon="campaign" style="font-variation-settings: 'FILL' 1;">campaign</span>
-</div>
-<div>
-<p class="text-4xl font-bold font-headline">142</p>
-<p class="text-sm text-slate-500 font-medium">Chiến dịch đã tham gia</p>
-</div>
-</div>
-<div class="bg-surface-container-lowest p-6 rounded-3xl border border-transparent hover:border-primary/10 transition-all flex flex-col justify-between hidden md:flex">
-<div class="w-12 h-12 rounded-2xl bg-tertiary-fixed flex items-center justify-center mb-4">
-<span class="material-symbols-outlined text-on-tertiary-fixed" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
-</div>
-<div>
-<p class="text-4xl font-bold font-headline">98%</p>
-<p class="text-sm text-slate-500 font-medium">Tỷ lệ xác thực danh tính</p>
-</div>
-</div>
-</div>
-</div>
 <!-- Filters & Table Section -->
 <div class="bg-surface-container-lowest rounded-[2rem] p-4 shadow-sm">
 <!-- High-End Filter Bar -->
@@ -272,171 +229,125 @@
 <div class="text-sm text-slate-400 font-medium"> Hiển thị 1 - 10 trên 12,482 người dùng </div>
 </div>
 <!-- Modern Data Table -->
+<?php
+require_once '../../includes/database.php';
+
+// 1. Cài đặt các thông số phân trang
+$limit = 10; // Số lượng người dùng trên mỗi trang
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+if ($page < 1) $page = 1;
+
+$offset = ($page - 1) * $limit;
+
+// 2. Lấy dữ liệu từ Database
+$total_records = get_total_donors_count(); // Hàm đã viết ở câu trước
+$total_pages = ceil($total_records / $limit);
+$donors = get_donors_paginated($limit, $offset);
+?>
+
 <div class="overflow-x-auto">
-<table class="w-full text-left border-separate border-spacing-y-2">
-<thead>
-<tr class="text-slate-400 text-[11px] uppercase tracking-widest font-bold">
-<th class="px-6 py-4">Tên</th>
-<th class="px-6 py-4">Liên hệ</th>
-<th class="px-6 py-4">Định danh</th>
-<th class="px-6 py-4">Tài khoản</th>
-<th class="px-6 py-4">Ngày sinh</th>
-<th class="px-6 py-4">Số điện thoại</th>
-<th class="px-6 py-4">Chiến dịch</th>
-<th class="px-6 py-4 text-right">Thao tác</th>
-</tr>
-</thead>
-<tbody class="text-sm">
-<!-- Row 1 -->
-<tr class="group hover:bg-surface-container-low transition-colors duration-300">
-<td class="px-6 py-4 rounded-l-2xl">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center font-bold text-primary">TP</div>
-<div>
-<p class="font-bold text-on-surface">Trần Anh Phan</p>
-<p class="text-xs text-slate-400">ID: #8821</p>
+    <table class="w-full text-left border-separate border-spacing-y-2">
+        <thead>
+            <tr class="text-slate-400 text-[11px] uppercase tracking-widest font-bold">
+                <th class="px-6 py-4">Tên</th>
+                <th class="px-6 py-4">Liên hệ</th>
+                <th class="px-6 py-4">Định danh</th>
+                <th class="px-6 py-4">Tài khoản</th>
+                <th class="px-6 py-4">Ngày tham gia</th> <th class="px-6 py-4">Số điện thoại</th>
+            </tr>
+        </thead>
+        <tbody class="text-sm">
+            
+            <?php if (empty($donors)): ?>
+                <tr>
+                    <td colspan="6" class="px-6 py-4 text-center text-slate-500">Không có dữ liệu nhà tài trợ.</td>
+                </tr>
+            <?php else: ?>
+                <?php foreach ($donors as $donor): 
+                    $full_name = htmlspecialchars($donor['full_name']);
+                    $email = htmlspecialchars($donor['email'] ?? 'Chưa cập nhật');
+                    $phone = htmlspecialchars($donor['phone'] ?? 'Chưa cập nhật');
+                    $citizen_id = htmlspecialchars($donor['citizen_id'] ?? 'N/A');
+                    $account = htmlspecialchars($donor['account']);
+                    $creation_date = $donor['creation_date'] ? date('d/m/Y', strtotime($donor['creation_date'])) : 'N/A';
+                    
+                    // Lấy 2 chữ cái đầu làm Avatar (Ví dụ: Nguyễn Minh -> NM)
+                    $words = explode(" ", trim($full_name));
+                    if (count($words) >= 2) {
+                        $initials = mb_substr($words[0], 0, 1) . mb_substr(end($words), 0, 1);
+                    } else {
+                        $initials = mb_substr($full_name, 0, 2);
+                    }
+                    $initials = mb_strtoupper($initials);
+                ?>
+                <tr class="group hover:bg-surface-container-low transition-colors duration-300">
+                    <td class="px-6 py-4 rounded-l-2xl border-l border-transparent group-hover:border-slate-200">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center font-bold text-orange-700">
+                                <?= $initials ?>
+                            </div>
+                            <div>
+                                <p class="font-bold text-on-surface"><?= $full_name ?></p>
+                                <p class="text-xs text-slate-400">ID: #<?= $donor['donor_id'] ?></p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 border-y border-transparent group-hover:border-slate-200">
+                        <p class="font-medium"><?= $email ?></p>
+                        <p class="text-xs text-slate-400"><?= $phone ?></p>
+                    </td>
+                    <td class="px-6 py-4 border-y border-transparent group-hover:border-slate-200">
+                        <span class="font-mono text-xs bg-surface-variant px-2 py-1 rounded"><?= $citizen_id ?></span>
+                    </td>
+                    <td class="px-6 py-4 font-semibold text-primary border-y border-transparent group-hover:border-slate-200">
+                        @<?= $account ?>
+                    </td>
+                    <td class="px-6 py-4 text-slate-500 border-y border-transparent group-hover:border-slate-200">
+                        <?= $creation_date ?>
+                    </td>
+                    <td class="px-6 py-4 font-bold text-tertiary rounded-r-2xl border-r border-transparent group-hover:border-slate-200">
+                        <p class="font-medium"><?= $phone ?></p>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
+
+        </tbody>
+    </table>
 </div>
-</div>
-</td>
-<td class="px-6 py-4">
-<p class="font-medium">phan.tran@email.com</p>
-<p class="text-xs text-slate-400">0902 345 678</p>
-</td>
-<td class="px-6 py-4">
-<span class="font-mono text-xs bg-surface-variant px-2 py-1 rounded">079093001234</span>
-</td>
-<td class="px-6 py-4 font-semibold text-primary">@phananhtran</td>
-<td class="px-6 py-4 text-slate-500">12/05/1988</td>
-<td class="px-6 py-4 font-bold text-tertiary"><p class="font-medium">0902 345 678</p></td>
-<td class="px-6 py-4">
-<div class="w-full bg-surface-variant h-1.5 rounded-full overflow-hidden max-w-[80px]">
-<div class="bg-primary h-full w-[65%]"></div>
-</div>
-<p class="text-[10px] mt-1 font-bold text-slate-400">12 Chiến dịch</p>
-</td>
-<td class="px-6 py-4 rounded-r-2xl text-right">
-<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-<button class="p-2 hover:bg-white rounded-lg text-slate-400 hover:text-primary transition-colors">
-<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
-</button>
-<button class="p-2 hover:bg-white rounded-lg text-slate-400 hover:text-secondary transition-colors">
-<span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
-</button>
-<button class="p-2 hover:bg-white rounded-lg text-slate-400 hover:text-tertiary transition-colors">
-<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 2 -->
-<tr class="group hover:bg-surface-container-low transition-colors duration-300">
-<td class="px-6 py-4 rounded-l-2xl">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-700">LH</div>
-<div>
-<p class="font-bold text-on-surface">Lê Minh Hoàng</p>
-<p class="text-xs text-slate-400">ID: #9124</p>
-</div>
-</div>
-</td>
-<td class="px-6 py-4">
-<p class="font-medium">hoang.le@outlook.com</p>
-<p class="text-xs text-slate-400">0913 778 990</p>
-</td>
-<td class="px-6 py-4">
-<span class="font-mono text-xs bg-surface-variant px-2 py-1 rounded">001085006672</span>
-</td>
-<td class="px-6 py-4 font-semibold text-primary">@hoangle_minh</td>
-<td class="px-6 py-4 text-slate-500">22/11/1995</td>
-<td class="px-6 py-4 font-bold text-tertiary"><p class="font-medium">0913 778 990</p></td>
-<td class="px-6 py-4">
-<div class="w-full bg-surface-variant h-1.5 rounded-full overflow-hidden max-w-[80px]">
-<div class="bg-primary h-full w-[15%]"></div>
-</div>
-<p class="text-[10px] mt-1 font-bold text-slate-400">2 Chiến dịch</p>
-</td>
-<td class="px-6 py-4 rounded-r-2xl text-right">
-<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-<button class="p-2 hover:bg-white rounded-lg text-slate-400 hover:text-primary transition-colors">
-<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
-</button>
-<button class="p-2 hover:bg-white rounded-lg text-slate-400 hover:text-secondary transition-colors">
-<span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
-</button>
-<button class="p-2 hover:bg-white rounded-lg text-slate-400 hover:text-tertiary transition-colors">
-<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 3 -->
-<tr class="group hover:bg-surface-container-low transition-colors duration-300">
-<td class="px-6 py-4 rounded-l-2xl">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center font-bold text-orange-700">NM</div>
-<div>
-<p class="font-bold text-on-surface">Nguyễn Thùy Minh</p>
-<p class="text-xs text-slate-400">ID: #1024</p>
-</div>
-</div>
-</td>
-<td class="px-6 py-4">
-<p class="font-medium">minh.nguyen@gmail.com</p>
-<p class="text-xs text-slate-400">0982 111 222</p>
-</td>
-<td class="px-6 py-4">
-<span class="font-mono text-xs bg-surface-variant px-2 py-1 rounded">038099012399</span>
-</td>
-<td class="px-6 py-4 font-semibold text-primary">@thuyminh.edu</td>
-<td class="px-6 py-4 text-slate-500">05/09/1990</td>
-<td class="px-6 py-4 font-bold text-tertiary"><p class="font-medium">0982 111 222</p></td>
-<td class="px-6 py-4">
-<div class="w-full bg-surface-variant h-1.5 rounded-full overflow-hidden max-w-[80px]">
-<div class="bg-primary h-full w-[90%]"></div>
-</div>
-<p class="text-[10px] mt-1 font-bold text-slate-400">45 Chiến dịch</p>
-</td>
-<td class="px-6 py-4 rounded-r-2xl text-right">
-<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-<button class="p-2 hover:bg-white rounded-lg text-slate-400 hover:text-primary transition-colors">
-<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
-</button>
-<button class="p-2 hover:bg-white rounded-lg text-slate-400 hover:text-secondary transition-colors">
-<span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
-</button>
-<button class="p-2 hover:bg-white rounded-lg text-slate-400 hover:text-tertiary transition-colors">
-<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
-</button>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<!-- Pagination -->
+
+<?php if ($total_pages > 1): 
+    $prev_page = ($page > 1) ? $page - 1 : 1;
+    $next_page = ($page < $total_pages) ? $page + 1 : $total_pages;
+?>
 <div class="flex items-center justify-between p-6 mt-4">
-<div class="flex items-center gap-2">
-<span class="text-sm text-slate-400">Hiển thị</span>
-<select class="bg-surface-container-low border-none rounded-lg text-xs font-bold py-1.5 focus:ring-0">
-<option>10</option>
-<option>25</option>
-<option>50</option>
-</select>
+    
+    <div class="flex gap-2 mx-auto">
+        <a href="?page=<?= $prev_page ?>" class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-100 text-slate-400 hover:bg-primary hover:text-white transition-all <?= ($page <= 1) ? 'pointer-events-none opacity-50' : '' ?>">
+            <span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+        </a>
+
+        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+            <?php if ($i == $page): ?>
+                <span class="w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-white font-bold">
+                    <?= $i ?>
+                </span>
+            <?php elseif (abs($page - $i) <= 2 || $i == 1 || $i == $total_pages): ?>
+                <a href="?page=<?= $i ?>" class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-100 hover:bg-slate-50 font-bold text-slate-600">
+                    <?= $i ?>
+                </a>
+            <?php elseif (abs($page - $i) == 3): ?>
+                <span class="w-10 h-10 flex items-center justify-center text-slate-300">...</span>
+            <?php endif; ?>
+        <?php endfor; ?>
+
+        <a href="?page=<?= $next_page ?>" class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-100 text-slate-400 hover:bg-primary hover:text-white transition-all <?= ($page >= $total_pages) ? 'pointer-events-none opacity-50' : '' ?>">
+            <span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+        </a>
+    </div>
+
 </div>
-<div class="flex gap-2">
-<button class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-100 text-slate-400 hover:bg-primary hover:text-white transition-all">
-<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
-</button>
-<button class="w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-white font-bold">1</button>
-<button class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-100 hover:bg-slate-50 font-bold">2</button>
-<button class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-100 hover:bg-slate-50 font-bold">3</button>
-<span class="w-10 h-10 flex items-center justify-center text-slate-300">...</span>
-<button class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-100 text-slate-400 hover:bg-primary hover:text-white transition-all">
-<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
-</button>
-</div>
-</div>
-</div>
+<?php endif; ?>
 <!-- Subtle Help Footer -->
 <div class="mt-12 py-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-400 text-sm">
 <p>© 2024 Kindred Heart Admin. All data is encrypted with AES-256 standard.</p>

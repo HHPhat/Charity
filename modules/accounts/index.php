@@ -166,6 +166,16 @@
 <span>Notifications</span>
 </button>
 </button>
+
+<?php if(isset($_SESSION['role']) && $_SESSION['role'] === 'Admin'): ?>
+    <button 
+        onclick="window.location.href='/Charity/modules/admin/'"
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-blue-700 transition">
+        Admin Dashboard
+    </button>
+<?php endif; ?>
+
+
 <a href="../fund_allocation/?id=1" class="flex w-full items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors text-left cursor-pointer">
     <span class="material-symbols-outlined">person</span>
     <span>1.Hội Chữ Thập Đỏ</span>

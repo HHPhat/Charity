@@ -3,6 +3,66 @@
     //     die('Truy cập không hợp lệ');
     // }
     session_start(); // Bắt buộc phải có ở đầu file để dùng Session hiển thị thông báo
+    require_once '../../blockchain/Blockchain.php';
+
+    $campaign_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+    
+    // 🔥 Đường dẫn chuẩn (tránh sai path)
+    $blockchainFile = __DIR__ . "/../../blockchain/data/campaign_" . $campaign_id . ".json";
+    
+    // 🔥 Nếu chưa có file → tạo mới blockchain
+    if (!file_exists($blockchainFile)) {
+        $blockchain = new Blockchain();
+    
+        // Ghi Genesis Block vào file
+        file_put_contents(
+            $blockchainFile,
+            json_encode($blockchain->chain, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+        );
+    }
+    
+    // 🔥 Đọc lại blockchain
+    $blockchainData = json_decode(file_get_contents($blockchainFile), true);
+    
+    // Khởi tạo object Blockchain để check
+    $blockchain = new Blockchain();
+    $blockchain->chain = [];
+    
+    foreach ($blockchainData as $block) {
+        $blockObj = new Block(
+            $block['index'],
+            $block['timestamp'],
+            $block['data'],
+            $block['previousHash']
+        );
+    
+        $blockObj->hash = $block['hash']; // giữ hash cũ
+        $blockchain->chain[] = $blockObj;
+    }
+    
+    // Kiểm tra
+    $isValid = $blockchain->isChainValid();
+    
+
+
+    // Khởi tạo blockchain object
+    $blockchain = new Blockchain();
+
+    // Gán lại chain từ file
+    $blockchain->chain = [];
+    foreach ($blockchainData as $block) {
+        $blockObj = new Block(
+            $block['index'],
+            $block['timestamp'],
+            $block['data'],
+            $block['previousHash']
+        );
+        $blockObj->hash = $block['hash']; // giữ hash cũ
+        $blockchain->chain[] = $blockObj;
+    }
+
+    // Kiểm tra tính toàn vẹn
+    $isValid = $blockchain->isChainValid();
 
 ?>
 <!DOCTYPE html>
@@ -147,6 +207,7 @@ if (!$campaign) {
     exit;
 }
 
+
 // Xử lý các biến hiển thị
 $img_path = "/Charity/templates/assets/image/campaigns/{$campaign_id}/campaign_{$campaign_id}.jpg";
 $org_name = htmlspecialchars($campaign['org_name'] ?? 'Tổ chức ẩn danh');
@@ -195,10 +256,19 @@ $transactions = get_campaign_transactions($campaign_id, 6);
             <h1 class="text-5xl lg:text-6xl font-headline font-extrabold tracking-tighter leading-tight mb-6">
                 <?= $campaign_name ?>
             </h1>
+
+
             
             <p class="text-on-surface-variant text-lg leading-relaxed mb-8">
                 <?= mb_substr(strip_tags($short_description), 0, 150) ?>...
             </p>
+
+
+
+            
+
+
+
             
             <div class="flex flex-wrap gap-4">
                 <button class="flex items-center gap-2 text-primary font-bold hover:opacity-80 transition-opacity">
@@ -208,6 +278,38 @@ $transactions = get_campaign_transactions($campaign_id, 6);
                     <span class="material-symbols-outlined" data-icon="favorite">favorite</span> Add to Wishlist
                 </button>
             </div>
+
+            <?php if (!$isValid): ?>
+                <div class="max-w-7xl mx-auto px-6 mt-6">
+                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-xl shadow">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-red-600">warning</span>
+                            <div>
+                                <p class="font-bold">Cảnh báo dữ liệu!</p>
+                                <p class="text-sm">
+                                    Blockchain đã bị thay đổi. Dữ liệu giao dịch có thể không còn đáng tin cậy.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="max-w-7xl mx-auto px-6 mt-6">
+                    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-xl shadow">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-green-600">verified</span>
+                            <div>
+                                <p class="font-bold">Blockchain hợp lệ</p>
+                                <p class="text-sm">
+                                    Tất cả giao dịch đều minh bạch và chưa bị chỉnh sửa.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+
         </div>
     </div>
 </section>

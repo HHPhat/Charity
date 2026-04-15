@@ -48,6 +48,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // 5. Thực thi câu lệnh
         if ($stmt->execute()) {
+
+            // ===== LẤY WALLET NGƯỜI GỬI =====
+            $sqlDonor = "SELECT wallet_address FROM donor WHERE donor_id = :donor_id";
+            $stmtDonor = $conn->prepare($sqlDonor);
+            $stmtDonor->bindValue(':donor_id', $donor_id, PDO::PARAM_INT);
+            $stmtDonor->execute();
+            $donor = $stmtDonor->fetch(PDO::FETCH_ASSOC);
+
+            $from_account = '';
+
+            $from_account = trim($_POST['card_number'] ?? '');
+
+            if (empty($from_account)) {
+                die("Vui lòng nhập số tài khoản!");
+            }
+            // ===== LẤY WALLET TỔ CHỨC =====
+            $sqlOrg = "SELECT co.wallet_address 
+                    FROM charitycampaign cc
+                    JOIN charityorganization co ON cc.org_id = co.org_id
+                    WHERE cc.campaign_id = :campaign_id";
+
+            $stmtOrg = $conn->prepare($sqlOrg);
+            $stmtOrg->bindValue(':campaign_id', $campaign_id, PDO::PARAM_INT);
+            $stmtOrg->execute();
+
+            $org = $stmtOrg->fetch(PDO::FETCH_ASSOC);
+            $org_wallet = $org ? $org['wallet_address'] : 'UNKNOWN';
+
+            // ===== GỬI BLOCKCHAIN =====
+            $postData = [
+                'campaign_id' => $campaign_id,
+                'from_account' => $from_account,
+                'to_account' => $org_wallet,
+                'amount' => $amount,
+                'type' => 'donate'
+            ];
+
+            $ch = curl_init("http://localhost/Charity/blockchain/save_block.php");
+
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true); // QUAN TRỌNG
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData)); // chuẩn hơn
+
+            $response = curl_exec($ch);
+            curl_close($ch);
             
             // (Tuỳ chọn) Xóa campaign_id khỏi session sau khi quyên góp thành công để tránh lưu rác
             unset($_SESSION['campaign_id']);

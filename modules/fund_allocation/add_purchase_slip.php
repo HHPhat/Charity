@@ -92,6 +92,64 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             insert_detection_detail($total_quantity, $id_dn, $beneficiary_id);
         }
 
+
+        $sqlOrg = "SELECT co.wallet_address, cc.campaign_id
+           FROM fundallocation fa
+           JOIN charitycampaign cc ON fa.campaign_id = cc.campaign_id
+           JOIN charityorganization co ON cc.org_id = co.org_id
+           WHERE fa.allocation_id = :allocation_id";
+
+        $stmtOrg = $conn->prepare($sqlOrg);
+        $stmtOrg->bindValue(':allocation_id', $allocation_id, PDO::PARAM_INT);
+        $stmtOrg->execute();
+
+        $org = $stmtOrg->fetch(PDO::FETCH_ASSOC);
+
+        $org_wallet = $org ? $org['wallet_address'] : 'UNKNOWN';
+        $campaign_id = $org ? $org['campaign_id'] : 0;
+
+
+        $sqlBen = "SELECT wallet_address 
+           FROM beneficiary 
+           WHERE beneficiary_id = :beneficiary_id";
+
+        $stmtBen = $conn->prepare($sqlBen);
+        $stmtBen->bindValue(':beneficiary_id', $beneficiary_id, PDO::PARAM_INT);
+        $stmtBen->execute();
+
+        $ben = $stmtBen->fetch(PDO::FETCH_ASSOC);
+
+        $to_account = $ben ? $ben['wallet_address'] : 'UNKNOWN';
+
+        $postData = [
+            'campaign_id' => $campaign_id,
+            'from_account' => $org_wallet,
+            'to_account' => $to_account,
+            'amount' => $total_amount_backend,
+            'time' => $purchase_date,
+            'type' => 'allocate',
+            'source' => 'system'
+        ];
+        
+        $ch = curl_init("http://localhost/Charity-main/blockchain/save_block.php");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        
+        $response = curl_exec($ch);
+        
+        if ($response === false) {
+            error_log("Blockchain error: " . curl_error($ch));
+        }
+        
+        curl_close($ch);
+
+        $result = json_decode($response, true);
+
+        if ($response === false || $result['status'] !== 'success') {
+            $conn->rollBack();
+            die("Lỗi blockchain! Giao dịch bị huỷ.");
+        }
+
         // Cam kết hoàn tất lưu dữ liệu
         $conn->commit();
         echo "<script>

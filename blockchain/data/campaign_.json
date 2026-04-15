@@ -1,0 +1,24 @@
+[
+    {
+        "index": 0,
+        "timestamp": "2026-04-13 17:48:19",
+        "data": {
+            "msg": "Genesis Block"
+        },
+        "previousHash": "0",
+        "hash": "5df49048b5f8d22ed228577ee6e198f5f05f6abf6d1ea5b17ae51a73cab5c019"
+    },
+    {
+        "index": 1,
+        "timestamp": "2026-04-13 17:48:19",
+        "data": {
+            "type": null,
+            "from": null,
+            "to": null,
+            "amount": null,
+            "time": "17:48:19 13-04-2026"
+        },
+        "previousHash": "5df49048b5f8d22ed228577ee6e198f5f05f6abf6d1ea5b17ae51a73cab5c019",
+        "hash": "68ae2d5b514201d2caddd8c8bdfd6d2340814eb25b4b9da0c5dc5ae540e406c5"
+    }
+]

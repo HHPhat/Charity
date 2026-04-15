@@ -1,3 +1,6 @@
+<?php session_start(); ?>
+
+
 <!DOCTYPE html>
 
 <html lang="vi"><head>
@@ -163,6 +166,7 @@
 <!-- Decorative Accent -->
 <div class="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-bl-full -mr-10 -mt-10"></div>
 <form action="process_add_campaign.php" method="POST" enctype="multipart/form-data" class="space-y-8">
+    <input type="hidden" name="org_id" value="<?= $_SESSION['org_id'] ?>">
     
     <section class="space-y-6">
         <div>

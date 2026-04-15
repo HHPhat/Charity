@@ -227,6 +227,7 @@ $formatted_amount = number_format($amount, 0, ',', '.');
 <form action="complete.php" method="POST" class="mt-8>
     <input type="hidden" name="amount" value="<?= $amount ?>">
     <input type="hidden" name="message" value="<?= htmlspecialchars($_POST['message'] ?? '') ?>">
+    <input type="hidden" name="card_number" value="<?= htmlspecialchars($_POST['card_number'] ?? '') ?>">
 
 <button type="submit" class="w-full bg-primary-container text-on-primary-container py-5 rounded-xl font-bold text-lg hover:scale-[0.99] transition-transform duration-200 shadow-[0_4px_0_0_#00419e] flex items-center justify-center gap-3">
                     Xác nhận &amp; Thanh toán

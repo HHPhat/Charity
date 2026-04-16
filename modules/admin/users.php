@@ -98,7 +98,7 @@
 <div class="flex items-center gap-3">
 </div>
 <div>
-<h1 class="text-xl font-bold text-blue-700 dark:text-blue-400 font-headline leading-tight">Guardian Admin</h1>
+<a href="../../"><h1 class="text-xl font-bold text-blue-700 dark:text-blue-400 font-headline leading-tight">Guardian Admin</h1></a>
 <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Institutional Steward</p>
 </div>
 </div>

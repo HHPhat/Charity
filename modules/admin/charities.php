@@ -97,7 +97,7 @@
 <div class="flex items-center gap-3">
 </div>
 <div>
-<h1 class="text-xl font-bold text-blue-700 dark:text-blue-400 font-headline leading-tight">Guardian Admin</h1>
+<a href="../../"><h1 class="text-xl font-bold text-blue-700 dark:text-blue-400 font-headline leading-tight">Guardian Admin</h1></a>
 <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Institutional Steward</p>
 </div>
 </div>
@@ -249,105 +249,175 @@ $total_orgs = get_total_organizations_count(); // Nếu bạn muốn dùng cho �
 
 </div>
 <!-- Table Container -->
-<div class="bg-surface-container-lowest rounded-3xl shadow-sm overflow-hidden border-none">
-<div class="p-6 flex items-center justify-between border-b border-surface-container">
-<div class="flex gap-4">
-<button class="text-sm font-bold text-primary px-4 py-2 bg-primary-fixed rounded-xl">Tất cả tổ chức</button>
-<button class="text-sm font-medium text-slate-500 px-4 py-2 hover:bg-slate-50 rounded-xl transition-colors">Chờ duyệt</button>
-</div>
-<div class="flex gap-2">
-<button class="p-2 text-slate-400 hover:text-primary transition-colors">
-<span class="material-symbols-outlined">filter_list</span>
-</button>
-</div>
-</div>
-<div class="overflow-x-auto">
 <?php
-// Lấy dữ liệu các tổ chức
-$organizations = get_organizations_summary();
+// 1. XỬ LÝ HÀNH ĐỘNG DUYỆT / TỪ CHỐI (Nếu có)
+if (isset($_GET['action']) && isset($_GET['id'])) {
+    $id = (int)$_GET['id'];
+    if ($_GET['action'] == 'approve') {
+        approve_organization($id);
+        echo "<script>alert('Đã duyệt tổ chức thành công!'); window.location.href='?tab=pending';</script>";
+        exit;
+    } elseif ($_GET['action'] == 'reject') {
+        reject_organization($id);
+        echo "<script>alert('Đã từ chối và xóa tổ chức!'); window.location.href='?tab=pending';</script>";
+        exit;
+    }
+}
+
+// 2. LOGIC ĐIỀU HƯỚNG TAB
+$tab = isset($_GET['tab']) ? $_GET['tab'] : 'all';
+
+// 3. LOGIC LẤY DỮ LIỆU
+if ($tab == 'pending') {
+    // Tab "Chờ duyệt" (Có phân trang)
+    $limit = 10;
+    $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+    if ($page < 1) $page = 1;
+    $offset = ($page - 1) * $limit;
+    
+    $total_records = count_pending_organizations();
+    $total_pages = ceil($total_records / $limit);
+    $orgs_data = get_pending_organizations($limit, $offset);
+    
+    // Tính toán hiển thị số lượng (VD: 1-10)
+    $start_display = ($total_records > 0) ? $offset + 1 : 0;
+    $end_display = min($offset + $limit, $total_records);
+} else {
+    // Tab "Tất cả tổ chức" (Giữ nguyên hàm cũ của bạn)
+    $orgs_data = get_organizations_summary();
+}
 ?>
 
-<table class="w-full text-left">
-    <thead>
-        <tr class="bg-surface-container-low text-slate-500 text-[10px] uppercase font-bold tracking-widest">
-            <th class="px-8 py-4">Tên tổ chức</th>
-            <th class="px-8 py-4">Tài khoản</th>
-            <th class="px-8 py-4">Số chiến dịch</th>
-            <th class="px-8 py-4">Tổng tiền kêu gọi được</th>
-            <th class="px-8 py-4 text-right">Hành động</th>
-        </tr>
-    </thead>
-    <tbody class="divide-y divide-surface-container">
-        
-        <?php if (empty($organizations)): ?>
-            <tr>
-                <td colspan="5" class="px-8 py-6 text-center text-slate-500">Chưa có dữ liệu tổ chức.</td>
-            </tr>
-        <?php else: ?>
-            <?php foreach ($organizations as $org): 
-                $org_name = htmlspecialchars($org['org_name']);
-                $account = htmlspecialchars($org['account']);
-                $total_campaigns = $org['total_campaigns'];
-                $total_raised = $org['total_raised'];
-                
-                // Tạo Avatar từ 2 chữ cái đầu của Tên tổ chức
-                $words = explode(" ", $org_name);
-                $initials = "";
-                if (count($words) >= 2) {
-                    $initials = mb_substr($words[0], 0, 1) . mb_substr($words[1], 0, 1);
-                } else {
-                    $initials = mb_substr($org_name, 0, 2);
-                }
-                $initials = mb_strtoupper($initials);
-            ?>
-            <tr class="hover:bg-slate-50/50 transition-colors group">
-                <td class="px-8 py-5">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold text-lg">
-                            <?= $initials ?>
-                        </div>
-                        <div>
-                            <p class="font-bold text-on-surface"><?= $org_name ?></p>
-                            <p class="text-xs text-slate-400">ID Tổ chức: #<?= $org['org_id'] ?></p>
-                        </div>
-                    </div>
-                </td>
-                
-                <td class="px-8 py-5 font-medium text-slate-600">
-                    <?= $account ?>
-                </td>
-                
-                <td class="px-8 py-5">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700">
-                        <?= $total_campaigns ?> Chiến dịch
-                    </span>
-                </td>
-                
-                <td class="px-8 py-5 font-bold text-on-surface">
-                    <?= number_format($total_raised, 0, ',', '.') ?> ₫
-                </td>
-                
-                <td class="px-8 py-5 text-right">
-                    <button class="text-slate-400 hover:text-primary transition-colors material-symbols-outlined">more_vert</button>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        <?php endif; ?>
-        
-    </tbody>
-</table>
-</div>
-<div class="p-6 bg-surface-container-low/30 flex items-center justify-between border-t border-surface-container">
-<p class="text-xs font-medium text-slate-500">Hiển thị 1-4 trong số 24 tổ chức</p>
-<div class="flex gap-2">
-<button class="p-2 bg-white border border-surface-container rounded-lg text-slate-400 hover:text-primary transition-all">
-<span class="material-symbols-outlined text-sm">chevron_left</span>
-</button>
-<button class="p-2 bg-white border border-surface-container rounded-lg text-slate-400 hover:text-primary transition-all">
-<span class="material-symbols-outlined text-sm">chevron_right</span>
-</button>
-</div>
-</div>
+<div class="bg-surface-container-lowest rounded-3xl shadow-sm overflow-hidden border-none">
+    
+    <div class="p-6 flex items-center justify-between border-b border-surface-container">
+        <div class="flex gap-4">
+            <a href="?tab=all" class="text-sm font-bold px-4 py-2 rounded-xl transition-colors <?= $tab == 'all' ? 'text-primary bg-primary-fixed' : 'text-slate-500 hover:bg-slate-50' ?>">
+                Tất cả tổ chức
+            </a>
+            <a href="?tab=pending" class="text-sm font-medium px-4 py-2 rounded-xl transition-colors <?= $tab == 'pending' ? 'text-primary bg-primary-fixed' : 'text-slate-500 hover:bg-slate-50' ?>">
+                Chờ duyệt
+                <?php if($tab != 'pending' && count_pending_organizations() > 0): ?>
+                    <span class="ml-1 px-1.5 py-0.5 rounded-full bg-red-500 text-white text-[10px]">!</span>
+                <?php endif; ?>
+            </a>
+        </div>
+        <div class="flex gap-2">
+            <button class="p-2 text-slate-400 hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">filter_list</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-left whitespace-nowrap">
+            
+            <?php if ($tab == 'all'): ?>
+                <thead>
+                    <tr class="bg-surface-container-low text-slate-500 text-[10px] uppercase font-bold tracking-widest">
+                        <th class="px-8 py-4">Tên tổ chức</th>
+                        <th class="px-8 py-4">Tài khoản</th>
+                        <th class="px-8 py-4">Số chiến dịch</th>
+                        <th class="px-8 py-4">Tổng tiền kêu gọi được</th>
+                        <th class="px-8 py-4 text-right">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-surface-container">
+                    <?php if (empty($orgs_data)): ?>
+                        <tr><td colspan="5" class="px-8 py-6 text-center text-slate-500">Chưa có dữ liệu tổ chức.</td></tr>
+                    <?php else: ?>
+                        <?php foreach ($orgs_data as $org): 
+                            $org_name = htmlspecialchars($org['org_name']);
+                            // Logic tạo Avatar initials...
+                            $words = explode(" ", $org_name);
+                            $initials = count($words) >= 2 ? mb_substr($words[0], 0, 1) . mb_substr($words[1], 0, 1) : mb_substr($org_name, 0, 2);
+                            $initials = mb_strtoupper($initials);
+                        ?>
+                        <tr class="hover:bg-slate-50/50 transition-colors group">
+                            <td class="px-8 py-5">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold text-lg"><?= $initials ?></div>
+                                    <div>
+                                        <p class="font-bold text-on-surface"><?= $org_name ?></p>
+                                        <p class="text-xs text-slate-400">ID Tổ chức: #<?= $org['org_id'] ?></p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-8 py-5 font-medium text-slate-600"><?= htmlspecialchars($org['account']) ?></td>
+                            <td class="px-8 py-5"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700"><?= $org['total_campaigns'] ?> Chiến dịch</span></td>
+                            <td class="px-8 py-5 font-bold text-on-surface"><?= number_format($org['total_raised'], 0, ',', '.') ?> ₫</td>
+                            <td class="px-8 py-5 text-right"><button onclick="window.location.href='org_detail_view.php?id=<?= $org['org_id'] ?>'" class="text-slate-400 hover:text-primary transition-colors material-symbols-outlined">more_vert</button></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+
+            <?php else: ?>
+                <thead>
+                    <tr class="bg-surface-container-low text-slate-500 text-[10px] uppercase font-bold tracking-widest">
+                        <th class="px-6 py-4">Tên tổ chức</th>
+                        <th class="px-6 py-4">Mã số thuế</th>
+                        <th class="px-6 py-4">Tài khoản LK</th>
+                        <th class="px-6 py-4">Ví mã hóa</th>
+                        <th class="px-6 py-4">Ngày đăng ký</th>
+                        <th class="px-6 py-4 text-center">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-surface-container">
+                    <?php if (empty($orgs_data)): ?>
+                        <tr><td colspan="6" class="px-8 py-6 text-center text-slate-500">Tuyệt vời! Không có tổ chức nào đang chờ duyệt.</td></tr>
+                    <?php else: ?>
+                        <?php foreach ($orgs_data as $org): ?>
+                        <tr class="hover:bg-slate-50/50 transition-colors group">
+                            <td class="px-6 py-4">
+                                <p class="font-bold text-on-surface"><?= htmlspecialchars($org['org_name']) ?></p>
+                                <p class="text-xs text-slate-400">ID: #<?= $org['org_id'] ?></p>
+                            </td>
+                            <td class="px-6 py-4 font-mono text-sm text-slate-600"><?= htmlspecialchars($org['tax_code']) ?></td>
+                            <td class="px-6 py-4 font-medium text-primary">@<?= htmlspecialchars($org['account']) ?></td>
+                            <td class="px-6 py-4">
+                                <span class="text-xs bg-slate-100 px-2 py-1 rounded" title="<?= htmlspecialchars($org['wallet_address']) ?>">
+                                    <?= mb_substr($org['wallet_address'], 0, 10) ?>...
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-slate-500"><?= date('d/m/Y H:i', strtotime($org['created_date'])) ?></td>
+                            
+                            <td class="px-6 py-4 text-center">
+                                <div class="flex items-center justify-center gap-3">
+                                    <a href="org_detail.php?id=<?= $org['org_id'] ?>" title="Xem chi tiết" class="text-slate-400 hover:text-blue-500 transition-colors">
+                                        <span class="material-symbols-outlined text-xl">visibility</span>
+                                    </a>
+                                    <a href="?tab=pending&action=approve&id=<?= $org['org_id'] ?>" onclick="return confirm('Bạn có chắc chắn duyệt tổ chức này?');" title="Phê duyệt" class="text-slate-400 hover:text-emerald-500 transition-colors">
+                                        <span class="material-symbols-outlined text-xl">check_circle</span>
+                                    </a>
+                                    <a href="?tab=pending&action=reject&id=<?= $org['org_id'] ?>" onclick="return confirm('Tổ chức sẽ bị xóa vĩnh viễn khỏi hệ thống. Xác nhận từ chối?');" title="Từ chối & Xóa" class="text-slate-400 hover:text-red-500 transition-colors">
+                                        <span class="material-symbols-outlined text-xl">cancel</span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            <?php endif; ?>
+
+        </table>
+    </div>
+
+    <?php if ($tab == 'pending' && $total_records > 0): ?>
+    <div class="p-6 bg-surface-container-low/30 flex items-center justify-between border-t border-surface-container">
+        <p class="text-xs font-medium text-slate-500">Hiển thị <?= $start_display ?>-<?= $end_display ?> trong số <?= $total_records ?> tổ chức chờ duyệt</p>
+        <div class="flex gap-2">
+            <a href="?tab=pending&page=<?= max(1, $page - 1) ?>" class="p-2 flex items-center bg-white border border-surface-container rounded-lg text-slate-400 hover:text-primary transition-all <?= ($page <= 1) ? 'opacity-50 pointer-events-none' : '' ?>">
+                <span class="material-symbols-outlined text-sm">chevron_left</span>
+            </a>
+            <a href="?tab=pending&page=<?= min($total_pages, $page + 1) ?>" class="p-2 flex items-center bg-white border border-surface-container rounded-lg text-slate-400 hover:text-primary transition-all <?= ($page >= $total_pages) ? 'opacity-50 pointer-events-none' : '' ?>">
+                <span class="material-symbols-outlined text-sm">chevron_right</span>
+            </a>
+        </div>
+    </div>
+    <?php endif; ?>
+
 </div>
 </div>
 <!-- Floating Action Button contextually relevant for admin creation -->

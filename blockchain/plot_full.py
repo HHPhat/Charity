@@ -1,6 +1,7 @@
 import json
 import matplotlib.pyplot as plt
 
+
 with open("benchmark_full.json", "r") as f:
     data = json.load(f)
 

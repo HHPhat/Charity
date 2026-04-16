@@ -607,4 +607,131 @@ function get_paginated_campaigns($limit = 10, $offset = 0) {
         return [];
     }
 }
+
+// 1. Hàm thêm tổ chức mới (Khởi tạo)
+function insert_charity_organization($org_name, $tax_code, $account) {
+    global $conn;
+    $created_date = date('Y-m-d H:i:s');
+    $status = 0; // Mặc định là 0 (Chờ duyệt)
+    
+    $sql = "INSERT INTO charityorganization (org_name, status, tax_code, created_date, account) 
+            VALUES (:org_name, :status, :tax_code, :created_date, :account)";
+            
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([
+        ':org_name' => $org_name,
+        ':status' => $status,
+        ':tax_code' => $tax_code,
+        ':created_date' => $created_date,
+        ':account' => $account
+    ]);
+    
+    return $conn->lastInsertId(); // Trả về org_id vừa tạo
+}
+
+// 2. Hàm cập nhật lại ví (Sau khi băm sha256)
+function update_org_wallet($org_id, $wallet_address) {
+    global $conn;
+    $sql = "UPDATE charityorganization SET wallet_address = :wallet WHERE org_id = :id";
+    $stmt = $conn->prepare($sql);
+    return $stmt->execute([
+        ':wallet' => $wallet_address,
+        ':id' => $org_id
+    ]);
+}
+
+// 1. Đếm tổng số tổ chức đang chờ duyệt (status = 0)
+function count_pending_organizations() {
+    global $conn;
+    try {
+        $sql = "SELECT COUNT(*) FROM charityorganization WHERE status = 0";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    } catch (PDOException $e) {
+        return 0;
+    }
+}
+
+// 2. Lấy danh sách tổ chức chờ duyệt có phân trang
+function get_pending_organizations($limit, $offset) {
+    global $conn;
+    try {
+        $sql = "SELECT * FROM charityorganization WHERE status = 0 ORDER BY created_date DESC LIMIT :limit OFFSET :offset";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        return [];
+    }
+}
+
+// 3. Duyệt tổ chức (Cập nhật status = 1)
+function approve_organization($id) {
+    global $conn;
+    try {
+        $sql = "UPDATE charityorganization SET status = 1 WHERE org_id = :id";
+        $stmt = $conn->prepare($sql);
+        return $stmt->execute([':id' => $id]);
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+// 4. Từ chối tổ chức (Xóa khỏi CSDL)
+function reject_organization($id) {
+    global $conn;
+    try {
+        $sql = "DELETE FROM charityorganization WHERE org_id = :id";
+        $stmt = $conn->prepare($sql);
+        return $stmt->execute([':id' => $id]);
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+function get_organization_and_donor_info($org_id) {
+    global $conn;
+    try {
+        $sql = "SELECT 
+                    o.org_name, 
+                    o.tax_code, 
+                    o.account,
+                    d.full_name, 
+                    d.citizen_id, 
+                    d.email, 
+                    d.phone
+                FROM charityorganization o
+                LEFT JOIN donor d ON o.account = d.account
+                WHERE o.org_id = :org_id";
+                
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([':org_id' => $org_id]);
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Lỗi lấy thông tin tổ chức: " . $e->getMessage());
+        return false;
+    }
+}
+
+// Hàm lấy danh sách tổ chức dựa trên tài khoản
+function get_organizations_by_account($account_id) {
+    global $conn;
+    try {
+        $sql = "SELECT org_id, org_name 
+                FROM charityorganization 
+                WHERE account = :account";
+                
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([':account' => $account_id]);
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Lỗi lấy danh sách tổ chức theo account: " . $e->getMessage());
+        return [];
+    }
+}
 ?>

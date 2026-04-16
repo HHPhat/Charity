@@ -153,9 +153,9 @@
 <span class="material-symbols-outlined">person</span>
 <span>Profile Information</span>
 </button>
-<button class="flex items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors text-left">
+<button onclick="window.location.href='org_register.php'" class="flex items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors text-left">
 <span class="material-symbols-outlined">security</span>
-<span>Security &amp; Password</span>
+<span>Ogranization Register</span>
 </button>
 <button class="flex items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors text-left">
 <span class="material-symbols-outlined">favorite</span>
@@ -176,30 +176,40 @@
 <?php endif; ?>
 
 
-<a href="../fund_allocation/?id=1" class="flex w-full items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors text-left cursor-pointer">
-    <span class="material-symbols-outlined">person</span>
-    <span>1.Hội Chữ Thập Đỏ</span>
-</a>
+<?php
+// Đảm bảo bạn đã gọi session_start() ở đầu file và require database.php
+require_once '../../includes/database.php';
 
-<a href="../fund_allocation/?id=2" class="flex w-full items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors text-left cursor-pointer">
-    <span class="material-symbols-outlined">person</span>
-    <span>2.Quỹ Hi Vọng</span>
-</a>
+// Kiểm tra xem đã đăng nhập chưa
+if (isset($_SESSION['account_id'])) {
+    $account_id = $_SESSION['account_id'];
+    
+    // Gọi hàm lấy danh sách tổ chức
+    $organizations = get_organizations_by_account($account_id);
+?>
 
-<a href="../fund_allocation/?id=3" class="flex w-full items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors text-left cursor-pointer">
-    <span class="material-symbols-outlined">person</span>
-    <span>3.Quỹ Trẻ Em</span>
-</a>
+    <?php if (!empty($organizations)): ?>
+        <?php foreach ($organizations as $org): 
+            $id = $org['org_id'];
+            $name = htmlspecialchars($org['org_name']); // Dùng htmlspecialchars để bảo mật, chống lỗi hiển thị
+        ?>
+        
+        <a href="../fund_allocation/?id=<?= $id ?>" class="flex w-full items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors text-left cursor-pointer">
+            <span class="material-symbols-outlined">person</span>
+            <span><?= $name ?></span>
+        </a>
+        
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p class="px-4 py-3 text-sm text-slate-400 italic">Bạn chưa quản lý tổ chức nào.</p>
+    <?php endif; ?>
 
-<a href="../fund_allocation/?id=4" class="flex w-full items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors text-left cursor-pointer">
-    <span class="material-symbols-outlined">person</span>
-    <span>4.Tâm Nguyện</span>
-</a>
-
-<a href="../fund_allocation/?id=5" class="flex w-full items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors text-left cursor-pointer">
-    <span class="material-symbols-outlined">person</span>
-    <span>5.Ánh Sáng</span>
-</a>
+<?php 
+} else {
+    // Xử lý khi chưa đăng nhập (nếu cần)
+    echo '<p class="px-4 py-3 text-sm text-red-500">Vui lòng đăng nhập!</p>';
+} 
+?>
 </nav>
 </aside>
 <!-- Main Content Area -->
